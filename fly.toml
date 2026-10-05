@@ -1,5 +1,5 @@
 # Fly.io — היום שלי. ה-app מוחלף אוטומטית על ידי scripts/deploy-fly.sh
-app = "daily-planner-CHANGE-ME"
+app = "dailyplanner"
 primary_region = "fra"
 
 [build]
