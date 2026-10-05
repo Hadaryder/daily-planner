@@ -1,0 +1,47 @@
+name: Test and deploy to Fly.io
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two production deploys at the same time
+concurrency:
+  group: ${{ github.event_name == 'push' && 'production-deploy' || format('test-{0}', github.ref) }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: API tests (auth, privacy, friends, postcards, data survives restart)
+        run: node --no-warnings tests/api.test.mjs
+
+  deploy:
+    # Only after merging to main - never from a pull request
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Safety guard - the app name and data volume must never change
+        run: |
+          grep -q '^app = "dailyplanner"' fly.toml || { echo "fly.toml: app name changed - refusing to deploy"; exit 1; }
+          grep -q 'source = "dp_data"' fly.toml || { echo "fly.toml: data volume changed - refusing to deploy"; exit 1; }
+          grep -q 'destination = "/data"' fly.toml || { echo "fly.toml: volume mount path changed - refusing to deploy"; exit 1; }
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy (single machine, data lives on the persistent volume)
+        run: flyctl deploy --remote-only --ha=false
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
