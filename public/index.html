@@ -299,6 +299,9 @@ details.how{border:2px dashed var(--ink);border-radius:14px;padding:6px 14px;bac
  .twin{grid-template-columns:1fr}
 }
 @media (min-width:1100px){.cell{aspect-ratio:1/.8}.calhead{margin-bottom:14px}.cols{row-gap:22px}}
+.cell .stk span.n3{font-size:clamp(9px,1.05vw,15px)}.score-big .n.n3{font-size:clamp(40px,5vw,58px)}
+.score-big.p100{margin-bottom:26px}.score-big.p100 .n.n3{font-size:clamp(34px,4.4vw,52px)}.p100cap{position:absolute;inset-inline:0;bottom:-20px;margin-inline:auto;width:max-content;max-width:112%;background:var(--card);color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:2px 14px;font-family:'Gveret Levin';font-size:clamp(14px,1.5vw,18px);transform:rotate(7deg);white-space:nowrap;box-shadow:-2px 2px 0 var(--ink)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:15px;text-align:start;line-height:1.5}.consent a,.pts a,.linkbtn a{color:inherit;text-decoration:underline}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><div id="app"></div><div id="menu"></div><div id="popup"></div><div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>'use strict';
@@ -311,6 +314,7 @@ const GX={
   flower(petal,center){let p='';for(let k=0;k<8;k++)p+=`<ellipse cx="50" cy="27" rx="11" ry="20" fill="${petal}" stroke="${INK}" stroke-width="3" transform="rotate(${k*45} 50 50)"/>`;return svgw(p+`<circle cx="50" cy="50" r="12" fill="${center}" stroke="${INK}" stroke-width="3"/>`)},
   star(fill){let pts='';for(let i=0;i<10;i++){const r=i%2?19:46,t=-Math.PI/2+i*Math.PI/5;pts+=(50+r*Math.cos(t)).toFixed(1)+','+(54+r*Math.sin(t)).toFixed(1)+' '}return svgw(`<polygon points="${pts}" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
   sparkle(fill){return svgw(`<path d="M50 4Q54 46 96 50Q54 54 50 96Q46 54 4 50Q46 46 50 4Z" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
+  flower100(){let p='';for(let k=0;k<10;k++)p+=`<ellipse cx="50" cy="22" rx="10" ry="19" fill="${COL.pink}" stroke="${INK}" stroke-width="3" transform="rotate(${k*36} 50 50)"/>`;return svgw(p+`<circle cx="50" cy="50" r="22" fill="var(--tape)" stroke="${INK}" stroke-width="3"/>`,'0 0 100 100','flower100')},
   squig(c='var(--ink)'){return svgw(`<path d="M2 12q9 -14 18 0t18 0t18 0t18 0t18 0t18 0" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`,'0 0 120 24','sq')},
   tape(c='var(--tape)'){return svgw(`<path d="M2 2L8 6L2 10L8 14L2 18L8 22L2 26H98L92 22L98 18L92 14L98 10L92 6L98 2Z" fill="${c}" fill-opacity=".9"/>`,'0 0 100 28','tp')},
 };
@@ -326,8 +330,8 @@ const IC={check:'M5 13l4 4L19 7',x:'M5 5l14 14M19 5L5 19',plus:'M12 5v14M5 12h14
 const ico=(n,s=22,w=2.4)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${IC[n]}"/></svg>`;
 const COL={pink:'var(--pink)',lime:'var(--lime)',lav:'var(--lav)',orange:'var(--orange)',green:'var(--green)',limel:'var(--lime-l)',pinkl:'var(--pink-l)',lavl:'var(--lav-l)'};
 // sticker by tier: great=orange scalloped, good=lime scalloped, soft=lavender blob
-function tierShape(t,seed=1){return t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):GX.blob(COL.lav,seed)}
-function stk(t,txt,size,rot){return `<span class="stk" style="width:${size}px;height:${size}px;${rot?`transform:rotate(${rot}deg)`:''}">${tierShape(t,(txt|0)+3)}<span style="font-size:${Math.round(size*.36)}px">${txt}</span></span>`}
+function tierShape(t,seed=1){if(+seed===100)return GX.flower100();return t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):GX.blob(COL.lav,seed)}
+function stk(t,txt,size,rot){return `<span class="stk" style="width:${size}px;height:${size}px;${rot?`transform:rotate(${rot}deg)`:''}">${tierShape(t,+txt||((txt|0)+3))}<span style="font-size:${Math.round(size*(String(txt).length>=3?.27:.36))}px">${txt}</span></span>`}
 const STICKERS=[['flower',()=>GX.flower(COL.pink,COL.lime)],['flower2',()=>GX.flower(COL.lav,COL.orange)],['star',()=>GX.star(COL.pink)],['badge',()=>GX.badge(COL.orange,14)],['blob',()=>GX.blob(COL.green,4)]];
 const stickerSvg=id=>{const f=STICKERS.find(s=>s[0]===id);return f?f[1]():GX.flower(COL.pink,COL.lime)};
 
@@ -372,9 +376,10 @@ function calc(day,g){
 }
 const tierOf=s=>s==null?'none':s>=85?'great':s>=60?'good':'soft';
 const PRAISE={great:'יום מעולה!',good:'יום טוב!',soft:'מחר עוד יום',none:'מתחילים?'};
+const praise=(score)=>score===100?'יום מושלם!':PRAISE[tierOf(score)];
 const scoreOf=s=>S.days[s]?calc(S.days[s],goal()).score:null;
 function streak(){let n=0,s=todayStr();const t=scoreOf(s);if(t!=null&&t>=60)n++;s=addDays(s,-1);for(let i=0;i<4000;i++){const v=scoreOf(s);if(v!=null&&v>=60){n++;s=addDays(s,-1)}else break}return n}
-function monthStats(y,m){const n=new Date(y,m+1,0).getDate();let sum=0,c=0,best=null,bd=null,great=0,good=0,soft=0,emp=0;for(let d=1;d<=n;d++){const s=`${y}-${pad2(m+1)}-${pad2(d)}`;if(s>todayStr())continue;const v=scoreOf(s);if(v==null){emp++;continue}sum+=v;c++;if(best==null||v>best){best=v;bd=s}const t=tierOf(v);if(t==='great')great++;else if(t==='good')good++;else soft++}return{avg:c?Math.round(sum/c):null,best,bd,great,good,soft,emp,count:c}}
+function monthStats(y,m){const n=new Date(y,m+1,0).getDate();let sum=0,c=0,best=null,bd=null,great=0,good=0,soft=0,emp=0,perfect=0;for(let d=1;d<=n;d++){const s=`${y}-${pad2(m+1)}-${pad2(d)}`;if(s>todayStr())continue;const v=scoreOf(s);if(v==null){emp++;continue}if(v===100)perfect++;sum+=v;c++;if(best==null||v>best){best=v;bd=s}const t=tierOf(v);if(t==='great')great++;else if(t==='good')good++;else soft++}return{avg:c?Math.round(sum/c):null,best,bd,great,good,soft,emp,perfect,count:c}}
 /* ---------- storage ---------- */
 const Store={db:null,uid:null,tm:{},ver:{},pending:{},
   ls(){try{return window.localStorage}catch(e){return null}},
@@ -413,8 +418,8 @@ const Store={db:null,uid:null,tm:{},ver:{},pending:{},
     this.loadLocal();const localCopy={profile:S.profile,days:S.days};
     if(!(window.claude&&window.claude.use)){
       const h=await Api.health();
-      if(h){S.apiAvail=true;S.signup=h.signup;const l=this.ls();const guest=!!(l&&l.getItem('dp_guest')==='1');let me=null;try{me=await Api.get('/api/me')}catch(e){}
-        if(me&&me.user){S.user=me.user;S.mode='api';S.profile=null;S.days={};await this.loadApi(guest?localCopy:null)}
+      if(h){S.apiAvail=true;S.signup=h.signup;S.mail=!!h.mail;const l=this.ls();const guest=!!(l&&l.getItem('dp_guest')==='1');let me=null;try{me=await Api.get('/api/me')}catch(e){}
+        if(me&&me.user){S.user=me.user;S.needsConsent=!!me.needsConsent;S.mail=!!me.mail;S.mode='api';S.profile=null;S.days={};await this.loadApi(guest?localCopy:null)}
         else if(guest&&localCopy.profile){S.mode='local';S.guest=true}
         else{S.mode='api';S.profile=null;S.days={}}
       }
@@ -467,15 +472,16 @@ function render(keep){
   parseRoute();const app=$('#app');if(!app)return;
   if(!S.ready){app.innerHTML='<div class="splash">היום שלי…</div>';return}
   const r=S.route.name;
-  if(S.mode==='api'){if(!S.user&&r!=='welcome'&&r!=='join')return go('welcome');if(S.user&&!S.profile&&r!=='setup')return go('setup')}
-  if(!S.profile&&r!=='welcome'&&r!=='setup'&&r!=='join'){return go('welcome')}
+  if(S.mode==='api'){if(!S.user&&!['welcome','join','reset','verify'].includes(r))return go('welcome');if(S.user&&!S.profile&&!['setup','reset','verify'].includes(r))return go('setup')}
+  if(!S.profile&&!['welcome','setup','join','reset','verify'].includes(r)){return go('welcome')}
   if(S.profile&&(r===''||r==='welcome'||(r==='setup'&&!S.ui.editSetup)))return go('today');
   const y=window.scrollY;
   const fn=PAGES[r]||PAGES.today;let html='';
   try{html=fn(S.route)}catch(e){console.error(e);html=`<div class="page"><div class="note">אופס, משהו השתבש בטעינת המסך. <button class="btn sm" data-act="reload">נסו שוב</button></div></div>`}
-  const showNav=S.profile&&!['welcome','setup'].includes(r);
+  const showNav=S.profile&&!['welcome','setup','reset','verify'].includes(r);
   app.innerHTML=(showNav?navHtml(r):'')+html;
   closeMenu();afterRender();
+  if(S.mode==='api'&&S.user&&S.needsConsent&&!S.popup)setTimeout(()=>{if(S.needsConsent&&!S.popup)openPopup('consent')},0);
   if(S.mode==='api'&&Social.on&&['friends','friend','postcards','zine'].includes(r)&&Date.now()-Social.last>6000)Social.refresh();
   window.scrollTo(0,keep?y:0);
 }
@@ -485,7 +491,7 @@ function afterRender(){$$('textarea[data-auto]').forEach(t=>{t.style.height='aut
 function openPopup(type,d){S.popup={type,d:d||{}};renderPopup()}
 function renderPopup(){const el=$('#popup');if(!el)return;if(!S.popup){el.innerHTML='';return}
   const p=POP[S.popup.type];if(!p){el.innerHTML='';return}
-  el.innerHTML=`<div class="scrim" data-act="scrim"><div class="dlg ${p.cls||''}" role="dialog" aria-modal="true" aria-label="${esc(p.label||'')}">${p.render(S.popup.d)}</div></div>`;
+  el.innerHTML=`<div class="scrim" ${p.locked?'':'data-act="scrim"'}><div class="dlg ${p.cls||''}" role="dialog" aria-modal="true" aria-label="${esc(p.label||'')}">${p.render(S.popup.d)}</div></div>`;
   const f=$('#popup [data-focus]');if(f){f.focus();if(f.dataset.focus==='sel'&&f.select)f.select()}
   if(p.after){try{p.after(S.popup.d)}catch(e){}}}
 function closePopup(){if(!S.popup)return;S.popup=null;const el=$('#popup');if(el)el.innerHTML=''}
@@ -503,9 +509,9 @@ document.addEventListener('click',e=>{
 document.addEventListener('input',e=>{const el=e.target.closest('[data-in]');if(el&&INP[el.dataset.in]){try{INP[el.dataset.in](el,e)}catch(err){console.error(err)}}});
 document.addEventListener('change',e=>{const el=e.target.closest('[data-ch]');if(el&&INP[el.dataset.ch]){try{INP[el.dataset.ch](el,e)}catch(err){console.error(err)}}});
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-submit]');if(f){e.preventDefault();const fn=SUB[f.dataset.submit];if(fn){try{fn(f,e)}catch(err){console.error(err)}}}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.menu)closeMenu();else closePopup()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.menu)closeMenu();else if(!(S.popup&&POP[S.popup.type]&&POP[S.popup.type].locked))closePopup()}});
 window.addEventListener('hashchange',()=>{closePopup();render(false)});
-const VERSION='1.6.0';
+const VERSION='1.7.0';
 async function saveFile(filename,blob){try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;if(dl){await dl.save({filename,data:blob});return true}}catch(e){if(e&&e.code==='cancelled')return false}
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);return true}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.flush()});window.addEventListener('pagehide',()=>Store.flush());
@@ -587,8 +593,9 @@ function chipsHtml(c){
   return `<div class="chips">${one('pink','משימות',t?`${t.a}/${t.b}`:'–')}${one('lime','לו״ז',s?`${s.a}/${s.b}`:'–')}${one('lav','אוכל',f?`${f.a}/${f.b}`:'–')}${one('green','צעדים',w?Math.round(w.f*100)+'%':'–')}</div>`;
 }
 function scoreBig(c){
-  const t=tierOf(c.score);const shape=t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):t==='soft'?GX.blob(COL.lav,5):`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`;
-  return `<div class="score-big" ${t==='none'?'style="color:var(--ink)"':''}>${shape}<div class="in-t" ${t==='none'?'style="color:var(--ink)"':''}><small>הציון שלי היום</small><span class="n">${c.score==null?'—':c.score}<small style="font-size:.3em">${c.score==null?'':'/100'}</small></span><small>${PRAISE[t]}</small></div></div>`;
+  if(c.score===100)return `<div class="score-big p100" aria-label="הציון שלי היום: 100. יום מושלם">${GX.flower100()}<div class="in-t"><span class="n n3">100</span></div><div class="p100cap">הציון שלי היום · יום מושלם!</div></div>`;
+  const t=tierOf(c.score);const shape=c.score===100?GX.flower100():t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):t==='soft'?GX.blob(COL.lav,5):`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`;
+  return `<div class="score-big" ${t==='none'?'style="color:var(--ink)"':''}>${shape}<div class="in-t" ${t==='none'?'style="color:var(--ink)"':''}><small>הציון שלי היום</small><span class="n ${c.score===100?'n3':''}">${c.score==null?'—':c.score}<small style="font-size:.3em">${c.score==null?'':'/100'}</small></span><small>${praise(c.score)}</small></div></div>`;
 }
 function headerHtml(date,ro){
   const d=dayOf(date),c=calc(d,goal());const msg=ro?'ככה נראה היום ההוא':MSGS[(pdate(date).getDate()+pdate(date).getMonth())%MSGS.length];
@@ -656,7 +663,7 @@ ACT['menu-meal']=el=>openMenu([{act:'add-food',ic:'pencil',t:'עריכה',data:{
 function dayPage(date){
   S.ui.date=date;const ro=!canEdit(date);const isToday=date===todayStr();
   const banner=(ro?`<div class="arch"><div class="banner lav">${ico('lock',18)} עמוד מהארכיון · נסגר בחצות · לעיון בלבד</div><a class="btn secondary" href="#/calendar">חזרה ללוח השנה</a></div>`:(!isToday?`<div class="arch"><div class="banner lav">${ico('cal',18)} מתכננים יום עתידי</div><a class="btn secondary" href="#/today">חזרה להיום</a></div>`:''));
-  return `<main class="page">${S.dbfail&&S.mode==='db'?'<div class="dbwarn">השמירה בענן לא זמינה לך כרגע (אולי יש לך הרשאת צפייה בלבד). הנתונים נשמרים במכשיר הזה.</div>':''}${banner}${headerHtml(date,ro)}
+  return `<main class="page">${verifyBanner()}${S.dbfail&&S.mode==='db'?'<div class="dbwarn">השמירה בענן לא זמינה לך כרגע (אולי יש לך הרשאת צפייה בלבד). הנתונים נשמרים במכשיר הזה.</div>':''}${banner}${headerHtml(date,ro)}
   <div class="cols"><div class="c2 stack">${tasksHtml(date,ro)}${journalHtml(date,ro)}</div><div class="c2 stack" style="gap:40px">${scheduleHtml(date,ro)}${stepsHtml(date,ro)}</div></div></main>${foodHtml(date,ro)}`;
 }
 PAGES.today=()=>dayPage(todayStr());
@@ -669,18 +676,18 @@ PAGES.calendar=()=>{
     if(dn<1){const d=new Date(y,m,dn);s=dstr(d);num=d.getDate();out=true}else if(dn>n){const d=new Date(y,m,dn);s=dstr(d);num=d.getDate();out=true}else{s=`${y}-${pad2(m+1)}-${pad2(dn)}`;num=dn}
     if(out){cells+=`<div class="cell out"><span class="d">${num}</span></div>`;continue}
     const sc=scoreOf(s);const tr=tierOf(sc);
-    if(s===t)cells+=`<button class="cell today" data-act="open-day" data-d="${s}" aria-label="היום, ${num}"><span class="d">${num}</span><span class="stk" style="aspect-ratio:1">${GX.blob(COL.pink,2)}<span>${sc==null?'היום':sc}</span></span></button>`;
+    if(s===t)cells+=`<button class="cell today" data-act="open-day" data-d="${s}" aria-label="היום, ${num}"><span class="d">${num}</span><span class="stk" style="aspect-ratio:1">${sc===100?GX.flower100():GX.blob(COL.pink,2)}<span class="${sc===100?'n3':''}">${sc==null?'היום':sc}</span></span></button>`;
     else if(s>t)cells+=`<button class="cell fut" data-act="open-day" data-d="${s}" aria-label="${num}, יום עתידי"><span class="d" style="opacity:.55">${num}</span></button>`;
     else if(sc==null)cells+=`<button class="cell emp" data-act="open-day" data-d="${s}" aria-label="${num}, בלי תכנון"><span class="d" style="opacity:.55">${num}</span><span class="ring"></span></button>`;
-    else cells+=`<button class="cell" data-act="open-day" data-d="${s}" aria-label="${num}, ציון ${sc}"><span class="d">${num}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-6:tr==='good'?5:-4}deg)">${tierShape(tr,sc)}<span>${sc}</span></span></button>`;
+    else cells+=`<button class="cell" data-act="open-day" data-d="${s}" aria-label="${num}, ציון ${sc}"><span class="d">${num}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-6:tr==='good'?5:-4}deg)">${tierShape(tr,sc)}<span class="${sc===100?'n3':''}">${sc}</span></span></button>`;
   }
   const st=monthStats(y,m);const avgT=tierOf(st.avg);const sk=streak();
   const leg=(sh,l,c)=>`<div class="lr"><span class="stk" style="aspect-ratio:1">${sh}</span><span class="grow">${l}</span><span class="suez">${c}</span></div>`;
   return `<main class="page"><div class="calhead"><div class="row" style="gap:14px;flex-wrap:wrap">${stitle('org','לוח השנה שלי',GX.sparkle(COL.lime))}</div><div class="mnav"><button class="icbtn big" data-act="cal-next" aria-label="חודש הבא">${ico('left',24)}</button><span class="suez" id="monthlbl" aria-live="polite">${HMON[m]} ${y}</span><button class="icbtn big" data-act="cal-prev" aria-label="חודש קודם">${ico('right',24)}</button><button class="btn secondary sm" data-act="cal-today">חזרה להיום</button></div></div>
   <div class="cols"><div class="c3"><div class="sheetwrap alt"><div class="sheet white" style="padding:26px 24px 18px;border-radius:56px 20px 56px 20px">${tapeEl('var(--tape)')}<div class="calgrid">${WD.map(w=>`<div class="wd">${w}</div>`).join('')}${cells}</div><div class="hint" style="justify-content:flex-start;margin-top:12px">${ico('check',16)} לחצו על יום כדי לפתוח את הדף שלו</div></div></div></div>
-  <div class="c1 sumcol"><div style="align-self:center;width:200px;height:200px;position:relative;transform:rotate(-4deg)" aria-label="ממוצע חודשי">${st.avg==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`:tierShape(avgT,st.avg)}<div class="in-t" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${st.avg==null?'var(--ink)':'var(--ink-fixed)'}"><small class="hand" style="font-size:18px">ממוצע ${HMON[m]}</small><span class="suez" style="font-size:56px;line-height:1">${st.avg==null?'—':st.avg}</span><small class="hand" style="font-size:18px">${PRAISE[avgT]}</small></div></div>
+  <div class="c1 sumcol"><div style="align-self:center;width:200px;height:200px;position:relative;transform:rotate(-4deg)" aria-label="ממוצע חודשי">${st.avg==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`:tierShape(avgT,st.avg===100?99:st.avg)}<div class="in-t" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${st.avg==null?'var(--ink)':'var(--ink-fixed)'}"><small class="hand" style="font-size:18px">ממוצע ${HMON[m]}</small><span class="suez" style="font-size:56px;line-height:1">${st.avg==null?'—':st.avg}</span><small class="hand" style="font-size:18px">${praise(st.avg)}</small></div></div>
   <div class="statn" style="background:var(--lime-l)"><b>${sk}</b>הרצף הנוכחי</div><div class="statn" style="background:var(--pink-l)"><b>${st.best==null?'–':st.best}</b>${st.bd?`היום הכי טוב (${shortDate(st.bd)})`:'היום הכי טוב'}</div><div class="statn" style="background:var(--lav-l)"><b>${st.great}</b>ימים מעולים</div>
-  <div class="legbox"><div class="pt" style="font-size:26px">מה אומרות המדבקות?</div>${leg(GX.badge(COL.orange,14),'מעולה · 85+',st.great)}${leg(GX.badge(COL.lime,12),'טוב · 60–84',st.good)}${leg(GX.blob(COL.lav,3),'רך · עד 59',st.soft)}${leg(`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="4" stroke-dasharray="8 8"/></svg>`,'חופש · בלי תכנון',st.emp)}</div>
+  <div class="legbox"><div class="pt" style="font-size:26px">מה אומרות המדבקות?</div>${leg(GX.flower100(),'מושלם · 100',st.perfect)}${leg(GX.badge(COL.orange,14),'מעולה · 85+',st.great)}${leg(GX.badge(COL.lime,12),'טוב · 60–84',st.good)}${leg(GX.blob(COL.lav,3),'רך · עד 59',st.soft)}${leg(`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="4" stroke-dasharray="8 8"/></svg>`,'חופש · בלי תכנון',st.emp)}</div>
   <a class="btn lime block" href="#/zine">${ico('mail',20)} הגיליון השבועי</a></div></div></main>`;
 };
 ACT['cal-prev']=()=>{S.cal.m--;if(S.cal.m<0){S.cal.m=11;S.cal.y--}render(true)};
@@ -827,9 +834,12 @@ POP.settings={label:'הפרופיל שלי',cls:'w',render:d=>{const st=d.st;ret
  <div class="field"><label>תאריך לידה (אופציונלי)</label><div class="twin" style="grid-template-columns:1fr 1fr 1.3fr;gap:10px"><input class="in num" inputmode="numeric" placeholder="יום" maxlength="2" value="${st.d}" data-in="setup-d" aria-label="יום"><input class="in num" inputmode="numeric" placeholder="חודש" maxlength="2" value="${st.m}" data-in="setup-m" aria-label="חודש"><input class="in num" inputmode="numeric" placeholder="שנה" maxlength="4" value="${st.y}" data-in="setup-y" aria-label="שנה"></div></div>
  ${goalFieldHtml(st.goal)}${st.err?`<div class="err-t" role="alert">${esc(st.err)}</div>`:''}
  <div class="acts" style="gap:10px"><button type="button" class="ghost" data-act="export-data">${ico('up',18)} ייצוא הנתונים שלי</button><span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="submit">שמירה</button></div>
- <div class="pts">גרסה ${VERSION}</div><div class="pts">מצב אחסון: ${S.mode==='api'?`חשבון ${esc(S.user?S.user.email:'')}. נשמר בענן`:S.mode==='db'?(S.dbfail?'במכשיר הזה בלבד (אין הרשאת כתיבה בענן)':'ענן. הנתונים נשמרים בחשבון שלך'):'מקומי, במכשיר הזה בלבד'}</div>${S.mode==='api'?`<div class="acts" style="gap:10px"><button type="button" class="btn secondary sm" data-act="logout">יציאה מהחשבון</button><span class="sp"></span><button type="button" class="ghost red" data-act="del-acct">מחיקת החשבון</button></div>`:(S.guest&&S.apiAvail?`<div><button type="button" class="btn lime sm" data-act="make-account">יצירת חשבון כדי לשמור בענן</button></div>`:'')}</div>`}};
+ ${S.mode==='api'?`<div class="stack" style="gap:8px;border-top:2px dashed var(--ink);padding-top:12px"><b>החשבון</b><div class="row" style="gap:8px;flex-wrap:wrap"><span>${esc(S.user?S.user.email:'')}</span>${S.mail?(S.user&&S.user.verified?`<span class="chip on">${ico('check',14,3)} מאומת</span>`:`<span class="chip pink">לא מאומת</span><button type="button" class="ghost" data-act="resend-verify">שליחת קישור</button>`):''}</div>
+<div class="twin"><div class="field"><label for="po">סיסמה נוכחית</label><input id="po" class="in sm" type="password" dir="ltr" style="text-align:left" autocomplete="current-password" data-in="pw-old"></div><div class="field"><label for="pn">סיסמה חדשה</label><input id="pn" class="in sm" type="password" dir="ltr" style="text-align:left" autocomplete="new-password" data-in="pw-new"></div></div>
+${d.pw&&d.pw.err?`<div class="err-t" role="alert">${esc(d.pw.err)}</div>`:''}${d.pw&&d.pw.ok?`<div class="hint">${ico('check',16)} הסיסמה שונתה</div>`:''}<div><button type="button" class="btn secondary sm" data-act="pw-change">שינוי סיסמה</button></div></div>`:''}
+<div class="pts">${typeof legalLinks==='function'?legalLinks():''} · גרסה ${VERSION}</div><div class="pts">מצב אחסון: ${S.mode==='api'?`חשבון ${esc(S.user?S.user.email:'')}. נשמר בענן`:S.mode==='db'?(S.dbfail?'במכשיר הזה בלבד (אין הרשאת כתיבה בענן)':'ענן. הנתונים נשמרים בחשבון שלך'):'מקומי, במכשיר הזה בלבד'}</div>${S.mode==='api'?`<div class="acts" style="gap:10px"><button type="button" class="btn secondary sm" data-act="logout">יציאה מהחשבון</button><span class="sp"></span><button type="button" class="ghost red" data-act="del-acct">מחיקת החשבון</button></div>`:(S.guest&&S.apiAvail?`<div><button type="button" class="btn lime sm" data-act="make-account">יצירת חשבון כדי לשמור בענן</button></div>`:'')}</div>`}};
 ACT['make-account']=()=>{closePopup();S.ui.auth={tab:'register',email:'',pass:'',err:'',busy:false};S.mode='api';S.user=null;go('welcome');render(true)};
-ACT.settings=()=>{initSetup();openPopup('settings',{st:S.setup})};
+ACT.settings=()=>{initSetup();openPopup('settings',{st:S.setup,pw:{old:'',nw:'',err:'',ok:false}})};
 SUB['save-settings']=()=>{const st=S.popup.d.st;const r=buildProfile(st,S.profile);if(r.err){st.err=r.err;return renderPopup()}S.profile=r.p;Store.saveProfile();S.setup=null;closePopup();render(true);toast('הפרופיל נשמר')};
 ACT['export-data']=async()=>{const data=JSON.stringify({exported:new Date().toISOString(),profile:S.profile,days:S.days},null,1);try{await saveFile('היום-שלי-גיבוי.json',new Blob([data],{type:'application/json'}));toast('הקובץ מוכן')}catch(e){toast('לא הצלחנו לייצא')}};
 
@@ -895,14 +905,14 @@ const inviteUrl=()=>{let b='';try{b=location.href.split('#')[0]}catch(e){}return
 const needDb=()=>{const acct=S.guest&&S.apiAvail;return `<main class="page"><div class="cols"><div class="c3"><div class="note"><div class="pt">${acct?'כדי להוסיף חברים צריך חשבון':'החלק החברתי עובד בענן'}</div><p style="margin:8px 0 12px">${acct?'כרגע אתם משתמשים בלי חשבון, והנתונים נשמרים רק במכשיר הזה. אחרי הרשמה אפשר להוסיף חברים ולשלוח גלויות, והנתונים שלכם יועברו לחשבון.':'כדי להוסיף חברים ולשלוח גלויות, צריך לפתוח את הדף עם הרשאת כתיבה. שאר האתר עובד כרגיל.'}</p>${acct?'<button class="btn primary" data-act="make-account">יצירת חשבון</button>':''}</div></div></div></main>`};
 /* ---------------- friends ---------------- */
 function fcardHtml(id){const p=Social.profiles[id]||{name:'?',scores:{}};const sc=p.scores||{};const t=sc[todayStr()];const tr=tierOf(t==null?null:t);const st=friendStreak(sc);
-  const sticker=t==null?`<span class="stk" style="aspect-ratio:1"><svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6" opacity=".5"/></svg><span style="opacity:.5">–</span></span>`:`<span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-5:tr==='good'?4:-3}deg)">${tierShape(tr,t)}<span style="font-size:20px">${t}</span></span>`;
+  const sticker=t==null?`<span class="stk" style="aspect-ratio:1"><svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6" opacity=".5"/></svg><span style="opacity:.5">–</span></span>`:`<span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-5:tr==='good'?4:-3}deg)">${tierShape(tr,t)}<span style="font-size:${t===100?15:20}px">${t}</span></span>`;
   return `<button class="fcard" data-act="open-friend" data-id="${esc(id)}">${fAvatar(p,'m')}<span class="tx"><b>${esc(p.name)}</b><span class="pts">${t==null?'עוד לא עודכן היום':(st?`רצף ${st} ימים · `:'')+'עודכן היום'}</span></span>${sticker}</button>`}
 PAGES.friends=()=>{
   if(!Social.on)return needDb();
   if(S.ui.pendingJoin){const c=S.ui.pendingJoin;S.ui.pendingJoin=null;setTimeout(()=>openPopup('addfriend',{code:c}),50)}
   const fr=Social.friendIds(),inc=Social.incoming(),out=Social.outgoing();
   const req=inc.map(id=>{const p=Social.profiles[id];return `<div class="fcard" style="cursor:default">${fAvatar(p,'m')}<span class="tx"><b>${esc(p.name)}</b><span class="pts">רוצה להצטרף אליך</span></span><button class="btn secondary sm" data-act="decline" data-id="${esc(id)}">דחייה</button><button class="btn primary sm" data-act="accept" data-id="${esc(id)}">${ico('check',18,3)} אישור</button></div>`}).join('');
-  return `<main class="page">${Social.err?'<div class="dbwarn">יש בעיה בחיבור לחלק החברתי. אולי חסרה לך הרשאת כתיבה בדף.</div>':''}<div class="rowb" style="margin-bottom:22px"><button class="btn primary" data-act="addfriend-popup">${ico('plus',20,3)} הוספת חבר/ה</button>${stitle('grn','החברים שלי',GX.flower(COL.pink,COL.lime))}</div>
+  return `<main class="page">${verifyBanner()}${Social.err?'<div class="dbwarn">יש בעיה בחיבור לחלק החברתי. אולי חסרה לך הרשאת כתיבה בדף.</div>':''}<div class="rowb" style="margin-bottom:22px"><button class="btn primary" data-act="addfriend-popup">${ico('plus',20,3)} הוספת חבר/ה</button>${stitle('grn','החברים שלי',GX.flower(COL.pink,COL.lime))}</div>
   <div class="cols"><div class="c2"><div class="sheetwrap alt"><div class="sheet" style="padding:26px 20px 22px"><div class="stack" style="gap:10px">${fr.length?fr.map(fcardHtml).join(''):`<div class="empty">עוד אין חברים.<br>שלחו קישור הזמנה כדי להתחיל ${GX.flower(COL.pink,COL.lime).replace('class="g "','class="g" style="width:48px;height:48px;display:inline-block;vertical-align:middle"')}</div>`}</div></div></div></div>
   <div class="c2 stack">${inc.length?`<div class="stack" style="gap:10px"><span class="pt">בקשות הצטרפות · ${inc.length}</span>${req}</div>`:''}${out.length?`<div class="note solid" style="padding:14px 18px"><b>ממתינים לאישור</b><div class="pts">${out.map(id=>esc(Social.profiles[id].name)).join(', ')}</div></div>`:''}${rankHtml()}
   <div class="note">${tapeEl()}<div class="pt">הזמנת חבר/ה</div><div class="stack" style="gap:12px;margin-top:10px"><div class="row" style="gap:10px"><button class="btn secondary sm" data-act="copy-invite">${ico('copy',18)} העתקה</button><div class="in sm" style="direction:ltr;text-align:left;font-family:Heebo;font-weight:500;font-size:15px;display:flex;align-items:center;overflow:hidden;white-space:nowrap">${esc(inviteUrl())}</div></div><button class="btn primary block" data-act="share-invite">${ico('share',20)} שליחה בוואטסאפ</button><div class="rowb"><span class="pts">הקוד האישי שלך</span><span class="codebox">${esc(S.profile.code||'')}</span></div></div></div>
@@ -924,7 +934,7 @@ POP.addfriend={label:'הוספת חבר/ה',after:()=>{loadQR().then(ok=>{const 
 INP['fc-code']=el=>{S.popup.d.code=el.value};
 SUB['add-by-code']=async()=>{const d=S.popup.d;if(!Social.on){d.err='החלק החברתי לא זמין כרגע';return renderPopup()}
   try{const r=await Social.addByCode(d.code);closePopup();toast(`נשלחה בקשה ל${r.name}. כשיאשרו, תראו אחד את השני`);render(true)}
-  catch(e){d.err=e.code==='nf'?'לא מצאנו קוד כזה. בדקו שהחבר/ה כבר נכנס/ה לדף':e.code==='dup'?`${e.name} כבר ברשימה`:'לא הצלחנו להוסיף. אולי חסרה הרשאת כתיבה';renderPopup()}};
+  catch(e){d.err=e.code==='nf'?'לא מצאנו קוד כזה. בדקו שהחבר/ה כבר נכנס/ה לדף':e.code==='dup'?`${e.name} כבר ברשימה`:e.code==='unverified'?'צריך לאמת את המייל קודם. בדקו את תיבת הדואר':'לא הצלחנו להוסיף. אולי חסרה הרשאת כתיבה';renderPopup()}};
 /* ---------------- friend calendar ---------------- */
 function fMonthStats(sc,y,m){const n=new Date(y,m+1,0).getDate();let sum=0,c=0,best=null,bd=null,great=0,good=0,soft=0,emp=0;for(let d=1;d<=n;d++){const s=`${y}-${pad2(m+1)}-${pad2(d)}`;if(s>todayStr())continue;const v=sc[s];if(v==null){emp++;continue}sum+=v;c++;if(best==null||v>best){best=v;bd=s}const t=tierOf(v);if(t==='great')great++;else if(t==='good')good++;else soft++}return{avg:c?Math.round(sum/c):null,best,bd,great,good,soft,emp}}
 PAGES.friend=r=>{
@@ -936,18 +946,18 @@ PAGES.friend=r=>{
     const s=`${y}-${pad2(m+1)}-${pad2(dn)}`;const v=sc[s];const tr=tierOf(v==null?null:v);
     if(s>t)cells+=`<div class="cell fut" style="cursor:default"><span class="d" style="opacity:.55">${dn}</span></div>`;
     else if(v==null)cells+=`<div class="cell emp" style="cursor:default"><span class="d" style="opacity:.55">${dn}</span><span class="ring"></span></div>`;
-    else cells+=`<button class="cell ${s===t?'today':''}" data-act="friend-day" data-id="${esc(id)}" data-d="${s}" aria-label="${dn}, ציון ${v}"><span class="d">${dn}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-6:tr==='good'?5:-4}deg)">${tierShape(tr,v)}<span>${v}</span></span></button>`}
+    else cells+=`<button class="cell ${s===t?'today':''}" data-act="friend-day" data-id="${esc(id)}" data-d="${s}" aria-label="${dn}, ציון ${v}"><span class="d">${dn}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-6:tr==='good'?5:-4}deg)">${tierShape(tr,v)}<span class="${v===100?'n3':''}">${v}</span></span></button>`}
   const st=fMonthStats(sc,y,m),avgT=tierOf(st.avg),sk=friendStreak(sc);
   return `<main class="page"><div class="calhead">
   <div class="row" style="gap:14px;flex-wrap:wrap"><button class="more" data-act="friend-privacy" data-id="${esc(id)}" aria-label="שיתוף וגישה"><i></i><i></i><i></i></button><button class="btn primary" data-act="send-card" data-id="${esc(id)}">${ico('mail',20)} שליחת גלויה</button><span class="chip" style="background:var(--lav-l);border-style:dashed">${ico('lock',14)} רואים רק ציונים</span><div style="text-align:start"><div class="pts">הלוח של</div><div class="suez" style="font-size:44px;line-height:1">${esc(p.name)}</div></div>${fAvatar(p,'m')}</div><div class="mnav"><button class="icbtn big" data-act="fcal-next" aria-label="חודש הבא">${ico('left',24)}</button><span class="suez">${HMON[m]} ${y}</span><button class="icbtn big" data-act="fcal-prev" aria-label="חודש קודם">${ico('right',24)}</button></div></div>
   <div class="cols"><div class="c3"><div class="sheetwrap alt"><div class="sheet white" style="padding:26px 24px 18px;border-radius:56px 20px 56px 20px">${tapeEl()}<div class="calgrid">${WD.map(w=>`<div class="wd">${w}</div>`).join('')}${cells}</div><div class="hint" style="justify-content:flex-start;margin-top:12px">${ico('check',16)} לחצו על יום כדי להדביק מדבקה או לשלוח גלויה</div></div></div></div>
-  <div class="c1 sumcol"><div style="align-self:center;width:200px;height:200px;position:relative;transform:rotate(-4deg)">${st.avg==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`:tierShape(avgT,st.avg)}<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${st.avg==null?'var(--ink)':'var(--ink-fixed)'}"><small class="hand" style="font-size:18px">ממוצע של ${esc(p.name)}</small><span class="suez" style="font-size:56px;line-height:1">${st.avg==null?'—':st.avg}</span><small class="hand" style="font-size:18px">${PRAISE[avgT]}</small></div></div>
+  <div class="c1 sumcol"><div style="align-self:center;width:200px;height:200px;position:relative;transform:rotate(-4deg)">${st.avg==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`:tierShape(avgT,st.avg===100?99:st.avg)}<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${st.avg==null?'var(--ink)':'var(--ink-fixed)'}"><small class="hand" style="font-size:18px">ממוצע של ${esc(p.name)}</small><span class="suez" style="font-size:56px;line-height:1">${st.avg==null?'—':st.avg}</span><small class="hand" style="font-size:18px">${PRAISE[avgT]}</small></div></div>
   <div class="statn" style="background:var(--lime-l)"><b>${sk}</b>הרצף הנוכחי</div><div class="statn" style="background:var(--pink-l)"><b>${st.best==null?'–':st.best}</b>היום הכי טוב</div><div class="statn" style="background:var(--lav-l)"><b>${st.great}</b>ימים מעולים</div><a class="btn secondary block" href="#/friends">חזרה לחברים</a></div></div></main>`;
 };
 ACT['fcal-prev']=()=>{S.fcal.m--;if(S.fcal.m<0){S.fcal.m=11;S.fcal.y--}render(true)};ACT['fcal-next']=()=>{S.fcal.m++;if(S.fcal.m>11){S.fcal.m=0;S.fcal.y++}render(true)};
 ACT['friend-day']=el=>openPopup('friendday',{id:el.dataset.id,date:el.dataset.d});
 POP.friendday={label:'יום של חבר/ה',render:d=>{const p=Social.profiles[d.id]||{name:'?',scores:{}};const v=(p.scores||{})[d.date];const t=tierOf(v==null?null:v);
-  return `${popTape()}${popHead(longDate(d.date))}<div class="row" style="gap:14px">${v==null?'':stk(t,v,72,-5)}<div><b>${esc(p.name)}</b><div class="pts">${PRAISE[t]}</div></div></div><div class="lbl">הדביקו מדבקה על היום הזה</div><div class="opts" style="justify-content:flex-start">${STICKERS.map(s=>`<button class="opt" data-act="react" data-id="${esc(d.id)}" data-d="${d.date}" data-s="${s[0]}" aria-label="שליחת מדבקה">${s[1]()}</button>`).join('')}</div><button class="btn secondary block" data-act="send-card" data-id="${esc(d.id)}" data-d="${d.date}">${ico('mail',20)} שליחת גלויה על היום הזה</button>`}};
+  return `${popTape()}${popHead(longDate(d.date))}<div class="row" style="gap:14px">${v==null?'':stk(t,v,72,-5)}<div><b>${esc(p.name)}</b><div class="pts">${praise(v)}</div></div></div><div class="lbl">הדביקו מדבקה על היום הזה</div><div class="opts" style="justify-content:flex-start">${STICKERS.map(s=>`<button class="opt" data-act="react" data-id="${esc(d.id)}" data-d="${d.date}" data-s="${s[0]}" aria-label="שליחת מדבקה">${s[1]()}</button>`).join('')}</div><button class="btn secondary block" data-act="send-card" data-id="${esc(d.id)}" data-d="${d.date}">${ico('mail',20)} שליחת גלויה על היום הזה</button>`}};
 ACT.react=async el=>{if(!Social.on)return;try{await Social.send({to:[el.dataset.id],note:'',sticker:el.dataset.s,photo:null,day:el.dataset.d});closePopup();toast('המדבקה נשלחה')}catch(e){toast('לא הצלחנו לשלוח')}};
 /* ---------------- privacy ---------------- */
 POP.privacy={label:'שיתוף וגישה',cls:'w',render:d=>{const p=Social.profiles[d.id]||{name:'?'};const nc=(S.profile.noCards||[]).includes(d.id);const hid=S.profile.hidden||[];
@@ -1001,7 +1011,7 @@ PAGES.zine=()=>{
   const cards=Social.on?Social.cardsIn().filter(c=>c.at>=Date.now()-7*864e5&&c.photo).slice(0,2):[];
   const dayCol=d=>{const t=tierOf(d.v);return `<div><span>${WD[pdate(d.s).getDay()]}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${t==='great'?-5:t==='good'?4:-3}deg)">${d.v==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6" opacity=".5"/></svg>`:tierShape(t,d.v)}<span style="font-size:20px">${d.v==null?'':d.v}</span></span></div>`};
   return `<main class="page"><div class="rowb" style="margin-bottom:22px"><div class="row" style="gap:12px;flex-wrap:wrap"><button class="btn primary" data-act="zine-share">${ico('share',20)} שיתוף בוואטסאפ</button><button class="btn secondary" data-act="zine-dl" id="zdl">${ico('up',20)} הורדה כתמונה</button></div><div class="row" style="gap:16px;flex-wrap:wrap"><div class="datetag" style="margin:0;font-family:'Gveret Levin';font-size:28px;transform:rotate(-2deg)">${esc(shortDate(first))} – ${esc(shortDate(last))}</div>${stitle('lav','הגיליון השבועי',GX.star(COL.lime))}</div></div>
-  <div class="cols"><div class="c2" style="position:relative;min-height:440px"><span class="dec" style="inset-inline-start:30px;top:30px;width:min(420px,70%);aspect-ratio:1.4">${GX.blob(COL.pink,2)}</span><div style="position:relative;z-index:1;display:grid;place-items:center;padding:20px 0">${z.best?`<div class="score-big" style="transform:rotate(-6deg)">${tierShape(tierOf(z.best.v),z.best.v)}<div class="in-t"><small>היום הכי טוב · ${WD[pdate(z.best.s).getDay()]}</small><span class="n">${z.best.v}</span><small>${PRAISE[tierOf(z.best.v)]}</small></div></div>`:`<div class="note"><div class="pt">עוד אין יום מוביל</div></div>`}</div>${cards.length?`<div class="pgrid" style="grid-template-columns:repeat(2,1fr);margin-top:10px">${cards.map(c=>pcardHtml(c,'in')).join('')}</div>`:''}</div>
+  <div class="cols"><div class="c2" style="position:relative;min-height:440px"><span class="dec" style="inset-inline-start:30px;top:30px;width:min(420px,70%);aspect-ratio:1.4">${GX.blob(COL.pink,2)}</span><div style="position:relative;z-index:1;display:grid;place-items:center;padding:20px 0">${z.best?(z.best.v===100?`<div class="score-big p100" style="transform:rotate(-6deg)">${GX.flower100()}<div class="in-t"><span class="n n3">100</span></div><div class="p100cap">היום הכי טוב · ${WD[pdate(z.best.s).getDay()]} · יום מושלם!</div></div>`:`<div class="score-big" style="transform:rotate(-6deg)">${tierShape(tierOf(z.best.v),z.best.v)}<div class="in-t"><small>היום הכי טוב · ${WD[pdate(z.best.s).getDay()]}</small><span class="n">${z.best.v}</span><small>${praise(z.best.v)}</small></div></div>`):`<div class="note"><div class="pt">עוד אין יום מוביל</div></div>`}</div>${cards.length?`<div class="pgrid" style="grid-template-columns:repeat(2,1fr);margin-top:10px">${cards.map(c=>pcardHtml(c,'in')).join('')}</div>`:''}</div>
   <div class="c2"><div class="sheetwrap alt"><div class="sheet white" style="padding:30px 22px 22px">${tapeEl()}<div class="zine-days" style="margin-bottom:18px">${z.days.slice().reverse().map(dayCol).join('')}</div><div class="row" style="gap:10px;margin-bottom:16px;flex-wrap:wrap"><div class="statn grow" style="background:var(--lav-l);justify-content:center;flex-direction:column;gap:0"><b>${z.best?z.best.v:'–'}</b><span class="pts">היום הכי טוב</span></div><div class="statn grow" style="background:var(--pink-l);justify-content:center;flex-direction:column;gap:0"><b>${z.streak}</b><span class="pts">ימים ברצף</span></div><div class="statn grow" style="background:var(--lime-l);justify-content:center;flex-direction:column;gap:0"><b>${z.avg==null?'–':z.avg}</b><span class="pts">ממוצע השבוע</span></div></div><div class="pt">${esc(quote)}</div><div class="row" style="gap:8px;margin-top:10px"><b>בממוצע ${fmtNum(z.stepsAvg)} צעדים ביום</b></div></div></div></div></div></main>`;
 };
 function zineText(z){return `הגיליון השבועי שלי ב"היום שלי":\n${z.days.map(d=>`${WD[pdate(d.s).getDay()]} ${d.v==null?'—':d.v}`).join(' · ')}\nממוצע ${z.avg==null?'—':z.avg}, ${z.streak} ימים ברצף${z.best?`, היום הכי טוב ${z.best.v}`:''}`}
@@ -1014,6 +1024,7 @@ ACT['zine-dl']=async()=>{
   x.fillStyle='#fbf4e6';x.fillRect(0,0,W,H);x.fillStyle='#1f1a2e';x.font='110px "Suez One",serif';x.fillText('הגיליון השבועי',W/2,170);x.font='44px "Gveret Levin",cursive';x.fillText(`${shortDate(z.days[0].s)} – ${shortDate(z.days[6].s)}`,W/2,240);
   z.days.slice().reverse().forEach((d,i)=>{const cx=W-(95+i*148),cy=470,t=tierOf(d.v);x.lineWidth=6;x.strokeStyle='#1f1a2e';
     if(d.v==null){x.setLineDash([12,12]);x.beginPath();x.arc(cx,cy,56,0,7);x.stroke();x.setLineDash([])}
+    else if(d.v===100){x.fillStyle='#ff9ccb';for(let k=0;k<10;k++){x.save();x.translate(cx,cy);x.rotate(k*Math.PI/5);x.beginPath();x.ellipse(0,-34,20,32,0,0,Math.PI*2);x.fill();x.stroke();x.restore()}x.fillStyle='#ffe27a';x.beginPath();x.arc(cx,cy,34,0,7);x.fill();x.stroke();x.fillStyle='#1f1a2e';x.font='34px "Suez One",serif';x.fillText('100',cx,cy+12)}
     else{x.fillStyle=t==='great'?'#ff5b2e':t==='good'?'#cbf03a':'#b9a4f7';if(t==='soft'){x.beginPath();x.arc(cx,cy,56,0,7)}else scallop(x,cx,cy,64,12);x.fill();x.stroke();x.fillStyle='#1f1a2e';x.font='46px "Suez One",serif';x.fillText(String(d.v),cx,cy+16)}
     x.fillStyle='#1f1a2e';x.font='700 32px Heebo,sans-serif';x.fillText(WD[pdate(d.s).getDay()],cx,cy-86)});
   const stat=(i,v,l,col)=>{const cx=W-(210+i*330),cy=780;x.fillStyle=col;x.strokeStyle='#1f1a2e';x.lineWidth=6;x.beginPath();x.roundRect(cx-140,cy-90,280,180,36);x.fill();x.stroke();x.fillStyle='#1f1a2e';x.font='90px "Suez One",serif';x.fillText(String(v),cx,cy+10);x.font='34px "Gveret Levin",cursive';x.fillText(l,cx,cy+60)};
@@ -1030,39 +1041,95 @@ const Api={
     const r=await fetch(path,{method,headers:body!==undefined?{'content-type':'application/json'}:{},body:body!==undefined?JSON.stringify(body):undefined,credentials:'same-origin',keepalive:!!(opt&&opt.keepalive)});
     let j=null;try{j=await r.json()}catch(e){}
     if(!r.ok){const err=Object.assign(new Error((j&&j.error)||'http '+r.status),{code:(j&&j.error)||('http'+r.status),status:r.status,data:j});
-      if(r.status===401&&!/\/api\/(login|register|me)$/.test(path))authLost();throw err}
+      if(r.status===401&&!/\/api\/(login|register|me)$/.test(path))authLost();if(err.code==='unverified')toast('צריך לאמת את המייל קודם. בדקו את תיבת הדואר');throw err}
     return j;
   },
   get(p){return this.call('GET',p)},post(p,b){return this.call('POST',p,b===undefined?{}:b)},
   async health(){try{const r=await fetch('/api/health',{credentials:'same-origin'});if(!r.ok)return null;const j=await r.json();return j&&j.app==='daily-planner'?j:null}catch(e){return null}}
 };
 function authLost(){if(S.mode!=='api'||!S.user)return;S.user=null;S.profile=null;S.days={};Social.on=false;toast('החיבור פג. צריך להתחבר מחדש');go('welcome')}
-const AUTH_ERR={bad_credentials:'המייל או הסיסמה לא נכונים',exists:'כבר יש חשבון עם המייל הזה. נסו להתחבר',weak_password:'הסיסמה צריכה להיות באורך 8 תווים לפחות',bad_email:'המייל לא נראה תקין',rate:'יותר מדי ניסיונות. נסו שוב בעוד כמה דקות',signup_closed:'ההרשמה סגורה כרגע'};
+const AUTH_ERR={bad_credentials:'המייל או הסיסמה לא נכונים',exists:'כבר יש חשבון עם המייל הזה. נסו להתחבר',weak_password:'הסיסמה צריכה להיות באורך 8 תווים לפחות',bad_email:'המייל לא נראה תקין',rate:'יותר מדי ניסיונות. נסו שוב בעוד כמה דקות',signup_closed:'ההרשמה סגורה כרגע',consent_required:'כדי להירשם צריך לאשר את תנאי השימוש ואת מדיניות הפרטיות',mail_disabled:'שחזור סיסמה אינו זמין כרגע',bad_token:'הקישור לא תקף או שפג תוקפו'};
+const legalLinks=()=>`<a href="/terms" target="_blank" rel="noopener">תנאי השימוש</a> ו<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>`;
+const consentRow=(on,act)=>`<div class="consent"><button type="button" class="ck ${on?'on':''}" role="checkbox" aria-checked="${!!on}" aria-label="אישור תנאים" data-act="${act}">${on?ico('check',20,3):''}</button><span>קראתי ואני מסכימ/ה ל${legalLinks()}</span></div>`;
 function authPanel(){
-  const a=S.ui.auth||(S.ui.auth={tab:'login',email:'',pass:'',err:'',busy:false});const reg=a.tab==='register';
+  const a=S.ui.auth||(S.ui.auth={tab:'login',email:'',pass:'',err:'',busy:false,consent:false,sent:false});const reg=a.tab==='register',fg=a.tab==='forgot';
+  const emailF=`<div class="field"><label for="em">מייל</label><input id="em" class="in" type="email" dir="ltr" style="text-align:left" autocomplete="${reg?'email':'username'}" value="${esc(a.email)}" data-in="auth-email" data-focus="1"></div>`;
+  const passF=`<div class="field"><label for="pw">סיסמה${reg?' (לפחות 8 תווים)':''}</label><input id="pw" class="in" type="password" dir="ltr" style="text-align:left" autocomplete="${reg?'new-password':'current-password'}" value="${esc(a.pass)}" data-in="auth-pass"></div>`;
+  const foot=`<div class="pts" style="opacity:.7">${legalLinks()} · גרסה ${VERSION}</div>`;
+  if(fg)return `<h2 class="suez" style="font-size:clamp(34px,5vw,52px)">שכחתי סיסמה</h2><p class="ptn">נשלח קישור לאיפוס אל המייל שלך. הוא תקף לשעה אחת.</p>
+   ${a.sent?`<div class="banner lav" role="status">${ico('check',20,3)} אם יש חשבון עם המייל הזה, נשלח אליו קישור. כדאי לבדוק גם בספאם.</div>`:`<div data-submit="auth" class="stack" style="gap:12px">${emailF}${a.err?`<div class="err-t" role="alert">${esc(a.err)}</div>`:''}<button class="btn primary big block" type="button" data-act="submit" ${a.busy?'disabled':''}>${ico('mail',22)} ${a.busy?'רגע…':'שלחו לי קישור'}</button></div>`}
+   <button class="linkbtn" style="align-self:flex-start" data-act="auth-tab" data-t="login">חזרה לכניסה</button>${foot}`;
   return `<h2 class="suez" style="font-size:clamp(36px,5vw,56px)">${reg?'יוצרים חשבון':'בואו נתחיל'}</h2><p class="ptn">${reg?'חשבון חינמי. הנתונים שלך נשמרים בענן ועובדים בכל מכשיר':'כניסה לדף היומי שלך'}</p>
   <div class="seg" role="tablist"><button class="chip ${!reg?'on':''}" role="tab" aria-selected="${!reg}" data-act="auth-tab" data-t="login">כניסה</button><button class="chip ${reg?'on':''}" role="tab" aria-selected="${reg}" data-act="auth-tab" data-t="register">הרשמה</button></div>
-  <div data-submit="auth" class="stack" style="gap:12px"><div class="field"><label for="em">מייל</label><input id="em" class="in" type="email" dir="ltr" style="text-align:left" autocomplete="${reg?'email':'username'}" value="${esc(a.email)}" data-in="auth-email" data-focus="1"></div>
-  <div class="field"><label for="pw">סיסמה${reg?' (לפחות 8 תווים)':''}</label><input id="pw" class="in" type="password" dir="ltr" style="text-align:left" autocomplete="${reg?'new-password':'current-password'}" value="${esc(a.pass)}" data-in="auth-pass"></div>
+  <div data-submit="auth" class="stack" style="gap:12px">${emailF}${passF}${reg?consentRow(a.consent,'auth-consent'):''}
   ${a.err?`<div class="err-t" role="alert">${esc(a.err)}</div>`:''}<button class="btn primary big block" type="button" data-act="submit" ${a.busy?'disabled':''}>${ico('check',22)} ${a.busy?'רגע…':reg?'הרשמה':'כניסה'}</button></div>
-  <button class="linkbtn" style="align-self:flex-start" data-act="guest">להמשיך בלי חשבון (נשמר במכשיר הזה בלבד)</button><div class="pts" style="opacity:.6">גרסה ${VERSION}</div>`;
+  ${!reg&&S.mail?`<button class="linkbtn" style="align-self:flex-start" data-act="auth-tab" data-t="forgot">שכחתי סיסמה</button>`:''}
+  <button class="linkbtn" style="align-self:flex-start" data-act="guest">להמשיך בלי חשבון (נשמר במכשיר הזה בלבד)</button>${foot}`;
 }
-ACT['auth-tab']=el=>{const a=S.ui.auth;a.tab=el.dataset.t;a.err='';render(true)};
+ACT['auth-tab']=el=>{const a=S.ui.auth;a.tab=el.dataset.t;a.err='';a.sent=false;render(true)};
+ACT['auth-consent']=()=>{const a=S.ui.auth;a.consent=!a.consent;if(a.consent)a.err='';render(true)};
 INP['auth-email']=el=>{S.ui.auth.email=el.value};INP['auth-pass']=el=>{S.ui.auth.pass=el.value};
+const setSession=r=>{S.user=r.user;S.needsConsent=!!r.needsConsent;S.mail=!!r.mail;S.mode='api';S.guest=false};
 SUB.auth=async()=>{
-  const a=S.ui.auth;if(a.busy)return;if(!a.email.trim()||!a.pass){a.err='צריך למלא מייל וסיסמה';return render(true)}
+  const a=S.ui.auth;if(a.busy)return;
+  if(a.tab==='forgot'){
+    if(!a.email.trim()){a.err='צריך למלא מייל';return render(true)}
+    a.busy=true;a.err='';render(true);
+    try{await Api.call('POST','/api/forgot',{email:a.email.trim()});a.sent=true}catch(e){a.err=AUTH_ERR[e.code]||'משהו השתבש. נסו שוב'}
+    a.busy=false;return render(true);
+  }
+  if(!a.email.trim()||!a.pass){a.err='צריך למלא מייל וסיסמה';return render(true)}
+  if(a.tab==='register'&&!a.consent){a.err=AUTH_ERR.consent_required;return render(true)}
   a.busy=true;a.err='';render(true);
   try{
     const lc=Store.readLocal();const l=Store.ls();const guestData=l&&l.getItem('dp_guest')==='1'&&lc&&lc.profile?lc:null;
-    const r=await Api.call('POST',a.tab==='login'?'/api/login':'/api/register',{email:a.email.trim(),password:a.pass});
-    S.user=r.user;S.mode='api';S.guest=false;if(l){l.removeItem('dp_guest');l.removeItem('dp1')}
+    const r=await Api.call('POST',a.tab==='login'?'/api/login':'/api/register',a.tab==='login'?{email:a.email.trim(),password:a.pass}:{email:a.email.trim(),password:a.pass,consent:true});
+    setSession(r);if(l){l.removeItem('dp_guest');l.removeItem('dp1')}
     await Store.loadApi(guestData);a.busy=false;a.pass='';S.setup=null;
     if(S.profile){Social=SocialApi;await Social.init()}
-    toast(a.tab==='login'?'ברוכים השבים!':'החשבון נוצר');go(S.profile?(S.ui.pendingJoin?'friends':'today'):'setup');
+    toast(a.tab==='login'?'ברוכים השבים!':S.mail?'החשבון נוצר. שלחנו לך מייל לאימות':'החשבון נוצר');go(S.profile?(S.ui.pendingJoin?'friends':'today'):'setup');
   }catch(e){a.busy=false;a.err=AUTH_ERR[e.code]||'משהו השתבש. נסו שוב';render(true)}
 };
+/* ---- איפוס סיסמה (הקישור מגיע במייל: #/reset/TOKEN) ---- */
+PAGES.reset=r=>{
+  const st=(S.ui.reset&&S.ui.reset.token===r.a)?S.ui.reset:(S.ui.reset={token:r.a,pass:'',err:'',busy:false});
+  return welcomeShell(`<h2 class="suez" style="font-size:clamp(34px,5vw,52px)">בחירת סיסמה חדשה</h2><p class="ptn">הקישור שקיבלת במייל תקף לשעה אחת.</p>
+  <div data-submit="reset" class="stack" style="gap:12px"><div class="field"><label for="np">סיסמה חדשה (לפחות 8 תווים)</label><input id="np" class="in" type="password" dir="ltr" style="text-align:left" autocomplete="new-password" value="${esc(st.pass)}" data-in="reset-pass" data-focus="1"></div>
+  ${st.err?`<div class="err-t" role="alert">${esc(st.err)}</div>`:''}<button class="btn primary big block" type="button" data-act="submit" ${st.busy?'disabled':''}>${ico('check',22)} ${st.busy?'רגע…':'שמירת הסיסמה'}</button></div>
+  <a class="linkbtn" href="#/welcome" style="align-self:flex-start">חזרה לכניסה</a>`);
+};
+INP['reset-pass']=el=>{S.ui.reset.pass=el.value};
+SUB.reset=async()=>{
+  const st=S.ui.reset;if(st.busy)return;
+  if((st.pass||'').length<8){st.err=AUTH_ERR.weak_password;return render(true)}
+  st.busy=true;st.err='';render(true);
+  try{const r=await Api.call('POST','/api/reset',{token:st.token,password:st.pass});setSession(r);S.ui.reset=null;await Store.loadApi(null);if(S.profile){Social=SocialApi;await Social.init()}toast('הסיסמה עודכנה. התחברת מחדש');go(S.profile?'today':'setup')}
+  catch(e){st.busy=false;st.err=e.code==='bad_token'?'הקישור לא תקף או שפג תוקפו. אפשר לבקש קישור חדש במסך הכניסה.':AUTH_ERR[e.code]||'משהו השתבש. נסו שוב';render(true)}
+};
+/* ---- אימות מייל (#/verify/TOKEN) ---- */
+async function doVerify(token){try{await Api.call('POST','/api/verify',{token});S.ui.verify.state='ok';if(S.user)S.user.verified=true}catch(e){S.ui.verify.state=e.code==='bad_token'?'bad':'err'}render(true)}
+PAGES.verify=r=>{
+  if(!S.ui.verify||S.ui.verify.token!==r.a){S.ui.verify={token:r.a,state:'busy'};doVerify(r.a)}
+  const st=S.ui.verify.state;
+  const body=st==='busy'?`<h2 class="suez" style="font-size:clamp(34px,5vw,52px)">מאמתים…</h2><p class="ptn">רגע אחד.</p>`
+   :st==='ok'?`<h2 class="suez" style="font-size:clamp(34px,5vw,52px)">המייל אומת!</h2><p class="ptn">עכשיו אפשר להוסיף חברים ולשלוח גלויות.</p><a class="btn primary big block" href="#/${S.user?'today':'welcome'}">${ico('check',22)} המשך לאתר</a>`
+   :`<h2 class="suez" style="font-size:clamp(34px,5vw,52px)">הקישור לא תקף</h2><p class="ptn">${st==='bad'?'ייתכן שפג תוקפו או שכבר נעשה בו שימוש.':'משהו השתבש.'} אם אתם מחוברים, אפשר לשלוח קישור חדש מההגדרות.</p><a class="btn secondary block" href="#/${S.user?'today':'welcome'}">חזרה לאתר</a>`;
+  return welcomeShell(body);
+};
+const verifyBanner=()=>(S.mode==='api'&&S.user&&S.mail&&!S.user.verified)?`<div class="dbwarn" role="status" style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span>${ico('mail',18)} אמתו את המייל כדי להוסיף חברים ולשלוח גלויות. שלחנו לכם קישור.</span><button class="btn sm secondary" data-act="resend-verify">שליחה מחדש</button></div>`:'';
+ACT['resend-verify']=async()=>{try{const r=await Api.post('/api/verify/resend');toast(r.already?'המייל כבר מאומת':'שלחנו קישור חדש. בדקו גם בספאם');if(r.already&&S.user){S.user.verified=true;render(true)}}catch(e){toast(e.code==='rate'?'כבר שלחנו כמה קישורים. נסו שוב בעוד כשעה':e.code==='mail_disabled'?'שליחת מיילים לא מוגדרת':'לא הצלחנו לשלוח')}};
+/* ---- הסכמה למסמכים (משתמשים קיימים / גרסה חדשה) ---- */
+POP.consent={label:'אישור תנאים',locked:true,render:d=>`${popTape()}<div class="pt">עדכון תנאים</div><p>כדי להמשיך להשתמש ב״היום שלי״ צריך לאשר את ${legalLinks()}. קראו אותם, וסמנו אם אתם מסכימים.</p>${consentRow(d.ok,'consent-toggle')}${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><button class="btn secondary" data-act="logout">יציאה מהחשבון</button><span class="sp"></span><button class="btn primary" data-act="consent-accept">מאשר/ת והמשך</button></div>`};
+ACT['consent-toggle']=()=>{const d=S.popup.d;d.ok=!d.ok;d.err='';renderPopup()};
+ACT['consent-accept']=async()=>{const d=S.popup.d;if(!d.ok){d.err='צריך לסמן שקראתם ומסכימים';return renderPopup()}try{await Api.post('/api/consent',{accept:true});S.needsConsent=false;closePopup();toast('תודה!');render(true)}catch(e){d.err='לא הצלחנו לשמור. נסו שוב';renderPopup()}};
+/* ---- שינוי סיסמה (בהגדרות) ---- */
+INP['pw-old']=el=>{S.popup.d.pw.old=el.value};INP['pw-new']=el=>{S.popup.d.pw.nw=el.value};
+ACT['pw-change']=async()=>{const p=S.popup.d.pw;p.err='';p.ok=false;
+  if(!p.old||!p.nw){p.err='צריך למלא את שתי הסיסמאות';return renderPopup()}
+  if(p.nw.length<8){p.err=AUTH_ERR.weak_password;return renderPopup()}
+  try{await Api.post('/api/password',{oldPassword:p.old,newPassword:p.nw});p.ok=true;p.old='';p.nw='';toast('הסיסמה שונתה')}catch(e){p.err=e.code==='bad_credentials'?'הסיסמה הנוכחית לא נכונה':AUTH_ERR[e.code]||'לא הצלחנו לשנות'}renderPopup()};
 ACT.guest=()=>{const l=Store.ls();if(l)l.setItem('dp_guest','1');S.mode='local';S.guest=true;S.setup=null;go('setup')};
-ACT.logout=async()=>{try{await Api.post('/api/logout')}catch(e){}S.user=null;S.profile=null;S.days={};S.setup=null;S.ui.auth=null;Social.on=false;closePopup();go('welcome');toast('יצאת מהחשבון')};
+ACT.logout=async()=>{try{await Api.post('/api/logout')}catch(e){}S.needsConsent=false;S.user=null;S.profile=null;S.days={};S.setup=null;S.ui.auth=null;Social.on=false;closePopup();go('welcome');toast('יצאת מהחשבון')};
 POP.delacct={label:'מחיקת חשבון',render:d=>`${popTape()}${popHead('מחיקת החשבון')}<p>כל הנתונים שלך יימחקו לצמיתות: משימות, לו״ז, אוכל, חברים וגלויות. אי אפשר לבטל.</p><div class="field"><label for="dp">סיסמה לאישור</label><input id="dp" class="in" type="password" dir="ltr" style="text-align:left" data-in="del-pass" data-focus="1" autocomplete="current-password"></div>${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" data-act="close-popup">ביטול</button><button class="btn danger" data-act="del-acct-go">למחוק הכול</button></div>`};
 ACT['del-acct']=()=>openPopup('delacct',{pass:'',err:''});INP['del-pass']=el=>{S.popup.d.pass=el.value};
 ACT['del-acct-go']=async()=>{const d=S.popup.d;try{await Api.post('/api/account/delete',{password:d.pass});S.user=null;S.profile=null;S.days={};Social.on=false;closePopup();go('welcome');toast('החשבון נמחק')}catch(e){d.err=e.code==='bad_credentials'?'הסיסמה לא נכונה':'לא הצלחנו למחוק';renderPopup()}};
@@ -1073,7 +1140,7 @@ const SocialApi={on:false,err:false,profiles:{},_f:[],_in:[],_out:[],_ci:[],_co:
   changed(){if(['friends','friend','postcards','zine'].includes(S.route.name))softRender()},
   me(){return S.user?String(S.user.id):''},mine(){return this._f.concat(this._out)},friendIds(){return this._f},incoming(){return this._in},outgoing(){return this._out},
   cardsIn(){return this._ci},get pcOut(){return this._co},touch(){},
-  async addByCode(code){try{const r=await Api.post('/api/friends/add',{code});await this.refresh();return r}catch(e){throw{code:e.code==='nf'?'nf':e.code==='dup'?'dup':'err',name:e.data&&e.data.name}}},
+  async addByCode(code){try{const r=await Api.post('/api/friends/add',{code});await this.refresh();return r}catch(e){throw{code:e.code==='nf'?'nf':e.code==='dup'?'dup':e.code==='unverified'?'unverified':'err',name:e.data&&e.data.name}}},
   async accept(id){await Api.post('/api/friends/accept',{id});await this.refresh()},
   async remove(id){await Api.post('/api/friends/remove',{id});await this.refresh()},
   async send(doc){const r=await Api.post('/api/postcards',doc);await this.refresh();return r},

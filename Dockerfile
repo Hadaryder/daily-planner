@@ -1,6 +1,6 @@
 FROM node:22-alpine
 WORKDIR /app
-COPY package.json server.mjs backup.mjs ./
+COPY package.json *.mjs ./
 COPY public ./public
 ENV PORT=3000 DATA_DIR=/data NODE_ENV=production
 VOLUME /data

@@ -5,6 +5,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
+import { mailConfig, sendMail } from './mail.mjs';
 
 const __dir = path.dirname(fileURLToPath(import.meta.url));
 const PORT = +process.env.PORT || 3000;
@@ -14,6 +15,13 @@ const AI_KEY = process.env.ANTHROPIC_API_KEY || '';
 const AI_MODEL = process.env.AI_MODEL || 'claude-haiku-4-5-20251001';
 const AI_DAILY_LIMIT = +process.env.AI_DAILY_LIMIT || 30;
 const ALLOW_SIGNUP = process.env.ALLOW_SIGNUP !== '0';
+const MAIL = mailConfig(); const MAIL_ENABLED = !!MAIL;
+const POLICY_VERSION = '2026-10-06'; // לעדכן כשמשנים את מדיניות הפרטיות או התנאים: כל המשתמשים יתבקשו לאשר מחדש
+const BASE_URL_ENV = String(process.env.BASE_URL || '').replace(/\/+$/, '');
+const OPERATOR_NAME = process.env.OPERATOR_NAME || '';
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || '';
+const MAIL_PROVIDER_NAME = process.env.MAIL_PROVIDER_NAME || 'ספק שירות המיילים';
+const HOSTING_TEXT = process.env.HOSTING_TEXT || 'שרתים של Fly.io באזור פרנקפורט (גרמניה)';
 const TRUST_PROXY = process.env.TRUST_PROXY === '1'; // להפעיל רק מאחורי פרוקסי (Fly, Caddy, nginx)
 fs.mkdirSync(DATA_DIR, { recursive: true });
 const DB_FILE = path.join(DATA_DIR, 'planner.db');
@@ -51,6 +59,8 @@ function backupNow(tag) {
     db.exec(`VACUUM INTO ${sqlStr(f)}`);
     const mine = fs.readdirSync(BACKUP_DIR).filter(x => x.startsWith(tag + '-') && x.endsWith('.db')).sort();
     for (const old of mine.slice(0, Math.max(0, mine.length - 8))) fs.rmSync(path.join(BACKUP_DIR, old), { force: true });
+    const left = mine.slice(Math.max(0, mine.length - 8)); // גיבויים ישנים מ-60 יום נמחקים (חוץ מ-3 האחרונים), בהתאם למדיניות הפרטיות
+    for (const old of left.slice(0, Math.max(0, left.length - 3))) { const fp = path.join(BACKUP_DIR, old); if (Date.now() - fs.statSync(fp).mtimeMs > 60 * 864e5) fs.rmSync(fp, { force: true }); }
     console.log('גיבוי נשמר:', path.basename(f));
   } catch (e) { console.error('גיבוי נכשל (ממשיכים):', e.message); }
 }
@@ -66,13 +76,30 @@ CREATE TABLE IF NOT EXISTS days(user_id INTEGER NOT NULL REFERENCES users(id) ON
 CREATE TABLE IF NOT EXISTS links(user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, other_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, PRIMARY KEY(user_id,other_id));
 CREATE TABLE IF NOT EXISTS postcards(id INTEGER PRIMARY KEY AUTOINCREMENT, from_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, note TEXT, sticker TEXT, photo TEXT, day TEXT, at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS postcard_to(pc_id INTEGER NOT NULL REFERENCES postcards(id) ON DELETE CASCADE, to_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, PRIMARY KEY(pc_id,to_id));
+CREATE TABLE IF NOT EXISTS tokens(hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, kind TEXT NOT NULL, expires INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS usage(user_id INTEGER NOT NULL, kind TEXT NOT NULL, bucket TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY(user_id,kind,bucket));
 `);
+// מיגרציות: רק מוסיפות עמודות (לא מוחקות ולא משנות)
+{ const cols = db.prepare('PRAGMA table_info(users)').all().map(c => c.name);
+  if (!cols.includes('verified')) db.exec('ALTER TABLE users ADD COLUMN verified INTEGER NOT NULL DEFAULT 0');
+  if (!cols.includes('consent_at')) db.exec('ALTER TABLE users ADD COLUMN consent_at INTEGER');
+  if (!cols.includes('consent_ver')) db.exec('ALTER TABLE users ADD COLUMN consent_ver TEXT'); }
 const q = {
   userByEmail: db.prepare('SELECT * FROM users WHERE email=?'),
-  insUser: db.prepare('INSERT INTO users(email,pass,created) VALUES (?,?,?)'),
+  insUser: db.prepare('INSERT INTO users(email,pass,created,consent_at,consent_ver) VALUES (?,?,?,?,?)'),
+  userById: db.prepare('SELECT * FROM users WHERE id=?'),
+  setPass: db.prepare('UPDATE users SET pass=? WHERE id=?'),
+  setVerified: db.prepare('UPDATE users SET verified=1 WHERE id=?'),
+  setConsent: db.prepare('UPDATE users SET consent_at=?, consent_ver=? WHERE id=?'),
+  delUserSessions: db.prepare('DELETE FROM sessions WHERE user_id=?'),
+  delOtherSessions: db.prepare('DELETE FROM sessions WHERE user_id=? AND token<>?'),
+  insToken: db.prepare('INSERT INTO tokens(hash,user_id,kind,expires) VALUES (?,?,?,?)'),
+  getToken: db.prepare('SELECT * FROM tokens WHERE hash=? AND kind=?'),
+  delToken: db.prepare('DELETE FROM tokens WHERE hash=?'),
+  delTokens: db.prepare('DELETE FROM tokens WHERE user_id=? AND kind=?'),
+  cleanTokens: db.prepare('DELETE FROM tokens WHERE expires<?'),
   insSess: db.prepare('INSERT INTO sessions(token,user_id,expires) VALUES (?,?,?)'),
-  sess: db.prepare('SELECT s.user_id id,u.email email FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>?'),
+  sess: db.prepare('SELECT s.user_id id,u.email email,u.verified verified,u.consent_ver consent_ver FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>?'),
   delSess: db.prepare('DELETE FROM sessions WHERE token=?'),
   prof: db.prepare('SELECT json,code FROM profiles WHERE user_id=?'),
   profByCode: db.prepare('SELECT user_id FROM profiles WHERE code=?'),
@@ -102,7 +129,7 @@ const checkPw = (pw, stored) => { const [s, h] = stored.split(':'); const x = cr
 const genCode = () => { const L = 'ABCDEFGHJKLMNPQRSTUVWXYZ', D = '23456789'; const r = s => s[crypto.randomInt(s.length)]; return r(L) + r(L) + r(L) + '-' + r(D) + r(D) + r(D); };
 const hits = new Map();
 function limited(key, max, windowMs) { const t = now(); const a = (hits.get(key) || []).filter(x => t - x < windowMs); a.push(t); hits.set(key, a); return a.length > max; }
-setInterval(() => { const t = now(); for (const [k, a] of hits) { const f = a.filter(x => t - x < 3600e3); if (f.length) hits.set(k, f); else hits.delete(k); } q.cleanSess.run(t); }, 600e3).unref();
+setInterval(() => { const t = now(); for (const [k, a] of hits) { const f = a.filter(x => t - x < 3600e3); if (f.length) hits.set(k, f); else hits.delete(k); } q.cleanSess.run(t); q.cleanTokens.run(t); }, 600e3).unref();
 const parseCookies = h => Object.fromEntries((h || '').split(';').map(c => c.trim().split('=')).filter(x => x[0]).map(([k, ...v]) => [k, decodeURIComponent(v.join('='))]));
 const send = (res, code, obj, headers = {}) => { const body = JSON.stringify(obj); res.writeHead(code, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers }); res.end(body); };
 const fail = (res, code, error, extra = {}) => send(res, code, { error, ...extra });
@@ -119,33 +146,89 @@ const pub = (uid, withScores) => {
   if (withScores) { const hid = new Set(ids(p.hidden)); const s = {}; for (const r of q.scores.all(uid, addDays(today(), -120))) if (!hid.has(r.date)) s[r.date] = r.score; o.scores = s; }
   return o;
 };
+
+/* ---------- מיילים, אסימונים, הסכמה ---------- */
+const sha = x => crypto.createHash('sha256').update(x).digest('hex');
+const escH = x => String(x).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const baseUrl = req => BASE_URL_ENV || `${(TRUST_PROXY && req.headers['x-forwarded-proto']) || 'http'}://${req.headers.host}`;
+function newToken(uid, kind, ttlMs) { const t = crypto.randomBytes(32).toString('base64url'); q.delTokens.run(uid, kind); q.insToken.run(sha(t), uid, kind, now() + ttlMs); return t; }
+function takeToken(t, kind) { const row = q.getToken.get(sha(String(t || '')), kind); if (!row) return null; q.delToken.run(row.hash); return row.expires < now() ? null : row.user_id; }
+const userInfo = u => ({ id: String(u.id), email: u.email, verified: !!u.verified });
+const needsConsent = u => u.consent_ver !== POLICY_VERSION;
+const mailHtml = (title, body, link, btn) => `<div dir="rtl" style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:auto;padding:24px;background:#fbf4e6;color:#1f1a2e;border:2px solid #1f1a2e;border-radius:18px"><h2 style="margin:0 0 12px">${escH(title)}</h2><p style="font-size:16px;line-height:1.6">${body}</p><p style="margin:22px 0"><a href="${escH(link)}" style="background:#16b04a;color:#1f1a2e;text-decoration:none;font-weight:bold;padding:12px 26px;border-radius:999px;border:2px solid #1f1a2e;display:inline-block">${escH(btn)}</a></p><p style="font-size:13px;color:#555">אם הכפתור לא נפתח, העתיקו את הקישור לדפדפן:<br><span style="word-break:break-all">${escH(link)}</span></p></div>`;
+function sendVerify(req, u) {
+  if (!MAIL_ENABLED) return; const link = `${baseUrl(req)}/#/verify/${newToken(u.id, 'verify', 3 * 864e5)}`;
+  sendMail(MAIL, { to: u.email, subject: 'אימות המייל שלך ב״היום שלי״', text: `שלום,\nכדי לאמת את כתובת המייל ב"היום שלי" פתחו את הקישור:\n${link}\n\nהקישור תקף ל-3 ימים. אם לא נרשמתם, אפשר להתעלם מההודעה.`, html: mailHtml('אימות המייל', 'תודה שנרשמתם ל״היום שלי״. כדי לאמת את כתובת המייל ולהפעיל חברים וגלויות, לחצו על הכפתור. הקישור תקף ל-3 ימים. אם לא נרשמתם, אפשר להתעלם מההודעה.', link, 'אימות המייל') }).catch(e => console.error('שליחת מייל אימות נכשלה:', e.message));
+}
+function sendReset(req, u) {
+  const link = `${baseUrl(req)}/#/reset/${newToken(u.id, 'reset', 3600e3)}`;
+  sendMail(MAIL, { to: u.email, subject: 'איפוס סיסמה ב״היום שלי״', text: `שלום,\nביקשתם לאפס את הסיסמה ב"היום שלי". הקישור תקף לשעה אחת:\n${link}\n\nאם לא ביקשתם, אפשר להתעלם. הסיסמה לא תשתנה.`, html: mailHtml('איפוס סיסמה', 'ביקשתם לאפס את הסיסמה ב״היום שלי״. הקישור תקף לשעה אחת. אם לא ביקשתם, אפשר להתעלם מההודעה והסיסמה לא תשתנה.', link, 'בחירת סיסמה חדשה') }).catch(e => console.error('שליחת מייל איפוס נכשלה:', e.message));
+}
+const needVerified = (res, ctx) => { if (MAIL_ENABLED && !ctx.user.verified) { fail(res, 403, 'unverified'); return true; } return false; };
+const pwOk = p => typeof p === 'string' && p.length >= 8 && p.length <= 200;
 /* ---------- routes ---------- */
 const routes = {};
 const R = (m, p, fn, opt = {}) => { routes[m + ' ' + p] = { fn, ...opt }; };
-R('GET', '/api/health', (req, res) => send(res, 200, { ok: true, app: 'daily-planner', signup: ALLOW_SIGNUP, ai: !!AI_KEY }));
-R('GET', '/api/me', (req, res, ctx) => ctx.user ? send(res, 200, { user: { id: String(ctx.user.id), email: ctx.user.email } }) : fail(res, 401, 'unauthorized'));
+R('GET', '/api/health', (req, res) => send(res, 200, { ok: true, app: 'daily-planner', signup: ALLOW_SIGNUP, ai: !!AI_KEY, mail: MAIL_ENABLED, policy: POLICY_VERSION }));
+R('GET', '/api/me', (req, res, ctx) => ctx.user ? send(res, 200, { user: userInfo(ctx.user), needsConsent: needsConsent(ctx.user), mail: MAIL_ENABLED }) : fail(res, 401, 'unauthorized'));
 R('POST', '/api/register', async (req, res, ctx) => {
   if (!ALLOW_SIGNUP) return fail(res, 403, 'signup_closed');
   if (limited('reg:' + ctx.ip, 10, 3600e3)) return fail(res, 429, 'rate');
   const { email, password } = ctx.body; const em = String(email || '').trim().toLowerCase();
   if (!/^[^@\s]{1,64}@[^@\s]{1,255}\.[^@\s]{2,}$/.test(em)) return fail(res, 400, 'bad_email');
-  if (typeof password !== 'string' || password.length < 8 || password.length > 200) return fail(res, 400, 'weak_password');
+  if (!pwOk(password)) return fail(res, 400, 'weak_password');
+  if (ctx.body.consent !== true) return fail(res, 400, 'consent_required');
   if (q.userByEmail.get(em)) return fail(res, 409, 'exists');
-  const id = Number(q.insUser.run(em, hashPw(password), now()).lastInsertRowid);
+  const id = Number(q.insUser.run(em, hashPw(password), now(), now(), POLICY_VERSION).lastInsertRowid);
   let code; for (let i = 0; i < 20; i++) { code = genCode(); if (!q.profByCode.get(code)) break; }
   q.upProf.run(id, JSON.stringify({ name: '', hidden: [], blocked: [], dismissed: [], noCards: [] }), code, now());
-  startSession(res, id); send(res, 200, { user: { id: String(id), email: em } }, sessionHeader(res));
+  const nu = q.userById.get(id); sendVerify(req, nu);
+  startSession(res, id); send(res, 200, { user: userInfo(nu), needsConsent: false, mail: MAIL_ENABLED }, sessionHeader(res));
 });
 R('POST', '/api/login', async (req, res, ctx) => {
   const { email, password } = ctx.body; const em = String(email || '').trim().toLowerCase();
   if (limited('login:' + ctx.ip + em, 10, 600e3)) return fail(res, 429, 'rate');
   const u = q.userByEmail.get(em);
   if (!u || typeof password !== 'string' || !checkPw(password, u.pass)) return fail(res, 401, 'bad_credentials');
-  startSession(res, u.id); send(res, 200, { user: { id: String(u.id), email: u.email } }, sessionHeader(res));
+  startSession(res, u.id); send(res, 200, { user: userInfo(u), needsConsent: needsConsent(u), mail: MAIL_ENABLED }, sessionHeader(res));
 });
 function startSession(res, uid) { const token = crypto.randomBytes(32).toString('hex'); q.insSess.run(token, uid, now() + 30 * 864e5); res._cookie = `dp_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 86400}${COOKIE_SECURE ? '; Secure' : ''}`; }
 const sessionHeader = res => ({ 'set-cookie': res._cookie });
 R('POST', '/api/logout', (req, res, ctx) => { if (ctx.token) q.delSess.run(ctx.token); send(res, 200, { ok: true }, { 'set-cookie': `dp_sid=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${COOKIE_SECURE ? '; Secure' : ''}` }); }, { auth: true });
+
+R('POST', '/api/forgot', (req, res, ctx) => {
+  if (!MAIL_ENABLED) return fail(res, 501, 'mail_disabled');
+  const em = String(ctx.body.email || '').trim().toLowerCase();
+  if (limited('forgot-ip:' + ctx.ip, 10, 3600e3) || limited('forgot:' + em, 3, 3600e3)) return fail(res, 429, 'rate');
+  const u = q.userByEmail.get(em); if (u) sendReset(req, u);
+  send(res, 200, { ok: true }); // אותה תשובה בין אם המייל קיים ובין אם לא
+});
+R('POST', '/api/reset', (req, res, ctx) => {
+  if (limited('reset:' + ctx.ip, 20, 3600e3)) return fail(res, 429, 'rate');
+  if (!pwOk(ctx.body.password)) return fail(res, 400, 'weak_password');
+  const uid = takeToken(ctx.body.token, 'reset'); if (!uid) return fail(res, 400, 'bad_token');
+  q.setPass.run(hashPw(ctx.body.password), uid); q.setVerified.run(uid); q.delUserSessions.run(uid); q.delTokens.run(uid, 'reset');
+  const u = q.userById.get(uid); startSession(res, uid);
+  send(res, 200, { user: userInfo(u), needsConsent: needsConsent(u), mail: MAIL_ENABLED }, sessionHeader(res));
+});
+R('POST', '/api/verify', (req, res, ctx) => {
+  if (limited('verify:' + ctx.ip, 30, 3600e3)) return fail(res, 429, 'rate');
+  const uid = takeToken(ctx.body.token, 'verify'); if (!uid) return fail(res, 400, 'bad_token');
+  q.setVerified.run(uid); send(res, 200, { ok: true });
+});
+R('POST', '/api/verify/resend', (req, res, ctx) => {
+  if (!MAIL_ENABLED) return fail(res, 501, 'mail_disabled');
+  const u = q.userById.get(ctx.user.id); if (u.verified) return send(res, 200, { ok: true, already: true });
+  if (limited('vresend:' + u.id, 3, 3600e3)) return fail(res, 429, 'rate');
+  sendVerify(req, u); send(res, 200, { ok: true });
+}, { auth: true });
+R('POST', '/api/password', (req, res, ctx) => {
+  const u = q.userById.get(ctx.user.id); if (limited('pw:' + u.id, 10, 3600e3)) return fail(res, 429, 'rate');
+  if (typeof ctx.body.oldPassword !== 'string' || !checkPw(ctx.body.oldPassword, u.pass)) return fail(res, 403, 'bad_credentials');
+  if (!pwOk(ctx.body.newPassword)) return fail(res, 400, 'weak_password');
+  q.setPass.run(hashPw(ctx.body.newPassword), u.id); q.delOtherSessions.run(u.id, ctx.token); send(res, 200, { ok: true });
+}, { auth: true });
+R('POST', '/api/consent', (req, res, ctx) => { if (ctx.body.accept !== true) return fail(res, 400, 'bad_body'); q.setConsent.run(now(), POLICY_VERSION, ctx.user.id); send(res, 200, { ok: true }); }, { auth: true });
 R('GET', '/api/data', (req, res, ctx) => { const days = {}; for (const r of q.days.all(ctx.user.id)) days[r.date] = JSON.parse(r.json); send(res, 200, { profile: getProfile(ctx.user.id), days }); }, { auth: true });
 R('PUT', '/api/profile', (req, res, ctx) => {
   const p = ctx.body.profile; if (!p || typeof p !== 'object') return fail(res, 400, 'bad_body');
@@ -170,6 +253,7 @@ R('GET', '/api/social', (req, res, ctx) => {
   send(res, 200, { me: { id: String(me), code: getProfile(me).code }, friends: friends.filter(Boolean), incoming: incoming.filter(Boolean), outgoing: outgoing.filter(Boolean), cardsIn, cardsOut });
 }, { auth: true });
 R('POST', '/api/friends/add', (req, res, ctx) => {
+  if (needVerified(res, ctx)) return;
   if (limited('fadd:' + ctx.user.id, 30, 3600e3)) return fail(res, 429, 'rate');
   let code = String(ctx.body.code || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); if (code.length === 6) code = code.slice(0, 3) + '-' + code.slice(3);
   const hit = q.profByCode.get(code); if (!hit || hit.user_id === ctx.user.id) return fail(res, 404, 'nf');
@@ -177,9 +261,10 @@ R('POST', '/api/friends/add', (req, res, ctx) => {
   if (q.hasLink.get(ctx.user.id, hit.user_id)) return fail(res, 409, 'dup', { name: them.name });
   q.link.run(ctx.user.id, hit.user_id); send(res, 200, { id: String(hit.user_id), name: them.name });
 }, { auth: true });
-R('POST', '/api/friends/accept', (req, res, ctx) => { const id = +ctx.body.id; if (!id || !q.hasLink.get(id, ctx.user.id)) return fail(res, 404, 'nf'); q.link.run(ctx.user.id, id); send(res, 200, { ok: true }); }, { auth: true });
+R('POST', '/api/friends/accept', (req, res, ctx) => { if (needVerified(res, ctx)) return; const id = +ctx.body.id; if (!id || !q.hasLink.get(id, ctx.user.id)) return fail(res, 404, 'nf'); q.link.run(ctx.user.id, id); send(res, 200, { ok: true }); }, { auth: true });
 R('POST', '/api/friends/remove', (req, res, ctx) => { const id = +ctx.body.id; if (id) q.unlink.run(ctx.user.id, id); send(res, 200, { ok: true }); }, { auth: true });
 R('POST', '/api/postcards', (req, res, ctx) => {
+  if (needVerified(res, ctx)) return;
   if (limited('pc:' + ctx.user.id, 30, 3600e3)) return fail(res, 429, 'rate');
   const b = ctx.body; const to = [...new Set(ids(b.to))].filter(x => mutual(ctx.user.id, +x)).slice(0, 20); if (!to.length) return fail(res, 400, 'no_recipients');
   const note = String(b.note || '').slice(0, 120); const photo = typeof b.photo === 'string' && b.photo.startsWith('data:image/') && b.photo.length < 220e3 ? b.photo : null; const day = DATE_RE.test(b.day || '') ? b.day : null;
@@ -218,12 +303,18 @@ const server = http.createServer(async (req, res) => {
     if (!url.pathname.startsWith('/api/')) {
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
       if (url.pathname === '/' || url.pathname === '/index.html') { res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache', ...SEC }); return res.end(fs.readFileSync(INDEX)); }
+      if (url.pathname === '/privacy' || url.pathname === '/terms') {
+        const f = path.join(__dir, 'public', url.pathname.slice(1) + '.html');
+        const vars = { OPERATOR_NAME: escH(OPERATOR_NAME || 'מפעיל/ת האתר'), CONTACT: CONTACT_EMAIL ? `<a href="mailto:${escH(CONTACT_EMAIL)}">${escH(CONTACT_EMAIL)}</a>` : 'בפנייה למפעיל/ת האתר', POLICY_VERSION, MAIL_PROVIDER: escH(MAIL_PROVIDER_NAME), HOSTING: escH(HOSTING_TEXT) };
+        res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache', ...SEC });
+        return res.end(fs.readFileSync(f, 'utf8').replace(/\{\{(\w+)\}\}/g, (m, k) => (k in vars ? vars[k] : m)));
+      }
       if (url.pathname === '/healthz') { res.writeHead(200); return res.end('ok'); }
       res.writeHead(404, SEC); return res.end('not found');
     }
     const route = routes[req.method + ' ' + url.pathname]; if (!route) return fail(res, 404, 'not_found');
     const cookies = parseCookies(req.headers.cookie); const token = cookies.dp_sid || null; const ctx = { ip, token, user: null, body: {} };
-    if (token) { const s = q.sess.get(token, now()); if (s) ctx.user = { id: s.id, email: s.email }; }
+    if (token) { const s = q.sess.get(token, now()); if (s) ctx.user = { id: s.id, email: s.email, verified: s.verified, consent_ver: s.consent_ver }; }
     if (route.auth && !ctx.user) return fail(res, 401, 'unauthorized');
     if (req.method !== 'GET' && req.method !== 'HEAD') {
       const org = req.headers.origin; const host = req.headers.host; if (org) { try { if (new URL(org).host !== host) return fail(res, 403, 'bad_origin'); } catch { return fail(res, 403, 'bad_origin'); } }
@@ -233,5 +324,6 @@ const server = http.createServer(async (req, res) => {
     await route.fn(req, res, ctx);
   } catch (e) { if (e && e.status) return fail(res, e.status, e.error); console.error(e); fail(res, 500, 'server_error'); }
 });
+if (MAIL_ENABLED && !CONTACT_EMAIL) console.warn('אזהרה: CONTACT_EMAIL לא מוגדר, מדיניות הפרטיות תציג ניסוח כללי');
 server.listen(PORT, () => console.log(`היום שלי רץ על http://localhost:${PORT}  (AI: ${AI_KEY ? 'פעיל' : 'כבוי'})`));
 process.on('SIGTERM', () => { server.close(() => process.exit(0)); });
