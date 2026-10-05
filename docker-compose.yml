@@ -1,0 +1,22 @@
+# אפשרות ב': שרת VPS משלך (Hetzner, DigitalOcean וכו') עם HTTPS אוטומטי דרך Caddy.
+# שימוש:  DOMAIN=planner.example.com docker compose up -d
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      PORT: "3000"
+      DATA_DIR: /data
+      COOKIE_SECURE: "1"
+      TRUST_PROXY: "1"
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ALLOW_SIGNUP: ${ALLOW_SIGNUP:-1}
+    volumes: [ "dp-data:/data" ]
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: [ "80:80", "443:443" ]
+    environment: { DOMAIN: "${DOMAIN:?הגדירו DOMAIN}" }
+    volumes: [ "./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy-data:/data" ]
+    depends_on: [ app ]
+volumes: { dp-data: {}, caddy-data: {} }

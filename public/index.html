@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>היום שלי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gveret+Levin&family=Heebo:wght@500;700;800&family=Suez+One&display=swap" rel="stylesheet">
+<style>:root{--ink:#1f1a2e;--ink-fixed:#1f1a2e;--paper:#fbf4e6;--paper2:#f1e4c8;--card:#fffdf6;--green:#16b04a;--green-d:#0c7a32;--pink:#ff9ccb;--pink-l:#ffd3e7;--lav:#b9a4f7;--lav-l:#ddd2fb;--orange:#ff5b2e;--lime:#cbf03a;--lime-l:#e7f8a0;--tape:#ffe27a;--m:16px;--g:10px;--navh:104px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#f4ecdc;--paper:#1c1727;--paper2:#2a2338;--card:#272034;--pink-l:#5a3a52;--lav-l:#3c3458;--lime-l:#4a5424}}
+:root[data-theme="dark"]{--ink:#f4ecdc;--paper:#1c1727;--paper2:#2a2338;--card:#272034;--pink-l:#5a3a52;--lav-l:#3c3458;--lime-l:#4a5424}
+@media (min-width:700px){:root{--m:40px;--g:16px;--navh:94px}}
+@media (min-width:1100px){:root{--m:120px;--g:24px}}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:'Heebo',system-ui,sans-serif;font-weight:500;font-size:18px;line-height:1.3;direction:rtl;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(var(--ink) 1.2px,transparent 1.8px),radial-gradient(var(--ink) 1px,transparent 1.6px);background-size:97px 89px,61px 73px;background-position:0 0,23px 31px;opacity:.07;pointer-events:none;z-index:0}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,p{margin:0}
+.hand{font-family:'Gveret Levin',cursive;font-weight:400}
+.suez{font-family:'Suez One',serif;font-weight:400}
+.g{display:block;width:100%;height:100%;overflow:visible}
+.ic{flex:none;display:block}
+.hide{display:none!important}
+#app{position:relative;z-index:1;min-height:100vh}
+.page{position:relative;padding:calc(var(--navh) + 22px) var(--m) 56px;max-width:1440px;margin:0 auto}
+.cols{display:grid;grid-template-columns:repeat(4,1fr);column-gap:var(--g);row-gap:28px;align-items:start}
+.cols>*{grid-column:1/-1;min-width:0}
+@media (min-width:1100px){.cols>.c2{grid-column:span 2}.cols>.c1{grid-column:span 1}.cols>.c3{grid-column:span 3}}
+.stack{display:flex;flex-direction:column;gap:22px;min-width:0}
+.row{display:flex;align-items:center;gap:12px}
+.rowb{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+/* ---------- top nav ---------- */
+.top{position:fixed;inset-inline:0;top:0;z-index:50;background:var(--paper);border-bottom:2px dotted color-mix(in srgb,var(--ink) 55%,transparent);padding:14px var(--m);padding-top:calc(14px + env(safe-area-inset-top,0px));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rail{display:flex;gap:4px;background:var(--card);border:2.5px solid var(--ink);border-radius:999px;padding:6px}
+.tab{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;font-weight:700;font-size:18px;color:var(--ink);border:2.5px solid transparent;background:none;text-decoration:none;white-space:nowrap}
+.tab.on{background:var(--lime);border-color:var(--ink);box-shadow:-3px 3px 0 var(--ink);color:var(--ink-fixed)}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Suez One';font-size:36px;line-height:1;color:var(--ink);text-decoration:none;background:none;border:0;padding:0}
+.logo .g{width:44px;height:44px}
+.me{display:flex;align-items:center;gap:10px;background:var(--card);border:2.5px solid var(--ink);border-radius:999px;padding:6px 8px 6px 18px;font-weight:700;cursor:pointer;color:var(--ink)}
+.av{width:40px;height:40px;border-radius:46% 28% 46% 28%;border:2px solid var(--ink);background:var(--lav);overflow:hidden;flex:none;box-shadow:-2px 2px 0 var(--ink);position:relative;display:grid;place-items:center}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.av .g{width:100%;height:100%}
+.av.l{width:150px;height:150px;border-width:3px;box-shadow:-6px 6px 0 var(--ink)}
+.av.m{width:72px;height:72px;border-width:2.5px;box-shadow:-3px 3px 0 var(--ink)}
+.av.round{border-radius:50%}
+@media (max-width:699px){
+ .top{padding-block:10px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+ .top .logo,.top .me b{display:none}.me{padding:4px}
+ .rail{flex:1;padding:5px;border-radius:28px}
+ .tab{flex:1;flex-direction:column;gap:2px;padding:8px 4px;font-size:13px;border-radius:18px;justify-content:center}
+ .top{gap:8px}
+}
+@media (min-width:700px) and (max-width:1099px){.top .logo span{display:none}.top .me b{display:none}.me{padding:4px}.tab{padding:8px 14px}}
+/* ---------- buttons / inputs ---------- */
+.btn{font-weight:700;font-size:20px;padding:10px 28px;border-radius:999px;border:2.5px solid var(--ink);display:inline-flex;gap:10px;align-items:center;justify-content:center;color:var(--ink-fixed);background:var(--card);text-decoration:none;white-space:nowrap;line-height:1.2}
+.btn.primary{background:var(--green);box-shadow:-4px 4px 0 var(--ink)}
+.btn.primary:active{background:var(--green-d);color:#fffdf6;box-shadow:-2px 2px 0 var(--ink)}
+.btn.secondary{background:var(--card);border-style:dashed;color:var(--ink)}
+.btn.sticker{background:var(--pink);border-radius:18px;font-family:'Gveret Levin';font-weight:400;font-size:34px;box-shadow:-6px 6px 0 var(--ink);padding:6px 28px}
+.btn.danger{background:var(--orange);box-shadow:-3px 3px 0 var(--ink)}
+.btn.lime{background:var(--lime);box-shadow:-3px 3px 0 var(--ink)}
+.btn.block{width:100%}.btn.big{min-height:64px}.btn.sm{font-size:16px;padding:6px 16px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.ghost{background:none;border:2px dashed var(--ink);border-radius:999px;padding:6px 14px;font-weight:700;display:inline-flex;gap:6px;align-items:center;color:var(--ink)}
+.ghost.red{border-color:var(--orange);color:var(--orange)}
+.icbtn{width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);background:var(--card);display:grid;place-items:center;color:var(--ink);padding:0;flex:none}
+.icbtn.big{width:52px;height:52px;border-width:2.5px;box-shadow:-3px 3px 0 var(--ink)}
+.more{width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);background:var(--card);display:flex;gap:3px;align-items:center;justify-content:center;padding:0;flex:none}
+.more i{width:4.5px;height:4.5px;background:var(--ink);border-radius:50%;display:block}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.lbl{font-weight:700;font-size:14px}
+.in{font-family:'Heebo',system-ui,sans-serif;font-weight:700;appearance:none;-webkit-appearance:none;font-size:20px;border:2.5px dashed var(--ink);border-radius:16px;background:var(--card);color:var(--ink);padding:6px 18px;height:56px;width:100%;min-width:0;direction:rtl;text-align:start;overflow:visible}
+.in:focus{border-style:solid;box-shadow:-4px 4px 0 var(--ink);outline:none}
+.in.ok{background:var(--lime-l);border-style:solid}
+.in.err{background:var(--pink-l);border-color:var(--orange)}
+.in.num{text-align:center}
+.in.sm{height:44px;font-size:20px;border-width:2px;border-radius:14px;padding:4px 12px}
+textarea.in{height:auto;min-height:56px;padding:10px 16px;resize:vertical}
+select.in{font-family:'Heebo';font-weight:700;font-size:16px}
+input[type=time].in,input[type=date].in{direction:ltr;text-align:center;font-family:'Suez One';font-size:22px}
+.quick{display:flex;flex-wrap:wrap;gap:8px}.quick .chip{font-size:15px;padding:5px 14px;background:var(--card)}.quick .chip small{font-family:'Suez One';font-size:13px;opacity:.75}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:12px}.res .note{padding:8px 14px}
+details.how{border:2px dashed var(--ink);border-radius:14px;padding:6px 14px;background:var(--card)}details.how summary{cursor:pointer;font-weight:700;font-size:15px}details.how li{font-size:15px;margin:4px 0}
+.err-t{color:var(--orange);font-family:'Gveret Levin';font-size:20px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:999px;border:2px dashed var(--ink);font-weight:700;font-size:14px;background:none;color:var(--ink)}
+.chip.on{background:var(--lime);border:2.5px solid var(--ink);box-shadow:-2px 2px 0 var(--ink);color:var(--ink-fixed)}
+.chip.pink{background:var(--pink-l);border-style:solid;color:var(--ink)}
+.seg{display:flex;gap:4px;padding:5px;border:2.5px solid var(--ink);border-radius:999px;background:var(--card)}
+.seg .chip{flex:1;justify-content:center;border-color:transparent}
+.seg .chip.on{border-color:var(--ink)}
+/* ---------- stickers / titles ---------- */
+.stitle{position:relative;display:inline-flex;align-items:center;font-family:'Suez One';font-size:clamp(32px,4vw,56px);line-height:1;padding:10px clamp(20px,3vw,36px);border:2.5px solid var(--ink);border-radius:48px 22px 48px 22px;box-shadow:-6px 6px 0 var(--ink);color:var(--ink-fixed);white-space:nowrap}
+.stitle>.dc{position:absolute;top:-30px;inset-inline-end:auto;inset-inline-start:-28px;width:clamp(36px,4.5vw,64px);height:clamp(36px,4.5vw,64px)}
+.stitle.pink{background:var(--pink)}.stitle.lime{background:var(--lime)}.stitle.lav{background:var(--lav)}.stitle.org{background:var(--orange)}.stitle.grn{background:var(--green)}.stitle.tp{background:var(--tape)}
+.sheetwrap{position:relative;margin-top:30px}
+.sheetwrap::before,.sheetwrap::after{content:'';position:absolute;inset:0;border:2.5px solid var(--ink);border-radius:48px;z-index:0}
+.sheetwrap::before{background:var(--lime);transform:translate(10px,12px) rotate(1.3deg)}
+.sheetwrap::after{background:var(--pink);transform:translate(-6px,15px) rotate(-1.1deg)}
+.sheetwrap.alt::before{background:var(--lav)}.sheetwrap.alt::after{background:var(--lime)}
+.sheet{position:relative;z-index:1;background:var(--lav-l);border:2.5px solid var(--ink);border-radius:56px 20px 56px 20px;padding:78px 28px 26px}
+.sheet.white{background:var(--card)}
+.sheet>.stitle{position:absolute;top:-38px;inset-inline-start:36px}
+.note{position:relative;background:var(--card);border:2.5px dashed var(--ink);border-radius:36px 16px 36px 16px;padding:22px 20px 18px}
+.note.solid{border-style:solid}
+.tape{position:absolute;width:96px;height:28px;top:-14px;inset-inline-start:50%;margin-inline-start:-48px;transform:rotate(-4deg);pointer-events:none;z-index:3}
+.dec{position:absolute;pointer-events:none;z-index:0}
+.stk{position:relative;display:grid;place-items:center;flex:none}
+.stk>.g{position:absolute;inset:0}
+.stk>span{position:relative;font-family:'Suez One';color:var(--ink-fixed)}
+.pt{font-family:'Gveret Levin';font-size:34px;line-height:1.1}
+.ptn{font-family:'Gveret Levin';font-size:24px;line-height:1.15}
+.pts{font-family:'Gveret Levin';font-size:20px;line-height:1.15;opacity:.8}
+/* ---------- header (today) ---------- */
+.hero{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:26px}
+.h-title{position:relative;text-align:start}
+.h-title h1{font-family:'Suez One';font-size:clamp(64px,10.5vw,160px);line-height:.88;position:relative;z-index:2;margin:0}
+.h-title .blob{position:absolute;inset-inline-start:30%;top:36%;width:60%;height:78%;z-index:1}
+.h-title .fl{position:absolute;inset-inline-end:100%;margin-inline-end:-30px;top:2%;width:clamp(56px,9vw,150px);z-index:2;transform:rotate(14deg)}
+.datetag{position:relative;z-index:3;display:inline-block;margin-top:-10px;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:6px 20px;box-shadow:-5px 5px 0 var(--ink);transform:rotate(-3deg);font-size:clamp(20px,2.2vw,34px)}
+.datetag .tape{width:70px;top:-12px;inset-inline-start:60%}
+.msg{position:relative;z-index:2;margin-top:14px;display:flex;align-items:center;gap:10px;font-size:clamp(18px,2vw,24px)}
+.score-cl{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.score-big{width:clamp(170px,22vw,240px);height:clamp(170px,22vw,240px);position:relative;transform:rotate(-7deg)}
+.score-big .g{position:absolute;inset:0}
+.score-big .in-t{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--ink-fixed)}
+.score-big .n{font-family:'Suez One';font-size:clamp(54px,7vw,80px);line-height:.95}
+.score-big small{font-family:'Gveret Levin';font-size:clamp(14px,1.6vw,20px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;max-width:260px}
+.chipx{display:inline-flex;gap:8px;align-items:center;padding:4px 16px;border-radius:999px;border:2px solid var(--ink);box-shadow:-3px 3px 0 var(--ink);font-weight:700;font-size:14px;color:var(--ink-fixed)}
+.chipx b{font-family:'Suez One';font-weight:400;font-size:18px}
+.linkbtn{background:none;border:0;padding:0;text-decoration:underline;font-family:'Gveret Levin';font-size:20px;display:inline-flex;gap:6px;align-items:center;color:var(--ink)}
+.linkbtn i{width:22px;height:22px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:'Heebo';font-weight:800;font-size:13px}
+/* ---------- tasks ---------- */
+.tlist{display:flex;flex-direction:column}
+.task{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:2px dashed color-mix(in srgb,var(--ink) 70%,transparent)}
+.task .lab{flex:1;font-weight:700;font-size:20px;text-align:start;min-width:0;overflow-wrap:anywhere}
+.task.done .lab{opacity:.9}
+.ck{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);background:var(--card);display:grid;place-items:center;padding:0;flex:none;color:var(--ink-fixed)}
+.ck.on{background:var(--lime);box-shadow:-2px 2px 0 var(--ink)}
+.ck.green.on{background:var(--green)}
+.addrow{margin-top:12px;display:flex;align-items:center;gap:10px;border:2.5px dashed var(--ink);border-radius:18px;padding:8px 14px;background:none;width:100%;font-family:'Gveret Levin';font-size:30px;color:var(--ink);justify-content:flex-start}
+.addrow .pl{width:38px;height:38px;border-radius:50%;background:var(--lime);border:2.5px solid var(--ink);display:grid;place-items:center;color:var(--ink-fixed);flex:none}
+.addform{margin-top:12px;display:flex;gap:10px;align-items:center}
+/* ---------- schedule ---------- */
+.legend{display:flex;gap:18px;justify-content:flex-start;flex-wrap:wrap;margin-bottom:14px;font-weight:700;font-size:14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.blocks{display:flex;flex-direction:column;gap:14px}
+.block{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:22px;border:2px dashed var(--ink);background:var(--card);min-width:0}
+.block.done{background:var(--lime-l);border:2.5px solid var(--ink);box-shadow:-3px 3px 0 var(--ink)}
+.block.missed{background:var(--pink-l);border-style:dashed}
+.block .bt{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.block .bt b{font-size:20px;overflow-wrap:anywhere;text-align:start}
+.note-in{display:inline-flex;gap:8px;padding:2px 12px;border-radius:999px;background:var(--card);border:1.5px dashed var(--ink);font-weight:700;font-size:14px;color:var(--ink)}
+.range{display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 10px;border-radius:20px;border:2.5px solid var(--ink);background:var(--card);font-family:'Suez One';font-size:18px;line-height:1.05;flex:none;color:var(--ink)}
+.range i{width:12px;height:14px;display:block;color:var(--ink)}
+.block.done .range{background:var(--green);color:var(--ink-fixed)}
+.block.missed .range{background:var(--pink);border-style:dashed;color:var(--ink-fixed)}
+.sico{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;background:var(--card);padding:0;flex:none;color:var(--ink-fixed)}
+.sico.done{background:var(--green)}.sico.missed{background:var(--pink-l);border-style:dashed;color:var(--ink)}
+.empty{text-align:center;font-family:'Gveret Levin';font-size:24px;padding:18px 8px;opacity:.75}
+/* ---------- steps ---------- */
+.steps{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:32px 12px 32px 12px;padding:14px 20px 16px;box-shadow:-4px 4px 0 var(--ink);display:flex;flex-direction:column;gap:10px}
+.steps .num{font-family:'Suez One';font-size:clamp(34px,4vw,56px);line-height:1}
+.track{height:26px;border-radius:999px;border:2.5px solid var(--ink);background:var(--card);overflow:hidden;position:relative}
+.track>i{position:absolute;inset-block:0;inset-inline-start:0;background:var(--green);display:block;transition:width .4s}
+.track.full>i{background:var(--lime)}
+/* ---------- journal ---------- */
+.journal{background:var(--card);border:2.5px solid var(--ink);border-radius:14px 40px 14px 40px;padding:24px 22px 16px;position:relative;box-shadow:-4px 4px 0 var(--ink)}
+.journal textarea{width:100%;border:0;background:repeating-linear-gradient(transparent 0 38px,var(--lav) 38px 40px);font-family:'Heebo',system-ui,sans-serif;font-weight:500;font-size:20px;line-height:40px;color:var(--ink);resize:none;min-height:200px;outline:none;padding:0 4px;direction:rtl}
+/* ---------- food band ---------- */
+.foodband{position:relative;margin-top:72px;background:var(--green);padding:130px var(--m) 70px;z-index:1}
+.foodband .wave{position:absolute;inset-inline:0;top:-26px;height:60px;width:100%}
+.foodband .fin{max-width:1440px;margin:0 auto;padding-inline:0}
+@media (min-width:1100px){.foodband{padding-inline:120px}}
+.foodband>.stitle{position:absolute;top:34px;inset-inline-start:max(var(--m),calc((100vw - 1440px)/2 + var(--m)))}
+.ftool{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:34px}
+.ntotal{background:var(--card);border:2.5px solid var(--ink);border-radius:36px 14px 36px 14px;padding:14px 22px 16px;box-shadow:-5px 5px 0 var(--ink);display:flex;flex-direction:column;gap:8px;min-width:min(588px,100%);flex:1;max-width:588px}
+.ntotal .itm{display:flex;align-items:center;gap:12px;flex:1}
+.meals{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:34px var(--g)}
+.meal{position:relative;display:flex;flex-direction:column;gap:12px;min-width:0}
+.meal h3{display:flex;align-items:center;gap:10px;font-family:'Suez One';font-weight:400;font-size:clamp(26px,3vw,36px);color:var(--ink-fixed)}
+.meal h3 .g{width:42px;height:42px}
+.slip{position:relative;border-radius:16px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;text-align:start;min-height:84px;border:2px dashed var(--ink);width:100%;background:var(--lav-l);color:var(--ink-fixed)}
+.slip .lb{align-self:flex-start;background:var(--card);border:1.5px solid var(--ink);border-radius:999px;padding:0 12px;font-size:13px;font-weight:800}
+.slip.plan{cursor:pointer}
+.slip.act{border:2.5px solid var(--ink);box-shadow:-3px 3px 0 var(--ink)}
+.slip.act.fol{background:var(--lime-l)}.slip.act.dif{background:var(--pink-l)}
+.slip.empty-act{background:transparent;border:2.5px dotted var(--ink);color:var(--ink-fixed);cursor:pointer}
+.slip .x{font-family:'Gveret Levin';font-size:24px;line-height:1.15}
+.slip .m2{position:absolute;inset-inline-end:auto;inset-inline-start:8px;top:8px}
+.nchips{display:flex;gap:6px;flex-wrap:wrap}
+.nchip{border:1.5px solid var(--ink);border-radius:999px;padding:1px 10px;font-weight:800;font-size:13px;color:var(--ink-fixed)}
+.signoff{margin-top:44px;text-align:center;font-family:'Gveret Levin';font-size:clamp(24px,3vw,34px);color:var(--ink-fixed);display:flex;gap:14px;justify-content:center;align-items:center}
+.signoff .g{width:40px;height:40px}
+.planin{width:100%;font-family:'Heebo',system-ui,sans-serif;font-weight:700;font-size:18px;border:0;background:transparent;color:var(--ink-fixed);outline:2px dashed var(--ink);border-radius:8px;padding:4px 8px;direction:rtl}
+/* ---------- popups ---------- */
+.scrim{position:fixed;inset:0;background:rgba(31,26,46,.6);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:max(18px,env(safe-area-inset-top,0px)) 14px 28px;overflow:auto}
+.dlg{position:relative;margin:auto 0;background:var(--card);border:2.5px dashed var(--ink);border-radius:40px 16px 40px 16px;box-shadow:-8px 8px 0 var(--ink);padding:30px 24px 24px;width:min(480px,100%);display:flex;flex-direction:column;gap:14px;color:var(--ink)}
+.dlg.w{width:min(540px,100%)}
+.dlg .hd{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dlg .hd .pt{flex:1;text-align:start}
+.dlg .acts{display:flex;gap:12px;justify-content:flex-start;flex-wrap:wrap;padding-top:4px}
+.dlg .acts .sp{flex:1}
+.hint{font-family:'Gveret Levin';font-size:20px;opacity:.8;display:flex;gap:6px;align-items:center}
+.twin{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.toggle{width:52px;height:30px;border-radius:15px;border:2.5px solid var(--ink);background:var(--paper2);position:relative;flex:none;padding:0}
+.toggle i{position:absolute;top:3.5px;inset-inline-start:3px;width:20px;height:20px;border-radius:50%;background:var(--card);border:2px solid var(--ink);transition:inset-inline-start .15s}
+.toggle.on{background:var(--green)}.toggle.on i{inset-inline-start:25px}
+.frow{display:grid;grid-template-columns:auto 76px 92px 1fr;gap:8px;align-items:center}
+.frow .est{grid-column:1/-1;font-family:'Gveret Levin';font-size:19px;opacity:.85;display:flex;gap:6px;align-items:center}
+.cf{display:flex;gap:10px}
+.banner{display:flex;gap:10px;align-items:center;padding:10px 16px;border-radius:18px;border:2px dashed var(--ink);font-weight:700}
+.banner.lav{background:var(--lav-l)}.banner.pink{background:var(--pink-l);border-color:var(--orange)}
+.dots i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink);margin-inline-end:4px;animation:bl 1s infinite}
+.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+@keyframes bl{50%{opacity:.25}}
+.menu{position:fixed;z-index:120;background:var(--card);border:2.5px solid var(--ink);border-radius:20px;box-shadow:-4px 4px 0 var(--ink);padding:8px;min-width:210px;display:flex;flex-direction:column;gap:2px}
+.menu button{display:flex;gap:10px;align-items:center;justify-content:flex-start;padding:9px 12px;border:0;background:none;border-radius:12px;font-weight:700;font-size:18px;color:var(--ink);width:100%;text-align:start}
+.menu button:hover{background:var(--paper2)}.menu button.red{color:var(--orange)}
+.toast{position:fixed;z-index:200;inset-inline:0;bottom:calc(24px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none}
+.toast span{background:var(--lime);color:var(--ink-fixed);border:2.5px solid var(--ink);border-radius:999px;padding:8px 22px;font-weight:800;box-shadow:-4px 4px 0 var(--ink)}
+.splash{min-height:100vh;display:grid;place-items:center;font-family:'Suez One';font-size:44px;position:relative;z-index:1}
+/* ---------- onboarding ---------- */
+.ob{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(24px,5vw,64px) var(--m);position:relative}
+.ob .in-wrap{display:grid;grid-template-columns:1fr;gap:40px;width:100%;max-width:1200px;align-items:center}
+@media (min-width:1000px){.ob .in-wrap.two{grid-template-columns:1fr 1fr}}
+.panel{position:relative;background:var(--lav-l);border:2.5px solid var(--ink);border-radius:72px 24px 72px 24px;padding:50px 40px 36px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:699px){.panel{padding:40px 20px 24px;border-radius:52px 18px 52px 18px}}
+.sheetwrap.big::before,.sheetwrap.big::after{border-radius:56px}
+.steps-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dots-s{display:flex;gap:8px;align-items:center}
+.dots-s i{display:block;width:16px;height:16px;border-radius:50%;border:2px dashed var(--ink)}.dots-s i.d{background:var(--lime);border-style:solid}.dots-s i.a{background:var(--pink);border-style:solid;width:22px;height:22px}
+.stepper{display:flex;gap:10px;align-items:center}
+.stepper .val{flex:1;display:flex;gap:8px;align-items:baseline;justify-content:center;background:var(--lime-l);border:2.5px solid var(--ink);border-radius:16px;padding:6px 16px;font-family:'Suez One';font-size:36px;color:var(--ink)}
+.stepper .val small{font-family:'Heebo';font-weight:800;font-size:18px}
+.stepper input{background:none;border:0;appearance:none;-webkit-appearance:none;font:inherit;width:6ch;text-align:center;color:inherit;outline:none}
+.opts{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.opt{width:56px;height:56px;border-radius:50%;border:2px solid transparent;display:grid;place-items:center;background:none;padding:6px}
+.opt.on{border:2.5px dashed var(--ink)}
+/* ---------- calendar ---------- */
+.calhead{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.mnav{display:flex;align-items:center;gap:12px}
+.mnav .suez{font-size:clamp(26px,3vw,36px)}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:clamp(4px,.6vw,8px)}
+.wd{text-align:center;font-weight:800;padding-bottom:2px}
+.cell{position:relative;aspect-ratio:1/.94;min-height:0;border-radius:clamp(10px,1.2vw,16px);border:2px dotted var(--ink);background:var(--card);display:flex;flex-direction:column;align-items:flex-end;padding:clamp(3px,.6vw,8px);gap:0;color:var(--ink);cursor:pointer;text-align:start}
+.cell .d{font-family:'Suez One';font-size:clamp(12px,1.3vw,18px);line-height:1}
+.cell .stk{width:min(68%,64px);margin:auto;transform:rotate(-5deg)}
+.cell .stk span{font-size:clamp(12px,1.5vw,22px)}
+.cell.out{border-color:transparent;background:none;opacity:.35;cursor:default}
+.cell.fut{background:none;border-color:color-mix(in srgb,var(--ink) 30%,transparent)}
+.cell.emp .ring{margin:auto;width:min(60%,60px);aspect-ratio:1;border:2px dashed color-mix(in srgb,var(--ink) 45%,transparent);border-radius:50%}
+.cell.today{background:var(--pink-l);border:2.5px solid var(--ink);box-shadow:-3px 3px 0 var(--ink);color:var(--ink)}
+.cell.today .stk span{font-family:'Gveret Levin';font-size:clamp(12px,1.4vw,20px)}
+.cell .rx{position:absolute;inset-inline-start:4px;bottom:4px;width:20px;height:20px}
+.rank-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rk{display:flex;align-items:center;gap:12px;padding:6px 12px;border:2px solid var(--ink);border-radius:18px;background:var(--card);color:var(--ink)}
+.rk.me{background:var(--lime-l);border-width:2.5px;box-shadow:-3px 3px 0 var(--ink)}
+.rk .rkn{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font-family:'Suez One';font-size:18px;color:var(--ink-fixed);background:var(--card);flex:none}
+.rk .rkn.r1{background:var(--tape);box-shadow:-2px 2px 0 var(--ink)}.rk .rkn.r2{background:var(--lav)}.rk .rkn.r3{background:var(--pink)}
+.rk .av{width:38px;height:38px}.rk .tx{flex:1;min-width:0;display:flex;flex-direction:column}.rk .tx b{font-size:18px}.rk .tx small{font-family:'Gveret Levin';font-size:17px;opacity:.8}
+.rk .rks{display:flex;align-items:baseline;gap:6px;font-weight:800;white-space:nowrap}.rk .rks b{font-family:'Suez One';font-weight:400;font-size:28px;line-height:1}
+.sumcol{display:flex;flex-direction:column;gap:12px}
+.statn{display:flex;align-items:center;gap:12px;padding:6px 14px;border-radius:16px;border:2.5px solid var(--ink);font-weight:800;color:var(--ink-fixed)}
+.statn b{font-family:'Suez One';font-weight:400;font-size:24px}
+.legbox{border:2.5px dashed var(--ink);border-radius:32px 12px 32px 12px;padding:18px 16px 14px;background:var(--card);display:flex;flex-direction:column;gap:6px}
+.legbox .lr{display:flex;align-items:center;gap:10px;font-weight:700}
+.legbox .lr .stk{width:30px;height:30px}
+/* ---------- social ---------- */
+.fcard{display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:24px;border:2.5px solid var(--ink);background:var(--card);box-shadow:-3px 3px 0 var(--ink);color:var(--ink);cursor:pointer;width:100%;text-align:start}
+.fcard .tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.fcard b{font-size:20px}
+.fcard .stk{width:56px;height:56px}
+.pcard{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:12px 12px 14px;box-shadow:-4px 4px 0 var(--ink);display:flex;flex-direction:column;gap:10px;color:var(--ink);cursor:pointer;text-align:start}
+.pcard .ph{height:170px;border-radius:12px;border:2px solid var(--ink);overflow:hidden;position:relative;background:var(--pink)}
+.pcard .ph img{width:100%;height:100%;object-fit:cover}
+.pcard .ph .g{position:absolute}
+.pcard .ft{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:26px var(--g)}
+.dropz{border:2.5px dashed var(--ink);border-radius:20px;background:var(--pink-l);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center;position:relative;overflow:hidden}
+.dropz img{max-width:100%;max-height:220px;border-radius:12px;border:2px solid var(--ink)}
+.banner-note{margin-bottom:18px}
+.qr{width:112px;height:112px;border:2.5px solid var(--ink);border-radius:14px;padding:8px;background:#fff;flex:none}
+.qr img,.qr canvas{width:100%;height:100%}
+.codebox{display:flex;gap:10px;align-items:center;padding:8px 16px;border-radius:14px;background:var(--lime-l);border:2.5px solid var(--ink);font-family:'Suez One';font-size:24px;color:var(--ink);direction:ltr}
+.zine-days{display:flex;justify-content:space-between;gap:6px}
+.zine-days>div{display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;flex:1}
+.zine-days .stk{width:min(100%,62px);aspect-ratio:1}
+.arch{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.arch .banner{margin:0}
+.dbwarn{background:var(--pink-l);border:2px dashed var(--orange);border-radius:14px;padding:8px 14px;font-weight:700;font-size:15px;margin-bottom:14px}
+@media (max-width:699px){
+ .page{padding-top:calc(var(--navh) + 14px)}
+ .sheet{padding:70px 14px 18px;border-radius:40px 16px 40px 16px}
+ .btn{font-size:18px;padding:9px 18px}.btn.sticker{font-size:28px}
+ .stitle{font-size:34px}
+ .block{padding:10px}.range{font-size:15px;padding:5px 7px}
+ .foodband{padding-top:110px}
+ .frow{grid-template-columns:auto 64px 84px 1fr}
+ .twin{grid-template-columns:1fr}
+}
+@media (min-width:1100px){.cell{aspect-ratio:1/.8}.calhead{margin-bottom:14px}.cols{row-gap:22px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div id="app"></div><div id="menu"></div><div id="popup"></div><div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>'use strict';
+const INK='var(--ink)';
+const svgw=(inner,vb='0 0 100 100',cls='')=>`<svg class="g ${cls}" viewBox="${vb}" aria-hidden="true" focusable="false">${inner}</svg>`;
+const midp=(a,b)=>`${((a[0]+b[0])/2).toFixed(1)} ${((a[1]+b[1])/2).toFixed(1)}`;
+const GX={
+  badge(fill,n=14){let d='';for(let i=0;i<=240;i++){const t=i/240*Math.PI*2,r=42+5*Math.cos(n*t);d+=(i?'L':'M')+(50+r*Math.cos(t)).toFixed(1)+' '+(50+r*Math.sin(t)).toFixed(1)}return svgw(`<path d="${d}Z" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
+  blob(fill,seed=1){const n=8,pts=[];let s=seed*9301+7;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};for(let i=0;i<n;i++){const t=i/n*Math.PI*2,r=34+rnd()*12;pts.push([50+r*Math.cos(t),50+r*Math.sin(t)])}let d='M'+midp(pts[n-1],pts[0]);for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n];d+=`Q${p[0].toFixed(1)} ${p[1].toFixed(1)} ${midp(p,q)}`}return svgw(`<path d="${d}Z" fill="${fill}" stroke="${INK}" stroke-width="3"/>`)},
+  flower(petal,center){let p='';for(let k=0;k<8;k++)p+=`<ellipse cx="50" cy="27" rx="11" ry="20" fill="${petal}" stroke="${INK}" stroke-width="3" transform="rotate(${k*45} 50 50)"/>`;return svgw(p+`<circle cx="50" cy="50" r="12" fill="${center}" stroke="${INK}" stroke-width="3"/>`)},
+  star(fill){let pts='';for(let i=0;i<10;i++){const r=i%2?19:46,t=-Math.PI/2+i*Math.PI/5;pts+=(50+r*Math.cos(t)).toFixed(1)+','+(54+r*Math.sin(t)).toFixed(1)+' '}return svgw(`<polygon points="${pts}" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
+  sparkle(fill){return svgw(`<path d="M50 4Q54 46 96 50Q54 54 50 96Q46 54 4 50Q46 46 50 4Z" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
+  squig(c='var(--ink)'){return svgw(`<path d="M2 12q9 -14 18 0t18 0t18 0t18 0t18 0t18 0" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`,'0 0 120 24','sq')},
+  tape(c='var(--tape)'){return svgw(`<path d="M2 2L8 6L2 10L8 14L2 18L8 22L2 26H98L92 22L98 18L92 14L98 10L92 6L98 2Z" fill="${c}" fill-opacity=".9"/>`,'0 0 100 28','tp')},
+};
+const IC={check:'M5 13l4 4L19 7',x:'M5 5l14 14M19 5L5 19',plus:'M12 5v14M5 12h14',minus:'M5 12h14',
+ trash:'M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6',pencil:'M5 19l1-4L16.5 4.5a2 2 0 012.8 0l.2.2a2 2 0 010 2.8L9 18 5 19zM14 7l3 3',
+ cup:'M5 9h11v5a5 5 0 01-5 5h-1a5 5 0 01-5-5V9zM16 10h1.4a2.4 2.4 0 010 4.8H16M8.5 3.5v2.5M12 3.5v2.5',camera:'M4 8.5h3l1.6-2.5h6.8L17 8.5h3a1.5 1.5 0 011.5 1.5v8A1.5 1.5 0 0120 19.5H4A1.5 1.5 0 012.5 18v-8A1.5 1.5 0 014 8.5zM12 17a3.6 3.6 0 100-7.2 3.6 3.6 0 000 7.2z',
+ image:'M4 5h16a1.5 1.5 0 011.5 1.5v11A1.5 1.5 0 0120 19H4a1.5 1.5 0 01-1.5-1.5v-11A1.5 1.5 0 014 5zM3 16l5-5 4 4 3-3 6 6',copy:'M9 9h10v11H9zM5 15V4h10',share:'M12 15V4M8 8l4-4 4 4M5 13v6h14v-6',
+ chev:'M6 9l6 6 6-6',left:'M20 12H5M11 5.5L4.5 12 11 18.5',right:'M4 12h15M13 5.5l6.5 6.5-6.5 6.5',lock:'M7 11V8a5 5 0 0110 0v3M5.5 11h13V20h-13z',
+ sun:'M12 7.8a4.2 4.2 0 100 8.4 4.2 4.2 0 000-8.4zM12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3L7 7M17 17l1.7 1.7M18.7 5.3L17 7M7 17l-1.7 1.7',
+ cal:'M5 5h14a1.5 1.5 0 011.5 1.5V19A1.5 1.5 0 0119 20.5H5A1.5 1.5 0 013.5 19V6.5A1.5 1.5 0 015 5zM3.5 10h17M8 3v4M16 3v4',
+ people:'M9 5.3a3.2 3.2 0 100 6.4 3.2 3.2 0 000-6.4zM3 20c0-3.6 2.7-5.8 6-5.8s6 2.2 6 5.8M17.5 7.1a2.4 2.4 0 100 4.8 2.4 2.4 0 000-4.8zM17 14.4c2.6 0 4.5 1.7 4.5 4.6',
+ mail:'M4 5.5h16A1.5 1.5 0 0121.5 7v10a1.5 1.5 0 01-1.5 1.5H4A1.5 1.5 0 012.5 17V7A1.5 1.5 0 014 5.5zM3.8 7.5l8.2 6 8.2-6',up:'M12 19V5M6 11l6-6 6 6'};
+const ico=(n,s=22,w=2.4)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${IC[n]}"/></svg>`;
+const COL={pink:'var(--pink)',lime:'var(--lime)',lav:'var(--lav)',orange:'var(--orange)',green:'var(--green)',limel:'var(--lime-l)',pinkl:'var(--pink-l)',lavl:'var(--lav-l)'};
+// sticker by tier: great=orange scalloped, good=lime scalloped, soft=lavender blob
+function tierShape(t,seed=1){return t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):GX.blob(COL.lav,seed)}
+function stk(t,txt,size,rot){return `<span class="stk" style="width:${size}px;height:${size}px;${rot?`transform:rotate(${rot}deg)`:''}">${tierShape(t,(txt|0)+3)}<span style="font-size:${Math.round(size*.36)}px">${txt}</span></span>`}
+const STICKERS=[['flower',()=>GX.flower(COL.pink,COL.lime)],['flower2',()=>GX.flower(COL.lav,COL.orange)],['star',()=>GX.star(COL.pink)],['badge',()=>GX.badge(COL.orange,14)],['blob',()=>GX.blob(COL.green,4)]];
+const stickerSvg=id=>{const f=STICKERS.find(s=>s[0]===id);return f?f[1]():GX.flower(COL.pink,COL.lime)};
+
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const HDAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const HMON=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const WD=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+const pad2=n=>String(n).padStart(2,'0');
+const dstr=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+const pdate=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const todayStr=()=>dstr(new Date());
+const addDays=(s,n)=>{const d=pdate(s);d.setDate(d.getDate()+n);return dstr(d)};
+const longDate=s=>{const d=pdate(s);return `יום ${HDAYS[d.getDay()]}, ${d.getDate()} ב${HMON[d.getMonth()]}`};
+const shortDate=s=>{const d=pdate(s);return `${d.getDate()} ב${HMON[d.getMonth()].slice(0,3)}׳`};
+const fmtNum=n=>Number(n||0).toLocaleString('en-US');
+const MEALS=[['breakfast','ארוחת בוקר'],['lunch','ארוחת צהריים'],['dinner','ארוחת ערב'],['snack','נשנושים']];
+const MEAL_SHORT={breakfast:'בוקר',lunch:'צהריים',dinner:'ערב',snack:'נשנושים'};
+const S={profile:null,days:{},ready:false,mode:'local',uid:null,route:{name:'',a:'',b:''},popup:null,menu:null,cal:null,ui:{},dbfail:false,setup:null};
+const emptyDay=()=>({tasks:[],blocks:[],meals:{breakfast:{plan:'',actual:null},lunch:{plan:'',actual:null},dinner:{plan:'',actual:null},snack:{plan:'',actual:null}},steps:0,journal:''});
+const plain=x=>x==null?x:JSON.parse(JSON.stringify(x));
+function normDay(d0){const e=emptyDay();if(!d0)return e;const d=plain(d0);return{tasks:Array.isArray(d.tasks)?d.tasks:[],blocks:Array.isArray(d.blocks)?d.blocks:[],meals:Object.assign(e.meals,d.meals||{}),steps:+d.steps||0,journal:d.journal||''}}
+const dayOf=s=>S.days[s]||emptyDay();
+const ensureDay=s=>{if(!S.days[s])S.days[s]=emptyDay();return S.days[s]};
+const goal=()=>(S.profile&&+S.profile.stepsGoal)||0;
+/* ---------- score ---------- */
+function calc(day,g){
+  const parts=[];const t=day.tasks||[];
+  if(t.length){const d=t.filter(x=>x.done).length;parts.push({k:'tasks',name:'משימות',w:30,f:d/t.length,a:d,b:t.length})}
+  const b=day.blocks||[];
+  if(b.length){const d=b.filter(x=>x.status==='done').length;parts.push({k:'schedule',name:'לו״ז',w:30,f:d/b.length,a:d,b:b.length})}
+  const pl=Object.values(day.meals||{}).filter(m=>m.plan&&m.plan.trim());
+  if(pl.length){const d=pl.filter(m=>m.actual&&m.actual.followed).length;parts.push({k:'food',name:'אוכל',w:20,f:d/pl.length,a:d,b:pl.length})}
+  const st=day.steps||0;
+  if(g>0&&(st>0||parts.length))parts.push({k:'steps',name:'צעדים',w:20,f:Math.min(1,st/g),a:st,b:g});
+  if(!parts.length)return{score:null,parts};
+  const W=parts.reduce((s,p)=>s+p.w,0);
+  parts.forEach(p=>{p.share=Math.round(100*p.w/W);p.pts=Math.round(100*p.w/W*p.f)});
+  return{score:Math.round(100*parts.reduce((s,p)=>s+p.w*p.f,0)/W),parts};
+}
+const tierOf=s=>s==null?'none':s>=85?'great':s>=60?'good':'soft';
+const PRAISE={great:'יום מעולה!',good:'יום טוב!',soft:'מחר עוד יום',none:'מתחילים?'};
+const scoreOf=s=>S.days[s]?calc(S.days[s],goal()).score:null;
+function streak(){let n=0,s=todayStr();const t=scoreOf(s);if(t!=null&&t>=60)n++;s=addDays(s,-1);for(let i=0;i<4000;i++){const v=scoreOf(s);if(v!=null&&v>=60){n++;s=addDays(s,-1)}else break}return n}
+function monthStats(y,m){const n=new Date(y,m+1,0).getDate();let sum=0,c=0,best=null,bd=null,great=0,good=0,soft=0,emp=0;for(let d=1;d<=n;d++){const s=`${y}-${pad2(m+1)}-${pad2(d)}`;if(s>todayStr())continue;const v=scoreOf(s);if(v==null){emp++;continue}sum+=v;c++;if(best==null||v>best){best=v;bd=s}const t=tierOf(v);if(t==='great')great++;else if(t==='good')good++;else soft++}return{avg:c?Math.round(sum/c):null,best,bd,great,good,soft,emp,count:c}}
+/* ---------- storage ---------- */
+const Store={db:null,uid:null,tm:{},ver:{},pending:{},
+  ls(){try{return window.localStorage}catch(e){return null}},
+  readLocal(){const l=this.ls();if(!l)return null;try{return JSON.parse(l.getItem('dp1')||'null')}catch(e){return null}},
+  loadLocal(){const j=this.readLocal();if(j){S.profile=j.profile||null;S.days={};for(const k in j.days||{})S.days[k]=normDay(j.days[k])}},
+  saveLocal(){if(S.mode==='api')return;const l=this.ls();if(!l)return;try{l.setItem('dp1',JSON.stringify({profile:S.profile,days:S.days}))}catch(e){}},
+  async initDb(){
+    try{
+      if(!window.claude||!window.claude.use)return false;
+      const to=new Promise(r=>setTimeout(()=>r(null),6000));
+      const got=await Promise.race([Promise.all([window.claude.use('user'),window.claude.use('db')]),to]);
+      if(!got)return false;const [user,db]=got;if(!user||!db)return false;
+      const id=await user.id();if(!id)return false;
+      this.db=db;this.uid=id;S.uid=id;S.mode='db';return true;
+    }catch(e){return false}
+  },
+  loadDb(){
+    return new Promise(res=>{
+      let first=true;
+      const done=()=>{if(first){first=false;res()}};
+      try{
+        this.db.collection('data/users/'+this.uid).onSnapshot(snap=>{
+          let changed=false;
+          snap.docs.forEach(d=>{
+            if(!d.exists)return;const data=d.data();if(!data)return;
+            if(d.id==='profile'){if(!this.pending.profile&&JSON.stringify(S.profile)!==JSON.stringify(data)){S.profile=plain(data);changed=true}}
+            else if(d.id.startsWith('d-')){const k=d.id.slice(2);if(!this.pending[d.id]){const nd=normDay(data);if(JSON.stringify(S.days[k])!==JSON.stringify(nd)){S.days[k]=nd;changed=true}}}
+          });
+          if(first){done()}else if(changed){this.saveLocal();softRender()}
+        },()=>{S.dbfail=true;done()});
+      }catch(e){S.dbfail=true;done()}
+      setTimeout(done,8000);
+    });
+  },
+  async init(){
+    this.loadLocal();const localCopy={profile:S.profile,days:S.days};
+    if(!(window.claude&&window.claude.use)){
+      const h=await Api.health();
+      if(h){S.apiAvail=true;S.signup=h.signup;const l=this.ls();const guest=!!(l&&l.getItem('dp_guest')==='1');let me=null;try{me=await Api.get('/api/me')}catch(e){}
+        if(me&&me.user){S.user=me.user;S.mode='api';S.profile=null;S.days={};await this.loadApi(guest?localCopy:null)}
+        else if(guest&&localCopy.profile){S.mode='local';S.guest=true}
+        else{S.mode='api';S.profile=null;S.days={}}
+      }
+      return;
+    }
+    const ok=await this.initDb();
+    if(ok){
+      S.profile=null;S.days={};
+      await this.loadDb();
+      if(!S.profile&&localCopy.profile){S.profile=localCopy.profile;S.days=localCopy.days;this.saveProfile();for(const k in S.days)this.saveDay(k)}
+      else this.saveLocal();
+    }
+  },
+  makers:{},tries:{},
+  queue(key,make){
+    this.saveLocal();
+    if(S.mode==='api'){
+      this.makers[key]=make;this.pending[key]=true;const v=(this.ver[key]||0)+1;this.ver[key]=v;clearTimeout(this.tm[key]);
+      this.tm[key]=setTimeout(async()=>{
+        try{const x=make();await Api.call(x.method,x.path,x.body);if(key==='profile'&&0){}S.dbfail=false;this.tries[key]=0;delete this.makers[key]}
+        catch(e){if(e.status===401)return;this.tries[key]=(this.tries[key]||0)+1;if(!S.dbfail){S.dbfail=true;toast('השמירה בשרת נכשלה. ננסה שוב')}if(this.tries[key]<8)setTimeout(()=>{if(this.ver[key]===v)this.queue(key,make)},4000*this.tries[key])}
+        finally{if(this.ver[key]===v)delete this.pending[key]}
+      },500);return;
+    }
+    if(S.mode!=='db'||!this.db)return;
+    this.pending[key]=true;const v=(this.ver[key]||0)+1;this.ver[key]=v;clearTimeout(this.tm[key]);
+    this.tm[key]=setTimeout(async()=>{
+      try{const x=make();await this.db.doc(x.path).set(JSON.parse(JSON.stringify(x.data)));S.dbfail=false}
+      catch(e){if(!S.dbfail){S.dbfail=true;toast('השמירה בענן לא זמינה — הנתונים נשמרים במכשיר הזה')}}
+      finally{if(this.ver[key]===v)delete this.pending[key]}
+    },700);
+  },
+  saveDay(s){if(S.mode==='api')this.queue('d-'+s,()=>({method:'PUT',path:'/api/day',body:{date:s,data:S.days[s],score:calc(S.days[s],goal()).score}}));else this.queue('d-'+s,()=>({path:`data/users/${this.uid}/d-${s}`,data:S.days[s]}));if(typeof Social!=='undefined')Social.touch()},
+  saveProfile(){if(S.mode==='api')this.queue('profile',()=>({method:'PUT',path:'/api/profile',body:{profile:S.profile}}));else this.queue('profile',()=>({path:`data/users/${this.uid}/profile`,data:S.profile}));if(typeof Social!=='undefined')Social.touch()},
+  flush(){if(S.mode!=='api')return;for(const k of Object.keys(this.makers)){try{const x=this.makers[k]();Api.call(x.method,x.path,x.body,{keepalive:true}).catch(()=>{})}catch(e){}}},
+};
+/* ---------- helpers ---------- */
+let toastT=null;
+function toast(msg){const t=$('#toast');if(!t)return;t.innerHTML=`<span>${esc(msg)}</span>`;clearTimeout(toastT);toastT=setTimeout(()=>{t.innerHTML=''},2600)}
+async function copyText(txt){try{await navigator.clipboard.writeText(txt);return true}catch(e){}
+  try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0;top:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(e){return false}}
+function resizeImage(file,max=640,q=.72){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=()=>rej(new Error('read'));fr.onload=()=>{const im=new Image();im.onerror=()=>rej(new Error('img'));im.onload=()=>{let w=im.width,h=im.height;const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);let url=c.toDataURL('image/jpeg',q);if(url.length>170000)url=c.toDataURL('image/jpeg',.5);res(url)};im.src=fr.result};fr.readAsDataURL(file)})}
+function genCode(){const L='ABCDEFGHJKLMNPQRSTUVWXYZ',D='23456789';let a='';for(let i=0;i<3;i++)a+=L[Math.floor(Math.random()*L.length)];let b='';for(let i=0;i<3;i++)b+=D[Math.floor(Math.random()*D.length)];return a+'-'+b}
+function whatsapp(text){const u='https://wa.me/?text='+encodeURIComponent(text);try{const w=window.open(u,'_blank','noopener');if(!w)throw 0}catch(e){copyText(text).then(()=>toast('הטקסט הועתק — אפשר להדביק בוואטסאפ'))}}
+/* ---------- routing / render ---------- */
+const PAGES={};const ACT={};const INP={};const SUB={};const POP={};
+function parseRoute(){const h=location.hash.replace(/^#\/?/,'').split('/');S.route={name:h[0]||'',a:decodeURIComponent(h[1]||''),b:h[2]||''}}
+function go(p){const t='#/'+p;if(location.hash===t)render(true);else location.hash=t}
+function render(keep){
+  parseRoute();const app=$('#app');if(!app)return;
+  if(!S.ready){app.innerHTML='<div class="splash">היום שלי…</div>';return}
+  const r=S.route.name;
+  if(S.mode==='api'){if(!S.user&&r!=='welcome'&&r!=='join')return go('welcome');if(S.user&&!S.profile&&r!=='setup')return go('setup')}
+  if(!S.profile&&r!=='welcome'&&r!=='setup'&&r!=='join'){return go('welcome')}
+  if(S.profile&&(r===''||r==='welcome'||(r==='setup'&&!S.ui.editSetup)))return go('today');
+  const y=window.scrollY;
+  const fn=PAGES[r]||PAGES.today;let html='';
+  try{html=fn(S.route)}catch(e){console.error(e);html=`<div class="page"><div class="note">אופס, משהו השתבש בטעינת המסך. <button class="btn sm" data-act="reload">נסו שוב</button></div></div>`}
+  const showNav=S.profile&&!['welcome','setup'].includes(r);
+  app.innerHTML=(showNav?navHtml(r):'')+html;
+  closeMenu();afterRender();
+  if(S.mode==='api'&&Social.on&&['friends','friend','postcards','zine'].includes(r)&&Date.now()-Social.last>6000)Social.refresh();
+  window.scrollTo(0,keep?y:0);
+}
+function softRender(){const a=document.activeElement;if(S.popup||S.menu||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&$('#app').contains(a)))return;if(Date.now()-lastDown<1500){clearTimeout(softT);softT=setTimeout(softRender,1600);return}render(true)}
+function afterRender(){$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const f=$('[data-focus]');if(f){f.focus();if(f.select&&f.dataset.focus==='sel')f.select()}}
+/* ---------- popups & menus ---------- */
+function openPopup(type,d){S.popup={type,d:d||{}};renderPopup()}
+function renderPopup(){const el=$('#popup');if(!el)return;if(!S.popup){el.innerHTML='';return}
+  const p=POP[S.popup.type];if(!p){el.innerHTML='';return}
+  el.innerHTML=`<div class="scrim" data-act="scrim"><div class="dlg ${p.cls||''}" role="dialog" aria-modal="true" aria-label="${esc(p.label||'')}">${p.render(S.popup.d)}</div></div>`;
+  const f=$('#popup [data-focus]');if(f){f.focus();if(f.dataset.focus==='sel'&&f.select)f.select()}
+  if(p.after){try{p.after(S.popup.d)}catch(e){}}}
+function closePopup(){if(!S.popup)return;S.popup=null;const el=$('#popup');if(el)el.innerHTML=''}
+function openMenu(items,el){closeMenu();const r=el.getBoundingClientRect();const w=230;let left=Math.min(Math.max(8,r.left),window.innerWidth-w-8);let top=r.bottom+6;if(top+items.length*46>window.innerHeight)top=Math.max(8,r.top-items.length*46-6);
+  const m=$('#menu');m.innerHTML=`<div class="menu" style="left:${left}px;top:${top}px">${items.map(i=>`<button class="${i.red?'red':''}" data-act="${i.act}" ${Object.entries(i.data||{}).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${ico(i.ic,20)}<span>${esc(i.t)}</span></button>`).join('')}</div>`;S.menu=true}
+function closeMenu(){if(!S.menu)return;S.menu=false;const m=$('#menu');if(m)m.innerHTML=''}
+document.addEventListener('click',e=>{
+  if(S.menu&&!e.target.closest('.menu')&&!e.target.closest('[data-menu]'))closeMenu();
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const a=el.dataset.act;
+  if(a==='scrim'){if(e.target===el)closePopup();return}
+  if(el.tagName==='A')e.preventDefault();
+  const fn=ACT[a];if(fn){try{const r=fn(el,e);if(r&&r.catch)r.catch(err=>{console.error(err);toast('שגיאה: '+(err&&err.message||'לא ידועה'))})}catch(err){console.error(err);toast('שגיאה: '+(err&&err.message||'לא ידועה'))}}
+});
+document.addEventListener('input',e=>{const el=e.target.closest('[data-in]');if(el&&INP[el.dataset.in]){try{INP[el.dataset.in](el,e)}catch(err){console.error(err)}}});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-ch]');if(el&&INP[el.dataset.ch]){try{INP[el.dataset.ch](el,e)}catch(err){console.error(err)}}});
+document.addEventListener('submit',e=>{const f=e.target.closest('[data-submit]');if(f){e.preventDefault();const fn=SUB[f.dataset.submit];if(fn){try{fn(f,e)}catch(err){console.error(err)}}}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.menu)closeMenu();else closePopup()}});
+window.addEventListener('hashchange',()=>{closePopup();render(false)});
+const VERSION='1.6.0';
+async function saveFile(filename,blob){try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;if(dl){await dl.save({filename,data:blob});return true}}catch(e){if(e&&e.code==='cancelled')return false}
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);return true}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.flush()});window.addEventListener('pagehide',()=>Store.flush());
+window.addEventListener('error',e=>{try{toast('שגיאה: '+(e.message||'לא ידועה'))}catch(_){}});window.addEventListener('unhandledrejection',e=>{try{toast('שגיאה: '+((e.reason&&e.reason.message)||'לא ידועה'))}catch(_){}});
+ACT.reload=()=>location.reload();
+ACT.submit=el=>{const f=el.closest('[data-submit]');if(f&&SUB[f.dataset.submit]){try{SUB[f.dataset.submit](f)}catch(err){console.error(err)}}};
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing||e.shiftKey)return;const t=e.target;if(!t||t.tagName!=='INPUT'||/^(button|checkbox|radio|file)$/.test(t.type))return;const f=t.closest('[data-submit]');if(f&&SUB[f.dataset.submit]){e.preventDefault();try{SUB[f.dataset.submit](f)}catch(err){console.error(err)}}});
+let lastDown=0,softT=null;document.addEventListener('pointerdown',()=>{lastDown=Date.now()},true);document.addEventListener('keydown',()=>{lastDown=Date.now()},true);
+
+const avatarHtml=(p,cls='')=>`<span class="av ${cls}">${p&&p.avatar?`<img alt="" src="${esc(p.avatar)}">`:stickerSvg((p&&p.sticker)||'flower')}</span>`;
+const stitle=(color,text,deco,lg)=>`<span class="stitle ${color}" ${lg?'':''}><span class="dc">${deco}</span>${esc(text)}</span>`;
+const tapeEl=(c)=>`<span class="tape">${GX.tape(c)}</span>`;
+function navHtml(r){
+  const active=r==='day'||r==='zine'?'calendar':r==='friend'?'friends':r;
+  const tabs=[['today','היום','sun'],['calendar','לוח שנה','cal'],['friends','חברים','people'],['postcards','גלויות','mail']];
+  return `<header class="top"><a class="logo" href="#/today"><span>היום שלי</span><span style="width:44px;height:44px;display:block">${GX.flower(COL.pink,COL.lime)}</span></a><nav class="rail" aria-label="ניווט ראשי">${tabs.map(t=>`<a class="tab ${active===t[0]?'on':''}" href="#/${t[0]}" ${active===t[0]?'aria-current="page"':''}>${ico(t[2],22)}<span>${t[1]}</span></a>`).join('')}</nav><button class="me" data-act="settings" aria-label="הפרופיל שלי">${avatarHtml(S.profile)}<b>${esc(S.profile.name)}</b></button></header>`;
+}
+/* ---------------- welcome ---------------- */
+const welcomeShell=panel=>`<div class="ob"><div class="in-wrap two">
+ <div class="h-title" style="text-align:center;justify-self:center"><div style="position:relative;display:inline-block"><span class="dec" style="inset-inline-start:-120px;top:-20px;width:110px">${GX.flower(COL.pink,COL.lime)}</span><span class="dec" style="inset-inline-end:-30px;width:90px;top:-70px">${GX.sparkle(COL.lime)}</span><h1>היום שלי</h1></div>
+ <p class="pt" style="margin-top:16px">משימות, לו״ז, אוכל וצעדים. ובסוף היום מדבקה.</p>
+ <div class="score-cl" style="justify-content:center;margin-top:26px"><div class="score-big" style="transform:rotate(-7deg)">${GX.badge(COL.orange,14)}<div class="in-t"><small>הציון שלי היום</small><span class="n">87</span><small>יום מעולה!</small></div></div></div></div>
+ <div class="sheetwrap big"><div class="panel" style="background:var(--lav-l);z-index:1">${tapeEl('var(--tape)')}${panel}</div></div></div></div>`;
+const classicPanel=()=>`<h2 class="suez" style="font-size:clamp(36px,5vw,56px)">בואו נתחיל</h2>
+  <p class="ptn">הדף היומי הצבעוני שלך, שנשמר בענן ועובד בכל מכשיר.</p>
+  <p class="pts">הכניסה מתבצעת אוטומטית דרך חשבון claude.ai שלך. אין סיסמה נוספת.</p>
+  <button class="btn primary big block" data-act="start">${ico('check',22)} התחלה</button><div class="pts" style="opacity:.6">גרסה ${VERSION}</div>`;
+PAGES.welcome=()=>welcomeShell(S.apiAvail?authPanel():classicPanel());
+ACT.start=()=>{S.setup=null;S.ui.editSetup=false;go('setup')};
+/* ---------------- setup ---------------- */
+function initSetup(){const p=S.profile;let d='',m='',y='';if(p&&p.birth){[y,m,d]=p.birth.split('-')}S.setup={name:p?p.name:'',d:d?+d:'',m:m?+m:'',y:y||'',avatar:p?p.avatar||null:null,sticker:p?p.sticker||'flower':'flower',goal:p?p.stepsGoal||8000:8000,err:''}}
+const goalFieldHtml=(g,presets=true)=>`<div class="field"><label>יעד צעדים יומי (מינימום)</label><div class="stepper"><button type="button" class="icbtn big" data-act="goal-step" data-n="500" aria-label="הוספה">${ico('plus',24)}</button><div class="val"><input type="number" inputmode="numeric" min="0" step="500" value="${g}" data-in="goal-input" aria-label="יעד צעדים"><small>צעדים</small></div><button type="button" class="icbtn big" data-act="goal-step" data-n="-500" aria-label="הפחתה">${ico('minus',24)}</button></div>
+ ${presets?`<div class="opts" style="justify-content:flex-start">${[5000,8000,10000,12000].map(n=>`<button type="button" class="chip ${g==n?'on':''}" data-act="goal-set" data-n="${n}">${fmtNum(n)}</button>`).join('')}</div>`:''}
+ <div class="hint">${ico('check',16)} עמידה ביעד שווה 20% מהציון היומי</div></div>`;
+const avatarEditHtml=(st)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><div style="position:relative;width:180px;height:170px;display:grid;place-items:center"><span class="dec" style="inset:0;width:170px;height:170px;margin:auto">${GX.blob(COL.lime,3)}</span><span style="position:relative;width:150px;height:150px;display:block">${st.avatar?`<span class="av l" style="width:150px;height:150px">${`<img alt="" src="${esc(st.avatar)}">`}</span>`:stickerSvg(st.sticker)}</span></div>
+ <input id="avfile" type="file" accept="image/*" hidden data-ch="avatar-file"><button type="button" class="btn sticker" style="font-size:28px" data-act="pick-avatar">${ico('camera',26)} העלאת תמונה</button>
+ <div class="pts">או בחרו מדבקה במקום</div><div class="opts">${STICKERS.map(s=>`<button type="button" class="opt ${!st.avatar&&st.sticker===s[0]?'on':''}" data-act="pick-sticker" data-id="${s[0]}" aria-label="מדבקה">${s[1]()}</button>`).join('')}</div></div>`;
+PAGES.setup=()=>{
+  if(!S.setup)initSetup();const st=S.setup;
+  return `<div class="ob"><div class="in-wrap" style="max-width:1100px"><div class="sheetwrap big"><div class="panel" style="z-index:1;gap:22px">${tapeEl()}
+  <div class="steps-top"><div class="dots-s"><i></i><i class="a"></i><i class="d"></i></div><span class="ptn">${S.ui.editSetup?'עריכת פרופיל':'שלב 2 מתוך 3'}</span></div>
+  <div><h2 class="suez" style="font-size:clamp(36px,5vw,56px)">ספרו לנו עליכם</h2><p class="pt">ככה העמוד היומי יהיה באמת שלכם</p></div>
+  <div data-submit="save-setup" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:34px;align-items:start">
+   <div class="stack" style="gap:18px">
+    <div class="field"><label for="nm">איך קוראים לך?</label><input id="nm" class="in ${st.name?'ok':''}" value="${esc(st.name)}" maxlength="24" data-in="setup-name" data-focus="1" autocomplete="given-name"></div>
+    <div class="field"><label>תאריך לידה (אופציונלי)</label><div class="twin" style="grid-template-columns:1fr 1fr 1.3fr;gap:10px"><input class="in num" inputmode="numeric" placeholder="יום" maxlength="2" value="${st.d}" data-in="setup-d" aria-label="יום"><input class="in num" inputmode="numeric" placeholder="חודש" maxlength="2" value="${st.m}" data-in="setup-m" aria-label="חודש"><input class="in num" inputmode="numeric" placeholder="שנה" maxlength="4" value="${st.y}" data-in="setup-y" aria-label="שנה"></div><div class="hint">${ico('check',16)} ככה נדע לשלוח לך מדבקה ביום ההולדת</div></div>
+    ${goalFieldHtml(st.goal)}
+    ${st.err?`<div class="err-t">${esc(st.err)}</div>`:''}
+    <div class="acts" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><button class="btn primary" type="button" data-act="submit">${S.ui.editSetup?'שמירה':'יאללה, מתחילים'} ${GX?'':''}</button>${S.ui.editSetup?`<button class="btn secondary" type="button" data-act="cancel-setup">ביטול</button>`:`<span class="pts">אפשר לשנות הכול אחר כך</span>`}</div>
+   </div>
+   ${avatarEditHtml(st)}
+  </div></div></div></div></div>`;
+};
+INP['setup-name']=el=>{S.setup.name=el.value;el.classList.toggle('ok',!!el.value.trim())};
+INP['setup-d']=el=>{S.setup.d=el.value.replace(/\D/g,'')};INP['setup-m']=el=>{S.setup.m=el.value.replace(/\D/g,'')};INP['setup-y']=el=>{S.setup.y=el.value.replace(/\D/g,'')};
+INP['goal-input']=el=>{S.setup.goal=Math.max(0,parseInt(el.value||'0',10)||0)};
+function setupRefresh(){const ae=document.activeElement;render(true)}
+ACT['goal-step']=el=>{const t=S.popup&&S.popup.type==='settings'?S.popup.d.st:S.setup;t.goal=Math.max(0,(+t.goal||0)+(+el.dataset.n));if(S.popup&&S.popup.type==='settings')renderPopup();else render(true)};
+ACT['goal-set']=el=>{const t=S.popup&&S.popup.type==='settings'?S.popup.d.st:S.setup;t.goal=+el.dataset.n;if(S.popup&&S.popup.type==='settings')renderPopup();else render(true)};
+ACT['pick-avatar']=()=>{const f=$('#avfile');if(f)f.click()};
+ACT['pick-sticker']=el=>{const t=S.popup&&S.popup.type==='settings'?S.popup.d.st:S.setup;t.sticker=el.dataset.id;t.avatar=null;if(S.popup&&S.popup.type==='settings')renderPopup();else render(true)};
+INP['avatar-file']=async el=>{const f=el.files&&el.files[0];if(!f)return;try{const url=await resizeImage(f,200,.8);const t=S.popup&&S.popup.type==='settings'?S.popup.d.st:S.setup;t.avatar=url;if(S.popup&&S.popup.type==='settings')renderPopup();else render(true)}catch(e){toast('לא הצלחנו לקרוא את התמונה')}};
+function buildProfile(st,old){
+  const name=(st.name||'').trim();if(!name)return{err:'צריך לכתוב שם קודם'};
+  let birth='';if(st.d||st.m||st.y){const d=+st.d,m=+st.m,y=+st.y;const dt=new Date(y,m-1,d);if(!(y>1900&&y<=new Date().getFullYear()&&m>=1&&m<=12&&d>=1&&dt.getMonth()===m-1))return{err:'תאריך הלידה לא נראה תקין'};birth=`${y}-${pad2(m)}-${pad2(d)}`}
+  return{p:Object.assign({hidden:[],blocked:[],noCards:[],created:todayStr(),code:genCode()},old||{},{name,birth,avatar:st.avatar||null,sticker:st.sticker||'flower',stepsGoal:Math.max(0,+st.goal||0)})};
+}
+SUB['save-setup']=()=>{const r=buildProfile(S.setup,S.profile);if(r.err){S.setup.err=r.err;return render(true)}
+  const first=!S.profile;S.profile=r.p;Store.saveProfile();S.ui.editSetup=false;S.setup=null;if(S.mode==='api'&&S.user&&!Social.on){Social=SocialApi;Social.init()}toast(first?'ברוכים הבאים!':'הפרופיל נשמר');go('today')};
+ACT['cancel-setup']=()=>{S.ui.editSetup=false;S.setup=null;go('today')};
+/* ---------------- today / day ---------------- */
+const MSGS=['יום חדש, עמוד חדש — בואו נצבע אותו!','קפה, מוזיקה, ויאללה','כל מדבקה מתחילה בדף ריק','צעד אחרי צעד, מדבקה אחרי מדבקה','היום הולך להיות ממש בסדר','קטן ויציב מנצח גדול ומתיש'];
+const canEdit=date=>{const t=todayStr();if(date>=t)return true;if(date===addDays(t,-1)&&new Date().getHours()<4)return true;return false};
+const WAVE_I=`<i><svg viewBox="0 0 12 14" width="12" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 0q4 3.5 0 7t0 7"/></svg></i>`;
+const moreBtn=(act,id,extra='')=>`<button class="more" data-act="${act}" data-menu data-id="${id}" ${extra} aria-label="אפשרויות"><i></i><i></i><i></i></button>`;
+function chipsHtml(c){
+  const get=k=>c.parts.find(p=>p.k===k);const t=get('tasks'),s=get('schedule'),f=get('food'),w=get('steps');
+  const one=(col,l,v)=>`<span class="chipx" style="background:var(--${col})"><b>${v}</b>${l}</span>`;
+  return `<div class="chips">${one('pink','משימות',t?`${t.a}/${t.b}`:'–')}${one('lime','לו״ז',s?`${s.a}/${s.b}`:'–')}${one('lav','אוכל',f?`${f.a}/${f.b}`:'–')}${one('green','צעדים',w?Math.round(w.f*100)+'%':'–')}</div>`;
+}
+function scoreBig(c){
+  const t=tierOf(c.score);const shape=t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):t==='soft'?GX.blob(COL.lav,5):`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`;
+  return `<div class="score-big" ${t==='none'?'style="color:var(--ink)"':''}>${shape}<div class="in-t" ${t==='none'?'style="color:var(--ink)"':''}><small>הציון שלי היום</small><span class="n">${c.score==null?'—':c.score}<small style="font-size:.3em">${c.score==null?'':'/100'}</small></span><small>${PRAISE[t]}</small></div></div>`;
+}
+function headerHtml(date,ro){
+  const d=dayOf(date),c=calc(d,goal());const msg=ro?'ככה נראה היום ההוא':MSGS[(pdate(date).getDate()+pdate(date).getMonth())%MSGS.length];
+  return `<div class="hero"><div class="h-title"><span class="fl">${GX.flower(COL.pink,COL.lime)}</span><span class="blob">${GX.blob(COL.pink,2)}</span><h1>היום שלי</h1><div class="datetag">${tapeEl()}${esc(longDate(date))}</div><div class="msg hand"><span style="width:60px">${ico('right',54,1.6)}</span><span>${esc(msg)}</span></div></div>
+  <div class="score-cl">${scoreBig(c)}<div class="stack" style="gap:10px">${chipsHtml(c)}<button class="linkbtn" data-act="score-info" data-d="${date}">איך הציון מחושב?<i>i</i></button></div></div></div>`;
+}
+function tasksHtml(date,ro){
+  const d=dayOf(date);
+  const rows=d.tasks.map(t=>`<div class="task ${t.done?'done':''}"><button class="ck ${t.done?'on':''}" data-act="toggle-task" data-id="${t.id}" ${ro?'disabled':''} aria-label="${esc(t.title)} — ${t.done?'בוצע':'לא בוצע'}" aria-pressed="${!!t.done}">${t.done?ico('check',22,3):''}</button><span class="lab">${esc(t.title)}</span>${t.done?`<span style="width:22px;display:block;flex:none">${GX.sparkle(COL.pink)}</span>`:''}${ro?'':moreBtn('menu-task',t.id)}</div>`).join('');
+  const add=ro?'':(S.ui.addTask?`<div class="addform" data-submit="add-task"><input class="in" data-focus="1" maxlength="80" placeholder="מה צריך לעשות?" aria-label="משימה חדשה"><button class="btn primary" type="button" data-act="submit">${ico('check',20)}</button><button class="icbtn big" type="button" data-act="cancel-add-task" aria-label="ביטול">${ico('x',22)}</button></div>`:`<button class="addrow" data-act="show-add-task"><span class="pl">${ico('plus',22,3)}</span>הוספת משימה</button>`);
+  return `<section class="stack" style="gap:30px" aria-label="המשימות שלי"><div>${stitle('pink','המשימות שלי',GX.star(COL.lime))}</div><div class="tlist" style="margin-top:6px">${rows||(ro?'<div class="empty">לא היו משימות ביום הזה</div>':'')}</div>${add}</section>`;
+}
+ACT['show-add-task']=()=>{S.ui.addTask=true;render(true)};ACT['cancel-add-task']=()=>{S.ui.addTask=false;render(true)};
+SUB['add-task']=f=>{const v=$('input',f).value.trim();if(!v){S.ui.addTask=false;return render(true)}const t=todayStr();const d=ensureDay(S.ui.date||t);d.tasks.push({id:rid(),title:v,done:false});Store.saveDay(S.ui.date||t);S.ui.addTask=true;render(true)};
+ACT['toggle-task']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const t=ensureDay(dt).tasks.find(x=>x.id===el.dataset.id);if(t){t.done=!t.done;Store.saveDay(dt);render(true)}};
+ACT['menu-task']=el=>openMenu([{act:'edit-task',ic:'pencil',t:'עריכה',data:{id:el.dataset.id}},{act:'ask-del-task',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
+function stepsHtml(date,ro){
+  const d=dayOf(date),g=goal(),st=d.steps||0,pct=g?Math.min(100,Math.round(st/g*100)):0,full=g&&st>=g;
+  return `<div class="steps"><div class="rowb">${ro?'<span></span>':`<button class="btn secondary sm" data-act="steps-popup">עדכון צעדים</button>`}<span class="pt">הצעדים שלי</span></div>
+  <div class="rowb"><div class="row" style="align-items:baseline"><span class="suez num">${fmtNum(st)}</span><b>צעדים</b></div><div class="pts">${g?(full?`היעד הושג! +${fmtNum(st-g)}`:`מתוך יעד של ${fmtNum(g)}`):'לא הוגדר יעד'}</div></div>
+  <div class="track ${full?'full':''}" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div></div>`;
+}
+const sortBlocks=a=>a.slice().sort((x,y)=>(x.start||'').localeCompare(y.start||''));
+function blockHtml(b,ro){
+  const st=b.status||'planned';
+  const ic=st==='done'?ico('check',20,3):st==='missed'?ico('x',20,3):'';
+  const lab=st==='done'?'עמדתי בלו״ז':st==='missed'?'לא הפעם':'עוד לא סימנתי';
+  return `<div class="block ${st}"><div class="range"><span>${esc(b.start)}</span>${WAVE_I}<span>${esc(b.end)}</span></div><div class="bt"><b>${esc(b.title)}</b>${b.note?`<span class="note-in"><span>${esc(b.note.start)}–${esc(b.note.end)}</span><span>${esc(b.note.title||'הפסקה')}</span></span>`:''}</div><button class="sico ${st}" data-act="cycle-block" data-id="${b.id}" ${ro?'disabled':''} title="${lab}" aria-label="${esc(b.title)}: ${lab}">${ic}</button>${ro?'':moreBtn('menu-block',b.id)}</div>`;
+}
+function scheduleHtml(date,ro){
+  const d=dayOf(date);const sico=(c,i)=>`<span style="display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px ${i==='p'?'solid':'dashed'} var(--ink);background:${c};color:var(--ink-fixed)">${i==='d'?ico('check',14,3):i==='m'?ico('x',14,3):''}</span>`;
+  return `<div class="sheetwrap"><section class="sheet" aria-label="הלו״ז שלי">${stitle('lime','הלו״ז שלי',GX.sparkle(COL.pink))}<div class="legend"><span>${sico('var(--green)','d')}עמדתי בלו״ז</span><span>${sico('var(--pink-l)','m')}לא הפעם</span><span>${sico('var(--card)','p')}עוד לא</span></div>
+  <div class="blocks">${d.blocks.length?sortBlocks(d.blocks).map(b=>blockHtml(b,ro)).join(''):`<div class="empty">${ro?'לא היו פעילויות ביום הזה':'עדיין אין פעילויות להיום'}</div>`}</div>${ro?'':`<button class="btn primary block big" style="margin-top:18px" data-act="add-block">${ico('plus',22,3)} הוספת פעילות</button>`}</section></div>`;
+}
+ACT['cycle-block']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const b=ensureDay(dt).blocks.find(x=>x.id===el.dataset.id);if(!b)return;b.status=b.status==='planned'||!b.status?'done':b.status==='done'?'missed':'planned';Store.saveDay(dt);render(true)};
+ACT['menu-block']=el=>openMenu([{act:'edit-block',ic:'pencil',t:'עריכה',data:{id:el.dataset.id}},{act:'edit-block',ic:'cup',t:'הוספת הפסקה',data:{id:el.dataset.id,brk:1}},{act:'ask-del-block',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
+function journalHtml(date,ro){return `<div class="journal">${tapeEl('var(--tape)')}<div class="pt">איך היה היום, בפועל?</div><textarea data-in="journal" data-auto placeholder="${ro?'':'כתבו כאן…'}" ${ro?'readonly':''} aria-label="יומן היום">${esc(dayOf(date).journal)}</textarea></div>`}
+let jt=null;INP.journal=el=>{const dt=S.ui.date;if(!canEdit(dt))return;ensureDay(dt).journal=el.value;el.style.height='auto';el.style.height=Math.max(el.scrollHeight,200)+'px';clearTimeout(jt);jt=setTimeout(()=>Store.saveDay(dt),900)};
+const FLOWERS={breakfast:()=>GX.flower(COL.pink,COL.lime),lunch:()=>GX.flower(COL.lime,COL.pink),dinner:()=>GX.flower(COL.lav,COL.orange),snack:()=>GX.star(COL.pink)};
+function foodTotals(day){let k=0,p=0,ai=false,any=false;for(const m of Object.values(day.meals)){const a=m.actual;if(!a)continue;if(a.kcal!=null){k+=+a.kcal;any=true}if(a.protein!=null){p+=+a.protein;any=true}if(a.ai)ai=true}return{k,p,ai,any}}
+function foodHtml(date,ro){
+  const d=dayOf(date),t=foodTotals(d);
+  let wave='M0 34';for(let i=0;i<6;i++)wave+=`q30 -30 60 0t60 0`;
+  const meal=([k,name])=>{const m=d.meals[k];const a=m.actual;
+    const plan=S.ui.editPlan===k&&!ro?`<div class="slip"><span class="lb">תכנון</span><input class="planin" data-focus="1" data-k="${k}" value="${esc(m.plan)}" maxlength="80" data-in="plan-input" aria-label="תכנון ל${esc(name)}"></div>`
+      :`<${ro?'div':'button'} class="slip plan" ${ro?'':`data-act="edit-plan" data-k="${k}"`}><span class="lb">תכנון</span><span class="x">${m.plan?esc(m.plan):`<span style="opacity:.6">${ro?'לא תוכנן':'מה מתכננים לאכול?'}</span>`}</span></${ro?'div':'button'}>`;
+    let act='';
+    if(a){const fol=a.followed!==false;act=`<div class="slip act ${fol?'fol':'dif'}">${ro?'':moreBtn('menu-meal',k,'style="position:absolute;inset-inline-end:8px;top:8px"')}<span class="lb">בפועל</span><span class="x">${esc(a.text)}</span>${(a.kcal!=null||a.protein!=null)?`<div class="nchips">${a.kcal!=null?`<span class="nchip" style="background:var(--pink)">${a.ai?'≈ ':''}${fmtNum(a.kcal)} קל׳</span>`:''}${a.protein!=null?`<span class="nchip" style="background:var(--lime)">${a.ai?'≈ ':''}${fmtNum(a.protein)} ג׳ חלבון</span>`:''}</div>`:''}<span class="hand" style="font-size:20px;display:flex;gap:6px;align-items:center">${m.plan?(fol?`${ico('check',18,3)} כמו שתכננתי`:`★ קצת אחרת`):''}</span></div>`}
+    else act=ro?`<div class="slip empty-act"><span class="lb">בפועל</span><span class="x" style="opacity:.6">לא מולא</span></div>`:`<button class="slip empty-act" data-act="add-food" data-k="${k}"><span class="lb">בפועל</span><span class="x" style="opacity:.6">מה אכלת בפועל?</span></button>`;
+    const quick=(!ro&&!a&&m.plan&&m.plan.trim()&&S.ui.editPlan!==k)?`<button class="chip lime-q" style="align-self:flex-start;background:var(--lime);border-style:solid;color:var(--ink-fixed)" data-act="ate-plan" data-k="${k}">${ico('check',16,3)} אכלתי כמו שתכננתי</button>`:'';
+    return `<div class="meal"><h3><span style="width:42px;height:42px;display:block;flex:none">${FLOWERS[k]()}</span>${name}</h3>${plan}${quick}${act}</div>`};
+  return `<section class="foodband" aria-label="מה אוכלים היום?"><svg class="wave" viewBox="0 0 720 60" preserveAspectRatio="none" aria-hidden="true"><path d="${wave}V70H0Z" fill="var(--green)"/><path d="${wave}" fill="none" stroke="var(--ink)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
+  <span class="stitle lav" style="top:30px"><span class="dc">${GX.flower(COL.pink,COL.lime)}</span>מה אוכלים היום?</span>
+  <div class="fin"><div class="ftool">
+   <div class="ntotal">${tapeEl('var(--tape)')}<div class="rowb"><span class="pt">אכלתי היום</span>${t.ai?`<span class="chip" style="background:var(--lav-l);border-style:solid">כולל הערכות AI</span>`:''}</div>
+   <div class="rowb" style="gap:18px;flex-wrap:nowrap"><div class="itm"><span class="stk" style="width:70px;height:70px;transform:rotate(-5deg)">${GX.badge(COL.orange,14)}<span style="font-size:${t.k>9999?18:t.k>999?21:26}px">${t.any||t.k?fmtNum(t.k):'0'}</span></span><div><b>קלוריות</b><div class="pts">עד עכשיו</div></div></div><div class="itm"><span class="stk" style="width:70px;height:70px;transform:rotate(4deg)">${GX.badge(COL.lime,12)}<span style="font-size:26px">${fmtNum(t.p)}</span></span><div><b>גרם חלבון</b><div class="pts">עד עכשיו</div></div></div></div></div>${ro?'<span></span>':`<button class="btn sticker" data-act="add-food">+ הוספת אוכל</button>`}</div>
+  <div class="meals">${MEALS.map(meal).join('')}</div>
+  <div class="signoff"><span>${GX.flower(COL.lime,COL.pink)}</span>נתראה מחר, עמוד חדש מחכה לנו!<span>${GX.flower(COL.pink,COL.lime)}</span></div></div></section>`;
+}
+ACT['edit-plan']=el=>{S.ui.editPlan=el.dataset.k;render(true)};
+INP['plan-input']=el=>{const k=el.dataset.k;ensureDay(S.ui.date).meals[k].plan=el.value;clearTimeout(INP._pt);INP._pt=setTimeout(()=>Store.saveDay(S.ui.date),700)};
+document.addEventListener('focusout',e=>{if(e.target&&e.target.matches&&e.target.matches('.planin')){S.ui.editPlan=null;Store.saveDay(S.ui.date);render(true)}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('.planin'))e.target.blur()});
+ACT['menu-meal']=el=>openMenu([{act:'add-food',ic:'pencil',t:'עריכה',data:{k:el.dataset.id,edit:1}},{act:'ask-del-meal',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
+function dayPage(date){
+  S.ui.date=date;const ro=!canEdit(date);const isToday=date===todayStr();
+  const banner=(ro?`<div class="arch"><div class="banner lav">${ico('lock',18)} עמוד מהארכיון · נסגר בחצות · לעיון בלבד</div><a class="btn secondary" href="#/calendar">חזרה ללוח השנה</a></div>`:(!isToday?`<div class="arch"><div class="banner lav">${ico('cal',18)} מתכננים יום עתידי</div><a class="btn secondary" href="#/today">חזרה להיום</a></div>`:''));
+  return `<main class="page">${S.dbfail&&S.mode==='db'?'<div class="dbwarn">השמירה בענן לא זמינה לך כרגע (אולי יש לך הרשאת צפייה בלבד). הנתונים נשמרים במכשיר הזה.</div>':''}${banner}${headerHtml(date,ro)}
+  <div class="cols"><div class="c2 stack">${tasksHtml(date,ro)}${journalHtml(date,ro)}</div><div class="c2 stack" style="gap:40px">${scheduleHtml(date,ro)}${stepsHtml(date,ro)}</div></div></main>${foodHtml(date,ro)}`;
+}
+PAGES.today=()=>dayPage(todayStr());
+PAGES.day=r=>{const d=r.a;if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return dayPage(todayStr());if(d===todayStr())return dayPage(d);return dayPage(d)};
+/* ---------------- calendar ---------------- */
+PAGES.calendar=()=>{
+  const now=new Date();if(!S.cal)S.cal={y:now.getFullYear(),m:now.getMonth()};const {y,m}=S.cal;
+  const first=new Date(y,m,1),off=first.getDay(),n=new Date(y,m+1,0).getDate(),rows=Math.ceil((off+n)/7);const t=todayStr();
+  let cells='';for(let i=0;i<rows*7;i++){const dn=i-off+1;let s,out=false,num;
+    if(dn<1){const d=new Date(y,m,dn);s=dstr(d);num=d.getDate();out=true}else if(dn>n){const d=new Date(y,m,dn);s=dstr(d);num=d.getDate();out=true}else{s=`${y}-${pad2(m+1)}-${pad2(dn)}`;num=dn}
+    if(out){cells+=`<div class="cell out"><span class="d">${num}</span></div>`;continue}
+    const sc=scoreOf(s);const tr=tierOf(sc);
+    if(s===t)cells+=`<button class="cell today" data-act="open-day" data-d="${s}" aria-label="היום, ${num}"><span class="d">${num}</span><span class="stk" style="aspect-ratio:1">${GX.blob(COL.pink,2)}<span>${sc==null?'היום':sc}</span></span></button>`;
+    else if(s>t)cells+=`<button class="cell fut" data-act="open-day" data-d="${s}" aria-label="${num}, יום עתידי"><span class="d" style="opacity:.55">${num}</span></button>`;
+    else if(sc==null)cells+=`<button class="cell emp" data-act="open-day" data-d="${s}" aria-label="${num}, בלי תכנון"><span class="d" style="opacity:.55">${num}</span><span class="ring"></span></button>`;
+    else cells+=`<button class="cell" data-act="open-day" data-d="${s}" aria-label="${num}, ציון ${sc}"><span class="d">${num}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-6:tr==='good'?5:-4}deg)">${tierShape(tr,sc)}<span>${sc}</span></span></button>`;
+  }
+  const st=monthStats(y,m);const avgT=tierOf(st.avg);const sk=streak();
+  const leg=(sh,l,c)=>`<div class="lr"><span class="stk" style="aspect-ratio:1">${sh}</span><span class="grow">${l}</span><span class="suez">${c}</span></div>`;
+  return `<main class="page"><div class="calhead"><div class="row" style="gap:14px;flex-wrap:wrap">${stitle('org','לוח השנה שלי',GX.sparkle(COL.lime))}</div><div class="mnav"><button class="icbtn big" data-act="cal-next" aria-label="חודש הבא">${ico('left',24)}</button><span class="suez" id="monthlbl" aria-live="polite">${HMON[m]} ${y}</span><button class="icbtn big" data-act="cal-prev" aria-label="חודש קודם">${ico('right',24)}</button><button class="btn secondary sm" data-act="cal-today">חזרה להיום</button></div></div>
+  <div class="cols"><div class="c3"><div class="sheetwrap alt"><div class="sheet white" style="padding:26px 24px 18px;border-radius:56px 20px 56px 20px">${tapeEl('var(--tape)')}<div class="calgrid">${WD.map(w=>`<div class="wd">${w}</div>`).join('')}${cells}</div><div class="hint" style="justify-content:flex-start;margin-top:12px">${ico('check',16)} לחצו על יום כדי לפתוח את הדף שלו</div></div></div></div>
+  <div class="c1 sumcol"><div style="align-self:center;width:200px;height:200px;position:relative;transform:rotate(-4deg)" aria-label="ממוצע חודשי">${st.avg==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`:tierShape(avgT,st.avg)}<div class="in-t" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${st.avg==null?'var(--ink)':'var(--ink-fixed)'}"><small class="hand" style="font-size:18px">ממוצע ${HMON[m]}</small><span class="suez" style="font-size:56px;line-height:1">${st.avg==null?'—':st.avg}</span><small class="hand" style="font-size:18px">${PRAISE[avgT]}</small></div></div>
+  <div class="statn" style="background:var(--lime-l)"><b>${sk}</b>הרצף הנוכחי</div><div class="statn" style="background:var(--pink-l)"><b>${st.best==null?'–':st.best}</b>${st.bd?`היום הכי טוב (${shortDate(st.bd)})`:'היום הכי טוב'}</div><div class="statn" style="background:var(--lav-l)"><b>${st.great}</b>ימים מעולים</div>
+  <div class="legbox"><div class="pt" style="font-size:26px">מה אומרות המדבקות?</div>${leg(GX.badge(COL.orange,14),'מעולה · 85+',st.great)}${leg(GX.badge(COL.lime,12),'טוב · 60–84',st.good)}${leg(GX.blob(COL.lav,3),'רך · עד 59',st.soft)}${leg(`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="4" stroke-dasharray="8 8"/></svg>`,'חופש · בלי תכנון',st.emp)}</div>
+  <a class="btn lime block" href="#/zine">${ico('mail',20)} הגיליון השבועי</a></div></div></main>`;
+};
+ACT['cal-prev']=()=>{S.cal.m--;if(S.cal.m<0){S.cal.m=11;S.cal.y--}render(true)};
+ACT['cal-next']=()=>{S.cal.m++;if(S.cal.m>11){S.cal.m=0;S.cal.y++}render(true)};
+ACT['cal-today']=()=>{const n=new Date();S.cal={y:n.getFullYear(),m:n.getMonth()};render(true)};
+ACT['open-day']=el=>{const d=el.dataset.d;go(d===todayStr()?'today':'day/'+d)};
+
+const popHead=(t)=>`<div class="hd"><button class="icbtn big" data-act="close-popup" aria-label="סגירה">${ico('x',22,3)}</button><span class="pt">${esc(t)}</span></div>`;
+const popTape=(x)=>`<span class="tape" style="inset-inline-start:${x||'60%'}">${GX.tape()}</span>`;
+ACT['close-popup']=()=>closePopup();
+const ghostDel=(act)=>`<button class="ghost red" type="button" data-act="${act}">${ico('trash',18)} מחיקה</button>`;
+/* ---------- task ---------- */
+POP.task={label:'משימה',render:d=>`${popTape()}${popHead('עריכת משימה')}<div data-submit="save-task" class="stack" style="gap:14px"><div class="field"><label for="tt">מה צריך לעשות?</label><input id="tt" class="in" value="${esc(d.title)}" maxlength="80" data-focus="sel" data-in="task-title"></div><div class="acts">${d.id?ghostDel('ask-del-task-pop'):''}<span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="submit">שמירה</button></div></div>`};
+ACT['edit-task']=el=>{closeMenu();const t=dayOf(S.ui.date).tasks.find(x=>x.id===el.dataset.id);if(t)openPopup('task',{id:t.id,title:t.title})};
+INP['task-title']=el=>{S.popup.d.title=el.value};
+SUB['save-task']=()=>{const d=S.popup.d,v=(d.title||'').trim();if(!v)return;const t=ensureDay(S.ui.date).tasks.find(x=>x.id===d.id);if(t)t.title=v;Store.saveDay(S.ui.date);closePopup();render(true)};
+/* ---------- confirm delete ---------- */
+POP.confirm={label:'אישור מחיקה',render:d=>`${popTape()}<div class="hd"><button class="icbtn big" data-act="close-popup" aria-label="סגירה">${ico('x',22,3)}</button><span class="stk" style="width:64px;height:64px;transform:rotate(-6deg)">${GX.badge(COL.orange,14)}<span>${ico('trash',28)}</span></span></div><div class="pt">${esc(d.title)}</div><p>${esc(d.body)}</p><div class="acts"><span class="sp"></span><button class="btn secondary" data-act="close-popup">ביטול</button><button class="btn danger" data-act="do-confirm" data-focus="1">כן, למחוק ${ico('trash',20)}</button></div>`};
+const CONFIRM={
+  task:id=>{const d=ensureDay(S.ui.date);d.tasks=d.tasks.filter(t=>t.id!==id);Store.saveDay(S.ui.date)},
+  block:id=>{const d=ensureDay(S.ui.date);d.blocks=d.blocks.filter(t=>t.id!==id);Store.saveDay(S.ui.date)},
+  meal:k=>{const d=ensureDay(S.ui.date);d.meals[k].actual=null;Store.saveDay(S.ui.date)},
+};
+const ask=(kind,id,title,body)=>{closeMenu();openPopup('confirm',{kind,id,title,body})};
+ACT['ask-del-task']=el=>ask('task',el.dataset.id,'למחוק את המשימה?','הפעולה תסיר אותה מהיום הזה, ואי אפשר לבטל אותה.');
+ACT['ask-del-task-pop']=()=>ask('task',S.popup.d.id,'למחוק את המשימה?','הפעולה תסיר אותה מהיום הזה, ואי אפשר לבטל אותה.');
+ACT['ask-del-block']=el=>ask('block',el.dataset.id,'למחוק את הפעילות?','הפעולה תסיר אותה מהיום הזה, ואי אפשר לבטל אותה.');
+ACT['ask-del-block-pop']=()=>ask('block',S.popup.d.id,'למחוק את הפעילות?','הפעולה תסיר אותה מהיום הזה, ואי אפשר לבטל אותה.');
+ACT['ask-del-meal']=el=>ask('meal',el.dataset.id,'למחוק את מה שאכלת?','נמחק רק החלק של "בפועל". התכנון נשאר.');
+ACT['do-confirm']=()=>{const c=S.popup.d;CONFIRM[c.kind](c.id);closePopup();render(true);toast('נמחק')};
+/* ---------- activity (with break) ---------- */
+POP.block={label:'פעילות',cls:'w',render:d=>`${popTape()}<div class="hd"><button class="icbtn big" data-act="close-popup" aria-label="סגירה">${ico('x',22,3)}</button>${d.id?ghostDel('ask-del-block-pop'):''}<span class="pt">${d.id?'עריכת פעילות':'פעילות חדשה'}</span></div>
+<div data-submit="save-block" class="stack" style="gap:14px"><div class="field"><label for="bn">מה עושים?</label><input id="bn" class="in" value="${esc(d.title)}" maxlength="60" data-in="b-title" ${d.brk?'':'data-focus="1"'} placeholder="למשל: עבודה על הפרויקט"></div>
+<div class="twin"><div class="field"><label for="bs">משעה</label><input id="bs" class="in" type="time" value="${esc(d.start)}" data-in="b-start"></div><div class="field"><label for="be">עד שעה</label><input id="be" class="in" type="time" value="${esc(d.end)}" data-in="b-end"></div></div>
+${d.brk?`<div class="stack" style="gap:8px"><div class="row" style="gap:8px">${ico('cup',20)}<b>הפסקה בתוך הפעילות</b></div><div class="note solid" style="background:var(--lav-l);padding:12px;border-style:dashed;display:grid;gap:10px"><div class="field"><label for="bk">שם</label><input id="bk" class="in sm" value="${esc(d.bt)}" maxlength="30" data-in="b-bt" ${d.brk===2?'data-focus="1"':''}></div><div class="twin"><div class="field"><label>משעה</label><input class="in sm" type="time" value="${esc(d.bs)}" data-in="b-bs"></div><div class="field"><label>עד שעה</label><input class="in sm" type="time" value="${esc(d.be)}" data-in="b-be"></div></div><div><button type="button" class="ghost red" data-act="b-rmbrk">${ico('trash',16)} הסרת ההפסקה</button></div></div></div>`
+:`<div class="stack" style="gap:6px;align-items:flex-start"><button type="button" class="ghost" data-act="b-addbrk">הוספת הפסקה בתוך הפעילות ${ico('cup',20)}</button><div class="hint">למשל 10:00–10:30 באמצע יום עבודה. אופציונלי</div></div>`}
+${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="submit">שמירה</button></div></div>`};
+function blockDefaults(){const n=new Date();const h=Math.min(23,n.getHours()+1);return{start:`${pad2(h)}:00`,end:`${pad2(Math.min(23,h+1))}:00`}}
+ACT['add-block']=()=>{const df=blockDefaults();openPopup('block',{id:null,title:'',start:df.start,end:df.end,brk:0,bt:'הפסקה',bs:'',be:'',err:''})};
+ACT['edit-block']=el=>{closeMenu();const b=dayOf(S.ui.date).blocks.find(x=>x.id===el.dataset.id);if(!b)return;const n=b.note;openPopup('block',{id:b.id,title:b.title,start:b.start,end:b.end,brk:n||el.dataset.brk?2:0,bt:n?n.title:'הפסקה',bs:n?n.start:'',be:n?n.end:'',err:'',status:b.status})};
+INP['b-title']=el=>{S.popup.d.title=el.value};INP['b-start']=el=>{S.popup.d.start=el.value};INP['b-end']=el=>{S.popup.d.end=el.value};INP['b-bt']=el=>{S.popup.d.bt=el.value};INP['b-bs']=el=>{S.popup.d.bs=el.value};INP['b-be']=el=>{S.popup.d.be=el.value};
+ACT['b-addbrk']=()=>{const d=S.popup.d;d.brk=2;if(!d.bs&&d.start&&d.end){const [h,m]=d.start.split(':').map(Number);const t=h*60+m+60;d.bs=`${pad2(Math.floor(t/60)%24)}:${pad2(t%60)}`;d.be=`${pad2(Math.floor((t+30)/60)%24)}:${pad2((t+30)%60)}`}renderPopup()};
+ACT['b-rmbrk']=()=>{const d=S.popup.d;d.brk=0;d.bs='';d.be='';renderPopup()};
+SUB['save-block']=()=>{
+  const d=S.popup.d;const title=(d.title||'').trim();
+  const fail=m=>{d.err=m;renderPopup()};
+  if(!title)return fail('צריך לכתוב מה עושים');
+  if(!d.start||!d.end)return fail('צריך לבחור שעות');
+  if(d.end<=d.start)return fail('שעת הסיום צריכה להיות אחרי שעת ההתחלה');
+  let note=null;
+  if(d.brk){if(!d.bs||!d.be)return fail('צריך לבחור שעות להפסקה');if(d.be<=d.bs)return fail('ההפסקה צריכה להסתיים אחרי שהיא מתחילה');if(d.bs<d.start||d.be>d.end)return fail('ההפסקה צריכה להיות בתוך שעות הפעילות');note={title:(d.bt||'').trim()||'הפסקה',start:d.bs,end:d.be}}
+  const day=ensureDay(S.ui.date);
+  if(d.id){const b=day.blocks.find(x=>x.id===d.id);if(b){b.title=title;b.start=d.start;b.end=d.end;if(note)b.note=note;else delete b.note}}
+  else{const b={id:rid(),title,start:d.start,end:d.end,status:'planned'};if(note)b.note=note;day.blocks.push(b)}
+  Store.saveDay(S.ui.date);closePopup();render(true);toast(d.id?'הפעילות עודכנה':'הפעילות נוספה');
+};
+/* ---------- steps ---------- */
+POP.steps={label:'עדכון צעדים',render:d=>`${popTape()}${popHead('עדכון צעדים')}<div class="field"><label>כמה צעדים עשית היום?</label><div class="stepper"><button class="icbtn big" type="button" data-act="st-step" data-n="500" aria-label="הוספה">${ico('plus',24)}</button><div class="val" style="background:var(--card);box-shadow:-3px 3px 0 var(--ink)"><input type="number" inputmode="numeric" min="0" step="100" value="${d.val}" data-in="st-input" data-focus="sel" aria-label="צעדים" style="width:7ch"><small>צעדים</small></div><button class="icbtn big" type="button" data-act="st-step" data-n="-500" aria-label="הפחתה">${ico('minus',24)}</button></div></div>
+<div class="opts" style="justify-content:flex-start">${[500,1000,2000].map(n=>`<button class="chip pink" type="button" data-act="st-step" data-n="${n}">+${fmtNum(n)}</button>`).join('')}</div>
+<div class="hint">${ico('check',16)} היעד: ${goal()?fmtNum(goal()):'לא הוגדר'} · עמידה בו שווה 20% מהציון</div>
+<div class="acts"><span class="sp"></span><button class="btn secondary" data-act="close-popup">ביטול</button><button class="btn primary" data-act="st-save">שמירה</button></div>`};
+ACT['steps-popup']=()=>openPopup('steps',{val:dayOf(S.ui.date).steps||0});
+ACT['st-step']=el=>{const d=S.popup.d;d.val=Math.max(0,(+d.val||0)+(+el.dataset.n));renderPopup()};
+INP['st-input']=el=>{S.popup.d.val=Math.max(0,parseInt(el.value||'0',10)||0)};
+ACT['st-save']=()=>{const dt=S.ui.date;ensureDay(dt).steps=Math.max(0,+S.popup.d.val||0);Store.saveDay(dt);closePopup();render(true);const g=goal();toast(g&&S.days[dt].steps>=g?'היעד הושג! כל הכבוד':'הצעדים עודכנו')};
+/* ---------- score breakdown ---------- */
+POP.score={label:'איך נבנה הציון',cls:'w',render:d=>{const c=calc(dayOf(d.date),goal());const t=tierOf(c.score);
+  const names={tasks:['משימות',COL.pink,`${'a'}`],schedule:['לו״ז',COL.lime],food:['אוכל',COL.lav],steps:['צעדים',COL.green]};
+  const det=p=>p.k==='steps'?`${fmtNum(p.a)} מתוך ${fmtNum(p.b)}`:`${p.a} מתוך ${p.b}`;
+  return `${popTape()}${popHead('איך נבנה הציון?')}<div class="rowb" style="flex-wrap:nowrap"><div><div class="pts">סכום החלקים</div><div class="suez" style="font-size:28px">${c.score==null?'עוד אין ציון':`= ${c.score} מתוך 100`}</div></div>${c.score==null?'':stk(t,c.score,92,-5)}</div>
+  <div class="stack" style="gap:12px">${['tasks','schedule','food','steps'].map(k=>{const p=c.parts.find(x=>x.k===k);const n=names[k];return `<div class="row" style="gap:12px"><span class="suez" style="min-width:64px;font-size:20px;direction:ltr;text-align:center">${p?`${p.pts}/${p.share}`:'–'}</span><div class="track grow" style="height:18px;border-width:2px"><i style="width:${p?Math.round(p.f*100):0}%;background:${n[1]}"></i></div><div style="text-align:start;min-width:120px"><b>${n[0]} · ${p?p.share+'%':'לא נספר'}</b><div class="pts">${p?det(p):'לא תוכנן'}</div></div><span style="width:30px;height:30px;display:block;flex:none">${GX.blob(n[1],k.length)}</span></div>`}).join('')}</div>
+  <p class="pts">כל חלק נספר לפי מה שתכננת, לא לפי כמה תכננת.</p><p class="pts">חלק שלא תכננת (למשל בלי יעד צעדים) לא נספר, והציון מתחלק מחדש.</p>`}};
+ACT['score-info']=el=>openPopup('score',{date:el.dataset.d||S.ui.date});
+/* ---------- food (AI optional) ---------- */
+const spk=(w=16)=>GX.sparkle(COL.lime).replace('class="g "',`class="g" style="width:${w}px;height:${w}px"`);
+function recentMeals(k){
+  const seen=new Set(),same=[],other=[];const dates=Object.keys(S.days).sort().reverse().slice(0,90);
+  for(const dt of dates){const ms=S.days[dt].meals||{};for(const mk of Object.keys(ms)){const a=ms[mk]&&ms[mk].actual;if(!a||!a.text)continue;const key=a.text.trim();if(seen.has(key))continue;seen.add(key);(mk===k?same:other).push({text:a.text,kcal:a.kcal,protein:a.protein,ai:!!a.ai,items:a.items||null})}}
+  return same.concat(other).slice(0,6);
+}
+POP.food={label:'הוספת אוכל',cls:'w',render:d=>{
+  const meal=dayOf(S.ui.date).meals[d.k]||{plan:''};const calcing=d.status==='calc';const rec=d.edit?[]:recentMeals(d.k);d.rec=rec;
+  const main=d.ai
+   ?`<div class="field"><label for="ft">מה אכלת? כתבו הכול ביחד, עם כמויות</label><textarea id="ft" class="in" rows="3" maxlength="400" data-in="f-text" data-focus="1" placeholder="למשל: שניצל אפוי 150 גרם, סלט ירקות, חצי כוס אורז">${esc(d.text)}</textarea><div class="hint">אין צורך לפרק לרכיבים. ה-AI יפרק בעצמו. ככל שיש יותר כמויות, ההערכה מדויקת יותר</div></div>`
+   :`<div class="field"><label for="ft">מה אכלת?</label><input id="ft" class="in" value="${esc(d.text)}" maxlength="120" data-in="f-text" data-focus="1" placeholder="${esc(meal.plan||'למשל: שניצל אפוי עם סלט')}"></div><div class="twin"><div class="field"><label>קלוריות (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.kcal)}" data-in="f-kcal"></div><div class="field"><label>חלבון בגרם (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.protein)}" data-in="f-prot"></div></div>`;
+  const est=d.est?`<div class="res"><div class="note solid" style="background:var(--pink-l)"><label class="lbl" for="ek">קלוריות</label><div class="row"><span class="suez" style="font-size:26px">≈</span><input id="ek" class="in sm num" style="font-family:'Suez One';font-size:26px" inputmode="numeric" value="${d.est.kcal}" data-in="f-ek"></div></div><div class="note solid" style="background:var(--lime-l)"><label class="lbl" for="ep">חלבון (גרם)</label><div class="row"><span class="suez" style="font-size:26px">≈</span><input id="ep" class="in sm num" style="font-family:'Suez One';font-size:26px" inputmode="numeric" value="${d.est.protein}" data-in="f-ep"></div></div></div>
+   <details class="how"><summary>מה ה-AI חישב? ${spk(14)}</summary><ul style="margin:8px 0 2px;padding-inline-start:20px">${d.est.items.map(i=>`<li><b>${esc(i.name)}</b>${i.amount?` · ${esc(i.amount)}`:''} · ${i.kcal} קל׳ · ${i.protein} ג׳ חלבון</li>`).join('')}</ul></details><div class="hint">${spk(16)} זו הערכה. אפשר לתקן כל מספר ידנית</div>`:'';
+  return `${popTape()}${popHead(d.edit?'עריכת אוכל':'הוספת אוכל')}
+  <div class="opts" style="justify-content:flex-start" role="group" aria-label="איזו ארוחה">${MEALS.map(([k])=>`<button type="button" class="chip ${d.k===k?'on':''}" data-act="f-meal" data-k="${k}">${MEAL_SHORT[k]}</button>`).join('')}</div>
+  ${rec.length?`<div class="stack" style="gap:6px"><span class="lbl">הוספה מהירה מארוחות קודמות</span><div class="quick">${rec.map((r,i)=>`<button type="button" class="chip" data-act="f-recent" data-i="${i}" title="${esc(r.text)}">${esc(r.text.length>20?r.text.slice(0,19)+'…':r.text)}${r.kcal!=null?` <small>${fmtNum(r.kcal)}</small>`:''}</button>`).join('')}</div></div>`:''}
+  ${main}
+  <div class="rowb" style="flex-wrap:nowrap;gap:14px"><div><b>חישוב קלוריות וחלבון עם AI</b><div class="hint">${spk(16)} אופציונלי. אפשר גם לדלג</div></div><button type="button" class="toggle ${d.ai?'on':''}" role="switch" aria-checked="${!!d.ai}" aria-label="חישוב עם AI" data-act="f-ai"><i></i></button></div>
+  ${calcing?`<div class="banner lav" role="status"><span class="dots"><i></i><i></i><i></i></span><span class="grow">ה-AI מחשב את ההערכה…</span>${spk(24)}</div>`:''}
+  ${d.status==='err'?`<div class="banner pink" role="alert"><span class="grow">${esc(d.errMsg||'לא הצלחנו לחשב עכשיו. אפשר לנסות שוב, או לשמור בלי חישוב.')}</span></div>`:''}
+  ${est}
+  ${meal.plan&&meal.plan.trim()?`<div class="row" style="gap:8px;flex-wrap:wrap"><b>כמו שתכננת?</b><button type="button" class="chip ${d.followed?'on':''}" data-act="f-fol" data-v="1">כמו שתכננתי</button><button type="button" class="chip ${!d.followed?'on':''}" data-act="f-fol" data-v="0">קצת אחרת</button></div>`:''}
+  <div class="acts">${d.ai&&!d.est?'<button type="button" class="ghost" data-act="f-save-nocalc">שמירה בלי חישוב</button>':''}<span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button>${d.ai&&!d.est?`<button class="btn primary" type="button" data-act="f-calc" ${calcing?'disabled':''}>${d.status==='err'?'נסו שוב':'חשבו עם AI'} ${spk(22)}</button>`:`<button class="btn primary" type="button" data-act="f-save" ${calcing?'disabled':''}>שמירה</button>`}</div>`}};
+ACT['add-food']=el=>{closeMenu();const dt=S.ui.date;const k=el.dataset.k||(MEALS.find(([x])=>!dayOf(dt).meals[x].actual)||MEALS[0])[0];const m=dayOf(dt).meals[k];const a=m.actual;const edit=!!(el.dataset.edit&&a);const ai=!!(edit&&a&&a.ai);
+  openPopup('food',{k,edit,ai,text:a?a.text:'',kcal:a&&a.kcal!=null&&!a.ai?a.kcal:'',protein:a&&a.protein!=null&&!a.ai?a.protein:'',followed:a?a.followed!==false:true,est:ai&&a.items?{items:a.items,kcal:a.kcal,protein:a.protein}:null,status:'idle'})};
+ACT['f-meal']=el=>{S.popup.d.k=el.dataset.k;renderPopup()};
+INP['f-text']=el=>{const d=S.popup.d;d.text=el.value;if(d.ai&&d.est){d.est=null;d.status='idle';renderPopup();const t=$('#ft');if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length)}}};
+INP['f-kcal']=el=>{S.popup.d.kcal=el.value};INP['f-prot']=el=>{S.popup.d.protein=el.value};
+INP['f-ek']=el=>{S.popup.d.est.kcal=Math.max(0,Math.round(+el.value||0))};INP['f-ep']=el=>{S.popup.d.est.protein=Math.max(0,Math.round(+el.value||0))};
+ACT['f-ai']=()=>{const d=S.popup.d;d.ai=!d.ai;d.est=null;d.status='idle';renderPopup()};
+ACT['f-fol']=el=>{S.popup.d.followed=el.dataset.v==='1';renderPopup()};
+function saveFood(withEst){
+  const d=S.popup.d;const day=ensureDay(S.ui.date);const meal=day.meals[d.k];
+  const text=(d.text||'').trim()||(!d.ai?(meal.plan||'').trim():'');
+  if(!text){toast('צריך לכתוב מה אכלת');return}
+  let kcal=null,protein=null,ai=false,items=null;
+  if(d.ai&&withEst&&d.est){ai=true;kcal=d.est.kcal;protein=d.est.protein;items=d.est.items}
+  else if(!d.ai){if(d.kcal!==''&&d.kcal!=null)kcal=Math.max(0,Math.round(+d.kcal||0));if(d.protein!==''&&d.protein!=null)protein=Math.max(0,Math.round(+d.protein||0))}
+  const followed=meal.plan&&meal.plan.trim()?!!d.followed:true;
+  meal.actual={text,kcal,protein,ai,followed};if(items)meal.actual.items=items;
+  Store.saveDay(S.ui.date);closePopup();render(true);toast('נשמר');
+}
+ACT['f-save']=()=>saveFood(true);ACT['f-save-nocalc']=()=>saveFood(false);
+ACT['f-recent']=el=>{const d=S.popup.d;const r=(d.rec||[])[+el.dataset.i];if(!r)return;const meal=dayOf(S.ui.date).meals[d.k];const plan=(meal.plan||'').trim();
+  const day=ensureDay(S.ui.date);const a={text:r.text,kcal:r.kcal!=null?r.kcal:null,protein:r.protein!=null?r.protein:null,ai:r.ai,followed:plan?plan===r.text.trim():true};if(r.items)a.items=r.items;
+  day.meals[d.k].actual=a;Store.saveDay(S.ui.date);closePopup();render(true);toast(`נוסף: ${r.text.length>22?r.text.slice(0,21)+'…':r.text}`)};
+ACT['ate-plan']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const m=ensureDay(dt).meals[el.dataset.k];if(!m.plan||!m.plan.trim())return;m.actual={text:m.plan.trim(),kcal:null,protein:null,ai:false,followed:true};Store.saveDay(dt);render(true);toast('נרשם: אכלת כמו שתכננת')};
+async function estimateFood(text){
+  if(S.mode==='api'){try{return await Api.post('/api/estimate',{text})}catch(e){throw{code:e.code==='ai_unavailable'?'unavailable':e.code==='ai_limit'?'limit':'err'}}}
+  const sample=window.claude&&window.claude.use?await window.claude.use('sample'):null;
+  if(!sample)throw{code:'unavailable'};
+  const prompt=`אתה עוזר תזונה. המשתמש תיאר ארוחה בטקסט חופשי. פרק אותה לרכיבים והערך לכל רכיב קלוריות וחלבון (בגרמים) לפי הכמות שצוינה. אם לא צוינה כמות, הנח מנה סבירה וכתוב אותה בשדה amount. היה ריאליסטי ועגל למספרים שלמים.\nהתיאור: "${text.replace(/"/g,"'")}"\n\nהחזר JSON בלבד, בלי טקסט נוסף, בפורמט: {"items":[{"name":"","amount":"","kcal":0,"protein":0}]}. עד 12 רכיבים.`;
+  const r=await sample.json(prompt,{modelTier:'quick',cache:false});
+  if(!r||!Array.isArray(r.items)||!r.items.length||r.items.length>12)throw{code:'bad_shape'};
+  const num=v=>{v=Math.round(+v);if(!isFinite(v)||v<0||v>6000)throw{code:'bad_value'};return v};
+  const its=r.items.map(x=>({name:String(x.name||'').slice(0,60)||'רכיב',amount:String(x.amount||'').slice(0,40),kcal:num(x.kcal),protein:num(x.protein)}));
+  return{items:its,kcal:its.reduce((s,x)=>s+x.kcal,0),protein:its.reduce((s,x)=>s+x.protein,0)};
+}
+ACT['f-calc']=async()=>{
+  const d=S.popup.d;const text=(d.text||'').trim();
+  if(text.length<2){toast('צריך לכתוב מה אכלת');return}
+  d.status='calc';d.est=null;renderPopup();const pp=S.popup;
+  try{const est=await estimateFood(text);if(S.popup!==pp)return;d.est=est;d.status='idle'}
+  catch(e){if(S.popup!==pp)return;d.status='err';d.errMsg=e&&e.code==='not_granted'?'לא אושרה הגישה ל-AI. אפשר לאשר אותה ולנסות שוב, או לשמור בלי חישוב.':e&&e.code==='limit'?'הגעת למכסה היומית של חישובי AI. אפשר לשמור בלי חישוב, ומחר ננסה שוב.':e&&e.code==='unavailable'?'ה-AI לא זמין כרגע. אפשר לשמור בלי חישוב.':'לא הצלחנו לחשב עכשיו. אפשר לנסות שוב, או לשמור בלי חישוב.'}
+  renderPopup();
+};
+/* ---------- settings / profile ---------- */
+POP.settings={label:'הפרופיל שלי',cls:'w',render:d=>{const st=d.st;return `${popTape()}${popHead('הפרופיל שלי')}<div data-submit="save-settings" class="stack" style="gap:16px">${avatarEditHtml(st)}
+ <div class="field"><label for="nm">איך קוראים לך?</label><input id="nm" class="in ${st.name?'ok':''}" value="${esc(st.name)}" maxlength="24" data-in="setup-name"></div>
+ <div class="field"><label>תאריך לידה (אופציונלי)</label><div class="twin" style="grid-template-columns:1fr 1fr 1.3fr;gap:10px"><input class="in num" inputmode="numeric" placeholder="יום" maxlength="2" value="${st.d}" data-in="setup-d" aria-label="יום"><input class="in num" inputmode="numeric" placeholder="חודש" maxlength="2" value="${st.m}" data-in="setup-m" aria-label="חודש"><input class="in num" inputmode="numeric" placeholder="שנה" maxlength="4" value="${st.y}" data-in="setup-y" aria-label="שנה"></div></div>
+ ${goalFieldHtml(st.goal)}${st.err?`<div class="err-t" role="alert">${esc(st.err)}</div>`:''}
+ <div class="acts" style="gap:10px"><button type="button" class="ghost" data-act="export-data">${ico('up',18)} ייצוא הנתונים שלי</button><span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="submit">שמירה</button></div>
+ <div class="pts">גרסה ${VERSION}</div><div class="pts">מצב אחסון: ${S.mode==='api'?`חשבון ${esc(S.user?S.user.email:'')}. נשמר בענן`:S.mode==='db'?(S.dbfail?'במכשיר הזה בלבד (אין הרשאת כתיבה בענן)':'ענן. הנתונים נשמרים בחשבון שלך'):'מקומי, במכשיר הזה בלבד'}</div>${S.mode==='api'?`<div class="acts" style="gap:10px"><button type="button" class="btn secondary sm" data-act="logout">יציאה מהחשבון</button><span class="sp"></span><button type="button" class="ghost red" data-act="del-acct">מחיקת החשבון</button></div>`:(S.guest&&S.apiAvail?`<div><button type="button" class="btn lime sm" data-act="make-account">יצירת חשבון כדי לשמור בענן</button></div>`:'')}</div>`}};
+ACT['make-account']=()=>{closePopup();S.ui.auth={tab:'register',email:'',pass:'',err:'',busy:false};S.mode='api';S.user=null;go('welcome');render(true)};
+ACT.settings=()=>{initSetup();openPopup('settings',{st:S.setup})};
+SUB['save-settings']=()=>{const st=S.popup.d.st;const r=buildProfile(st,S.profile);if(r.err){st.err=r.err;return renderPopup()}S.profile=r.p;Store.saveProfile();S.setup=null;closePopup();render(true);toast('הפרופיל נשמר')};
+ACT['export-data']=async()=>{const data=JSON.stringify({exported:new Date().toISOString(),profile:S.profile,days:S.days},null,1);try{await saveFile('היום-שלי-גיבוי.json',new Blob([data],{type:'application/json'}));toast('הקובץ מוכן')}catch(e){toast('לא הצלחנו לייצא')}};
+
+const ago=ts=>{const m=Math.round((Date.now()-ts)/60000);if(m<1)return 'עכשיו';if(m<60)return `לפני ${m} דקות`;const h=Math.round(m/60);if(h<24)return h===1?'לפני שעה':`לפני ${h} שעות`;const d=Math.round(h/24);return d===1?'אתמול':`לפני ${d} ימים`};
+const SocialDb={on:false,profiles:{},links:{},pcIn:{},pcOut:[],pcSubs:{},timer:null,lastPub:'',err:false,
+  me(){return S.uid},
+  async init(){
+    if(S.mode!=='db'||!Store.db)return;this.on=true;const db=Store.db;const me=S.uid;
+    try{
+      db.collection('profiles').onSnapshot(sn=>{const o={};sn.docs.forEach(d=>{if(d.exists)o[d.id]=d.data()});this.profiles=o;this.changed()},()=>{this.err=true});
+      db.collection('links').onSnapshot(sn=>{const o={};sn.docs.forEach(d=>{if(d.exists)o[d.id]=d.data()});this.links=o;this.syncCards();this.changed()},()=>{this.err=true});
+      db.collection('postcards/'+me+'/sent').onSnapshot(sn=>{this.pcOut=sn.docs.filter(d=>d.exists).map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>(b.at||0)-(a.at||0));this.changed()},()=>{});
+    }catch(e){this.on=false}
+    this.touch(true);
+  },
+  changed(){if(['friends','friend','postcards','zine'].includes(S.route.name))softRender()},
+  mine(){const l=this.links[this.me()];return(l&&l.with)||[]},
+  friendIds(){const me=this.me();const bl=(S.profile&&S.profile.blocked)||[];return this.mine().filter(u=>u!==me&&!bl.includes(u)&&((this.links[u]&&this.links[u].with)||[]).includes(me))},
+  incoming(){const me=this.me(),mine=this.mine(),bl=((S.profile&&S.profile.blocked)||[]).concat((S.profile&&S.profile.dismissed)||[]);return Object.keys(this.links).filter(u=>u!==me&&!bl.includes(u)&&!mine.includes(u)&&(this.links[u].with||[]).includes(me)&&this.profiles[u])},
+  outgoing(){const f=this.friendIds();return this.mine().filter(u=>!f.includes(u)&&this.profiles[u])},
+  syncCards(){
+    const db=Store.db;if(!db)return;const me=this.me();const f=this.friendIds();
+    for(const u of f){if(this.pcSubs[u])continue;try{this.pcSubs[u]=db.collection('postcards/'+u+'/sent').where('to','array-contains',me).onSnapshot(sn=>{this.pcIn[u]=sn.docs.filter(d=>d.exists).map(d=>Object.assign({id:d.id,from:u},d.data()));this.changed()},()=>{})}catch(e){}}
+    for(const u of Object.keys(this.pcSubs)){if(!f.includes(u)){try{this.pcSubs[u]()}catch(e){}delete this.pcSubs[u];delete this.pcIn[u]}}
+  },
+  cardsIn(){const nc=(S.profile&&S.profile.noCards)||[];return Object.values(this.pcIn).flat().filter(c=>!nc.includes(c.from)).sort((a,b)=>(b.at||0)-(a.at||0))},
+  touch(fast){if(!this.on)return;clearTimeout(this.timer);this.timer=setTimeout(()=>this.publish(),fast?300:2500)},
+  async publish(){
+    if(!this.on||!S.profile)return;const hid=S.profile.hidden||[];const scores={};const t=todayStr();
+    for(let i=0;i<120;i++){const s=addDays(t,-i);if(hid.includes(s))continue;const v=scoreOf(s);if(v!=null)scores[s]=v}
+    const av=S.profile.avatar&&S.profile.avatar.length<40000?S.profile.avatar:null;
+    const doc={name:S.profile.name,avatar:av,sticker:S.profile.sticker||'flower',code:S.profile.code,scores,updated:Date.now()};
+    const key=JSON.stringify(Object.assign({},doc,{updated:0}));if(key===this.lastPub)return;
+    try{await Store.db.doc('profiles/'+this.me()).set(doc);this.lastPub=key;this.err=false}catch(e){this.err=true}
+  },
+  async setLinks(withArr){await Store.db.doc('links/'+this.me()).set({with:withArr,updated:Date.now()})},
+  async addByCode(code){
+    code=(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(code.length===6)code=code.slice(0,3)+'-'+code.slice(3);
+    const me=this.me();const hit=Object.entries(this.profiles).find(([id,v])=>v.code===code&&id!==me);
+    if(!hit)throw{code:'nf'};const id=hit[0];if(this.mine().includes(id))throw{code:'dup',name:hit[1].name};
+    await this.setLinks(this.mine().concat([id]));return{id,name:hit[1].name};
+  },
+  async remove(id){await this.setLinks(this.mine().filter(x=>x!==id))},
+  async accept(id){await this.setLinks(this.mine().concat([id]))},
+  async send(doc){return Store.db.collection('postcards/'+this.me()+'/sent').add(Object.assign({at:Date.now()},doc))},
+};
+let Social=SocialDb;
+function friendStreak(sc){let n=0,s=todayStr();if((sc[s]||0)>=60)n++;s=addDays(s,-1);for(let i=0;i<400;i++){if((sc[s]||0)>=60){n++;s=addDays(s,-1)}else break}return n}
+const mySc=()=>{const o={},t=todayStr();for(let i=0;i<120;i++){const d=addDays(t,-i),v=scoreOf(d);if(v!=null)o[d]=v}return o};
+function bestStreak(sc){let best=0,cur=0;const t=todayStr();for(let i=119;i>=0;i--){const v=sc[addDays(t,-i)];if(v!=null&&v>=60){cur++;if(cur>best)best=cur}else cur=0}return best}
+function rankRows(){
+  const rows=[];const msc=mySc();rows.push({id:'me',mine:true,name:S.profile.name,p:S.profile,streak:friendStreak(msc),best:bestStreak(msc)});
+  for(const id of Social.friendIds()){const p=Social.profiles[id];if(!p)continue;const sc=p.scores||{};rows.push({id,mine:false,name:p.name,p,streak:friendStreak(sc),best:bestStreak(sc)})}
+  rows.sort((a,b)=>b.streak-a.streak||b.best-a.best||(a.mine?-1:b.mine?1:0)||a.name.localeCompare(b.name,'he'));
+  rows.forEach((r,i)=>{const f=rows.findIndex(x=>x.streak===r.streak&&x.best===r.best);r.rank=f+1});return rows;
+}
+function rankHtml(){
+  const rows=rankRows();if(rows.length<2)return '';
+  return `<div class="note solid" aria-label="דירוג הרצפים">${tapeEl()}<div class="rowb" style="margin-bottom:10px"><span class="pt">דירוג הרצפים</span><span class="pts">${esc(String(rows.length))} משתתפים</span></div><ol class="rank-list">${rows.map(r=>`<li class="rk ${r.mine?'me':''}"><span class="rkn r${r.rank<=3?r.rank:0}" aria-label="מקום ${r.rank}">${r.rank}</span>${fAvatar(r.p,'')}<span class="tx"><b>${esc(r.name)}${r.mine?' (את/ה)':''}</b><small>הרצף הארוך ביותר: ${r.best}</small></span><span class="rks"><b>${r.streak}</b>${r.streak===1?'יום':'ימים'}</span></li>`).join('')}</ol><div class="hint" style="margin-top:10px">${ico('check',16)} רצף = ימים ברצף עם ציון 60 ומעלה</div></div>`;
+}
+const fAvatar=(p,cls)=>avatarHtml(p,cls);
+const inviteUrl=()=>{let b='';try{b=location.href.split('#')[0]}catch(e){}return b+'#/join/'+(S.profile&&S.profile.code||'')};
+const needDb=()=>{const acct=S.guest&&S.apiAvail;return `<main class="page"><div class="cols"><div class="c3"><div class="note"><div class="pt">${acct?'כדי להוסיף חברים צריך חשבון':'החלק החברתי עובד בענן'}</div><p style="margin:8px 0 12px">${acct?'כרגע אתם משתמשים בלי חשבון, והנתונים נשמרים רק במכשיר הזה. אחרי הרשמה אפשר להוסיף חברים ולשלוח גלויות, והנתונים שלכם יועברו לחשבון.':'כדי להוסיף חברים ולשלוח גלויות, צריך לפתוח את הדף עם הרשאת כתיבה. שאר האתר עובד כרגיל.'}</p>${acct?'<button class="btn primary" data-act="make-account">יצירת חשבון</button>':''}</div></div></div></main>`};
+/* ---------------- friends ---------------- */
+function fcardHtml(id){const p=Social.profiles[id]||{name:'?',scores:{}};const sc=p.scores||{};const t=sc[todayStr()];const tr=tierOf(t==null?null:t);const st=friendStreak(sc);
+  const sticker=t==null?`<span class="stk" style="aspect-ratio:1"><svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6" opacity=".5"/></svg><span style="opacity:.5">–</span></span>`:`<span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-5:tr==='good'?4:-3}deg)">${tierShape(tr,t)}<span style="font-size:20px">${t}</span></span>`;
+  return `<button class="fcard" data-act="open-friend" data-id="${esc(id)}">${fAvatar(p,'m')}<span class="tx"><b>${esc(p.name)}</b><span class="pts">${t==null?'עוד לא עודכן היום':(st?`רצף ${st} ימים · `:'')+'עודכן היום'}</span></span>${sticker}</button>`}
+PAGES.friends=()=>{
+  if(!Social.on)return needDb();
+  if(S.ui.pendingJoin){const c=S.ui.pendingJoin;S.ui.pendingJoin=null;setTimeout(()=>openPopup('addfriend',{code:c}),50)}
+  const fr=Social.friendIds(),inc=Social.incoming(),out=Social.outgoing();
+  const req=inc.map(id=>{const p=Social.profiles[id];return `<div class="fcard" style="cursor:default">${fAvatar(p,'m')}<span class="tx"><b>${esc(p.name)}</b><span class="pts">רוצה להצטרף אליך</span></span><button class="btn secondary sm" data-act="decline" data-id="${esc(id)}">דחייה</button><button class="btn primary sm" data-act="accept" data-id="${esc(id)}">${ico('check',18,3)} אישור</button></div>`}).join('');
+  return `<main class="page">${Social.err?'<div class="dbwarn">יש בעיה בחיבור לחלק החברתי. אולי חסרה לך הרשאת כתיבה בדף.</div>':''}<div class="rowb" style="margin-bottom:22px"><button class="btn primary" data-act="addfriend-popup">${ico('plus',20,3)} הוספת חבר/ה</button>${stitle('grn','החברים שלי',GX.flower(COL.pink,COL.lime))}</div>
+  <div class="cols"><div class="c2"><div class="sheetwrap alt"><div class="sheet" style="padding:26px 20px 22px"><div class="stack" style="gap:10px">${fr.length?fr.map(fcardHtml).join(''):`<div class="empty">עוד אין חברים.<br>שלחו קישור הזמנה כדי להתחיל ${GX.flower(COL.pink,COL.lime).replace('class="g "','class="g" style="width:48px;height:48px;display:inline-block;vertical-align:middle"')}</div>`}</div></div></div></div>
+  <div class="c2 stack">${inc.length?`<div class="stack" style="gap:10px"><span class="pt">בקשות הצטרפות · ${inc.length}</span>${req}</div>`:''}${out.length?`<div class="note solid" style="padding:14px 18px"><b>ממתינים לאישור</b><div class="pts">${out.map(id=>esc(Social.profiles[id].name)).join(', ')}</div></div>`:''}${rankHtml()}
+  <div class="note">${tapeEl()}<div class="pt">הזמנת חבר/ה</div><div class="stack" style="gap:12px;margin-top:10px"><div class="row" style="gap:10px"><button class="btn secondary sm" data-act="copy-invite">${ico('copy',18)} העתקה</button><div class="in sm" style="direction:ltr;text-align:left;font-family:Heebo;font-weight:500;font-size:15px;display:flex;align-items:center;overflow:hidden;white-space:nowrap">${esc(inviteUrl())}</div></div><button class="btn primary block" data-act="share-invite">${ico('share',20)} שליחה בוואטסאפ</button><div class="rowb"><span class="pts">הקוד האישי שלך</span><span class="codebox">${esc(S.profile.code||'')}</span></div></div></div>
+  <div class="hint banner-note">${ico('lock',16)} רק מי שהזמנת יכול/ה להיות חבר/ה. אין חיפוש משתמשים. רואים רק ציונים.</div></div></div></main>`;
+};
+ACT['open-friend']=el=>go('friend/'+el.dataset.id);
+ACT['addfriend-popup']=()=>openPopup('addfriend',{code:''});
+ACT['copy-invite']=async()=>{toast((await copyText(inviteUrl()))?'הקישור הועתק':'לא הצלחנו להעתיק')};
+ACT['share-invite']=()=>whatsapp(`${S.profile.name} מזמין/ה אותך ל"היום שלי", הדף היומי הצבעוני: ${inviteUrl()}\nהקוד שלי: ${S.profile.code}`);
+ACT.accept=async el=>{try{await Social.accept(el.dataset.id);toast('נוסף/ה לחברים');render(true)}catch(e){toast('לא הצלחנו להוסיף')}};
+ACT.decline=el=>{S.profile.dismissed=(S.profile.dismissed||[]).concat([el.dataset.id]);Store.saveProfile();toast('הבקשה נדחתה');render(true)};
+let qrLoad=null;function loadQR(){if(window.QRCode)return Promise.resolve(true);if(qrLoad)return qrLoad;qrLoad=new Promise(res=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=()=>res(!!window.QRCode);s.onerror=()=>res(false);document.head.appendChild(s);setTimeout(()=>res(!!window.QRCode),5000)});return qrLoad}
+POP.addfriend={label:'הוספת חבר/ה',after:()=>{loadQR().then(ok=>{const b=$('#qrbox');if(!ok||!b||b.firstChild)return;try{new QRCode(b,{text:inviteUrl(),width:96,height:96,correctLevel:QRCode.CorrectLevel.M})}catch(e){}})},
+ render:d=>`${popTape()}${popHead('הוספת חבר/ה')}<p>שלחו קישור הזמנה. רק מי שקיבל/ה אותו יכול/ה להצטרף.</p>
+ <div class="row" style="gap:10px"><button class="btn secondary sm" data-act="copy-invite">${ico('copy',18)} העתקה</button><div class="in sm" style="direction:ltr;text-align:left;font-family:Heebo;font-weight:500;font-size:14px;display:flex;align-items:center;overflow:hidden;white-space:nowrap">${esc(inviteUrl())}</div></div>
+ <button class="btn primary block" data-act="share-invite">${ico('share',20)} שליחה בוואטסאפ</button>
+ <div class="rowb" style="flex-wrap:nowrap;gap:16px"><div class="qr" id="qrbox" aria-label="קוד QR להזמנה"></div><div class="stack" style="gap:6px;align-items:flex-end"><span class="lbl">הקוד האישי שלך</span><span class="codebox">${esc(S.profile.code||'')}</span><span class="pts">או סרקו את ה-QR</span></div></div>
+ <hr style="border:0;border-top:2px dashed var(--ink);opacity:.4;width:100%"><div data-submit="add-by-code" class="stack" style="gap:10px"><div class="field"><label for="fc">יש לך קוד של חבר/ה?</label><input id="fc" class="in" style="direction:ltr;text-transform:uppercase" value="${esc(d.code||'')}" maxlength="7" placeholder="ABC-123" data-in="fc-code" data-focus="1" autocomplete="off"></div>${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" type="button" data-act="submit">הוספה</button></div></div>`};
+INP['fc-code']=el=>{S.popup.d.code=el.value};
+SUB['add-by-code']=async()=>{const d=S.popup.d;if(!Social.on){d.err='החלק החברתי לא זמין כרגע';return renderPopup()}
+  try{const r=await Social.addByCode(d.code);closePopup();toast(`נשלחה בקשה ל${r.name}. כשיאשרו, תראו אחד את השני`);render(true)}
+  catch(e){d.err=e.code==='nf'?'לא מצאנו קוד כזה. בדקו שהחבר/ה כבר נכנס/ה לדף':e.code==='dup'?`${e.name} כבר ברשימה`:'לא הצלחנו להוסיף. אולי חסרה הרשאת כתיבה';renderPopup()}};
+/* ---------------- friend calendar ---------------- */
+function fMonthStats(sc,y,m){const n=new Date(y,m+1,0).getDate();let sum=0,c=0,best=null,bd=null,great=0,good=0,soft=0,emp=0;for(let d=1;d<=n;d++){const s=`${y}-${pad2(m+1)}-${pad2(d)}`;if(s>todayStr())continue;const v=sc[s];if(v==null){emp++;continue}sum+=v;c++;if(best==null||v>best){best=v;bd=s}const t=tierOf(v);if(t==='great')great++;else if(t==='good')good++;else soft++}return{avg:c?Math.round(sum/c):null,best,bd,great,good,soft,emp}}
+PAGES.friend=r=>{
+  if(!Social.on)return needDb();
+  const id=r.a;const p=Social.profiles[id];if(!p||!Social.friendIds().includes(id))return `<main class="page"><div class="note"><div class="pt">לא מצאנו את החבר/ה הזה</div><p style="margin:10px 0"><a class="btn primary" href="#/friends">חזרה לחברים</a></p></div></main>`;
+  const now=new Date();if(!S.fcal)S.fcal={y:now.getFullYear(),m:now.getMonth()};const {y,m}=S.fcal;const sc=p.scores||{};const t=todayStr();
+  const off=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate(),rows=Math.ceil((off+n)/7);let cells='';
+  for(let i=0;i<rows*7;i++){const dn=i-off+1;if(dn<1||dn>n){const d=new Date(y,m,dn);cells+=`<div class="cell out"><span class="d">${d.getDate()}</span></div>`;continue}
+    const s=`${y}-${pad2(m+1)}-${pad2(dn)}`;const v=sc[s];const tr=tierOf(v==null?null:v);
+    if(s>t)cells+=`<div class="cell fut" style="cursor:default"><span class="d" style="opacity:.55">${dn}</span></div>`;
+    else if(v==null)cells+=`<div class="cell emp" style="cursor:default"><span class="d" style="opacity:.55">${dn}</span><span class="ring"></span></div>`;
+    else cells+=`<button class="cell ${s===t?'today':''}" data-act="friend-day" data-id="${esc(id)}" data-d="${s}" aria-label="${dn}, ציון ${v}"><span class="d">${dn}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${tr==='great'?-6:tr==='good'?5:-4}deg)">${tierShape(tr,v)}<span>${v}</span></span></button>`}
+  const st=fMonthStats(sc,y,m),avgT=tierOf(st.avg),sk=friendStreak(sc);
+  return `<main class="page"><div class="calhead">
+  <div class="row" style="gap:14px;flex-wrap:wrap"><button class="more" data-act="friend-privacy" data-id="${esc(id)}" aria-label="שיתוף וגישה"><i></i><i></i><i></i></button><button class="btn primary" data-act="send-card" data-id="${esc(id)}">${ico('mail',20)} שליחת גלויה</button><span class="chip" style="background:var(--lav-l);border-style:dashed">${ico('lock',14)} רואים רק ציונים</span><div style="text-align:start"><div class="pts">הלוח של</div><div class="suez" style="font-size:44px;line-height:1">${esc(p.name)}</div></div>${fAvatar(p,'m')}</div><div class="mnav"><button class="icbtn big" data-act="fcal-next" aria-label="חודש הבא">${ico('left',24)}</button><span class="suez">${HMON[m]} ${y}</span><button class="icbtn big" data-act="fcal-prev" aria-label="חודש קודם">${ico('right',24)}</button></div></div>
+  <div class="cols"><div class="c3"><div class="sheetwrap alt"><div class="sheet white" style="padding:26px 24px 18px;border-radius:56px 20px 56px 20px">${tapeEl()}<div class="calgrid">${WD.map(w=>`<div class="wd">${w}</div>`).join('')}${cells}</div><div class="hint" style="justify-content:flex-start;margin-top:12px">${ico('check',16)} לחצו על יום כדי להדביק מדבקה או לשלוח גלויה</div></div></div></div>
+  <div class="c1 sumcol"><div style="align-self:center;width:200px;height:200px;position:relative;transform:rotate(-4deg)">${st.avg==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`:tierShape(avgT,st.avg)}<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${st.avg==null?'var(--ink)':'var(--ink-fixed)'}"><small class="hand" style="font-size:18px">ממוצע של ${esc(p.name)}</small><span class="suez" style="font-size:56px;line-height:1">${st.avg==null?'—':st.avg}</span><small class="hand" style="font-size:18px">${PRAISE[avgT]}</small></div></div>
+  <div class="statn" style="background:var(--lime-l)"><b>${sk}</b>הרצף הנוכחי</div><div class="statn" style="background:var(--pink-l)"><b>${st.best==null?'–':st.best}</b>היום הכי טוב</div><div class="statn" style="background:var(--lav-l)"><b>${st.great}</b>ימים מעולים</div><a class="btn secondary block" href="#/friends">חזרה לחברים</a></div></div></main>`;
+};
+ACT['fcal-prev']=()=>{S.fcal.m--;if(S.fcal.m<0){S.fcal.m=11;S.fcal.y--}render(true)};ACT['fcal-next']=()=>{S.fcal.m++;if(S.fcal.m>11){S.fcal.m=0;S.fcal.y++}render(true)};
+ACT['friend-day']=el=>openPopup('friendday',{id:el.dataset.id,date:el.dataset.d});
+POP.friendday={label:'יום של חבר/ה',render:d=>{const p=Social.profiles[d.id]||{name:'?',scores:{}};const v=(p.scores||{})[d.date];const t=tierOf(v==null?null:v);
+  return `${popTape()}${popHead(longDate(d.date))}<div class="row" style="gap:14px">${v==null?'':stk(t,v,72,-5)}<div><b>${esc(p.name)}</b><div class="pts">${PRAISE[t]}</div></div></div><div class="lbl">הדביקו מדבקה על היום הזה</div><div class="opts" style="justify-content:flex-start">${STICKERS.map(s=>`<button class="opt" data-act="react" data-id="${esc(d.id)}" data-d="${d.date}" data-s="${s[0]}" aria-label="שליחת מדבקה">${s[1]()}</button>`).join('')}</div><button class="btn secondary block" data-act="send-card" data-id="${esc(d.id)}" data-d="${d.date}">${ico('mail',20)} שליחת גלויה על היום הזה</button>`}};
+ACT.react=async el=>{if(!Social.on)return;try{await Social.send({to:[el.dataset.id],note:'',sticker:el.dataset.s,photo:null,day:el.dataset.d});closePopup();toast('המדבקה נשלחה')}catch(e){toast('לא הצלחנו לשלוח')}};
+/* ---------------- privacy ---------------- */
+POP.privacy={label:'שיתוף וגישה',cls:'w',render:d=>{const p=Social.profiles[d.id]||{name:'?'};const nc=(S.profile.noCards||[]).includes(d.id);const hid=S.profile.hidden||[];
+  return `${popTape()}${popHead('מה '+p.name+' רואה?')}<div class="seg" role="group"><span class="chip" style="opacity:.5;border-color:transparent">הכול</span><span class="chip" style="opacity:.5;border-color:transparent">ציונים ומשימות</span><span class="chip on">ציונים בלבד</span></div><p>${esc(p.name)} רואה רק את המדבקות והציונים שלך. אף פעם לא מה שכתבת, מה אכלת או הלו״ז.</p>
+  <div class="rowb" style="flex-wrap:nowrap"><span class="grow"><b>לאפשר ל${esc(p.name)} לשלוח לי גלויות</b></span><button class="toggle ${nc?'':'on'}" role="switch" aria-checked="${!nc}" aria-label="גלויות" data-act="pv-cards" data-id="${esc(d.id)}"><i></i></button></div>
+  <div class="stack" style="gap:8px"><b>ימים שמוסתרים מכל החברים</b><div class="opts" style="justify-content:flex-start">${hid.map(h=>`<span class="chip pink">${esc(shortDate(h))}<button class="icbtn" style="width:22px;height:22px;border-width:1.5px" data-act="pv-unhide" data-d="${h}" aria-label="הצגת היום">${ico('x',12,3)}</button></span>`).join('')||'<span class="pts">אין ימים מוסתרים</span>'}</div><div class="row" style="gap:8px"><input class="in sm" type="date" data-in="pv-date" style="max-width:190px" aria-label="בחירת יום להסתרה"><button class="ghost" data-act="pv-hide">${ico('plus',16)} הסתרת יום</button></div></div>
+  <div class="acts"><button class="ghost red" data-act="pv-block" data-id="${esc(d.id)}">חסימה</button><button class="ghost" data-act="pv-remove" data-id="${esc(d.id)}">הסרה מהחברים</button><span class="sp"></span><button class="btn primary" data-act="close-popup">סגירה</button></div>`}};
+ACT['friend-privacy']=el=>openPopup('privacy',{id:el.dataset.id});
+ACT['pv-cards']=el=>{const id=el.dataset.id;const a=S.profile.noCards||(S.profile.noCards=[]);const i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);Store.saveProfile();renderPopup()};
+INP['pv-date']=el=>{S.popup.d.hd=el.value};
+ACT['pv-hide']=()=>{const v=S.popup.d.hd;if(!v)return toast('צריך לבחור יום');const a=S.profile.hidden||(S.profile.hidden=[]);if(!a.includes(v))a.push(v);Store.saveProfile();Social.lastPub='';renderPopup();toast('היום מוסתר מהחברים')};
+ACT['pv-unhide']=el=>{S.profile.hidden=(S.profile.hidden||[]).filter(x=>x!==el.dataset.d);Store.saveProfile();Social.lastPub='';renderPopup()};
+ACT['pv-remove']=async el=>{try{await Social.remove(el.dataset.id);closePopup();go('friends');toast('הוסר/ה מהחברים')}catch(e){toast('לא הצלחנו להסיר')}};
+ACT['pv-block']=async el=>{const id=el.dataset.id;try{await Social.remove(id);S.profile.blocked=(S.profile.blocked||[]).concat([id]);Store.saveProfile();closePopup();go('friends');toast('נחסם/ה')}catch(e){toast('לא הצלחנו לחסום')}};
+/* ---------------- postcards ---------------- */
+function pcardHtml(c,dir){const who=dir==='in'?Social.profiles[c.from]:null;const toNames=(c.to||[]).map(u=>(Social.profiles[u]||{name:'?'}).name).join(', ');
+  const ph=c.photo?`<img alt="" src="${esc(c.photo)}">`:`<span style="position:absolute;inset:18% 30%">${stickerSvg(c.sticker||'flower')}</span>`;
+  return `<button class="pcard" data-act="view-card" data-i="${esc(c.id)}" data-dir="${dir}" style="transform:rotate(${(c.id.charCodeAt(0)%5-2)*.8}deg)">${tapeEl()}<div class="ph" style="background:${c.photo?'var(--card)':['var(--pink)','var(--lime)','var(--lav)'][c.id.charCodeAt(1)%3]}">${ph}${c.photo&&c.sticker?`<span style="position:absolute;inset-inline-start:8px;top:8px;width:46px;height:46px">${stickerSvg(c.sticker)}</span>`:''}</div><div class="ptn" style="min-height:28px">${esc(c.note||(c.day?`מדבקה על ${shortDate(c.day)}`:''))}</div><div class="ft"><span class="pts">${ago(c.at||0)}</span><span class="row" style="gap:8px">${dir==='in'?`<b style="font-size:14px">${esc(who?who.name:'?')}</b>${who?fAvatar(who,''):''}`:`<b style="font-size:14px">אל: ${esc(toNames)}</b>`}</span></div></button>`}
+PAGES.postcards=()=>{
+  if(!Social.on)return needDb();
+  const tab=S.ui.ptab||'in';const list=tab==='in'?Social.cardsIn():Social.pcOut;
+  return `<main class="page"><div class="rowb" style="margin-bottom:18px"><button class="btn primary" data-act="send-card">${ico('plus',20,3)} גלויה חדשה</button>${stitle('tp','הגלויות שלי',GX.sparkle(COL.lime))}</div>
+  <div class="opts" style="justify-content:flex-start;margin-bottom:22px"><button class="chip ${tab==='in'?'on':''}" style="font-size:18px;padding:6px 20px" data-act="ptab" data-t="in">התקבלו · ${Social.cardsIn().length}</button><button class="chip ${tab==='out'?'on':''}" style="font-size:18px;padding:6px 20px" data-act="ptab" data-t="out">ששלחתי · ${Social.pcOut.length}</button></div>
+  ${list.length?`<div class="pgrid">${list.map(c=>pcardHtml(c,tab)).join('')}</div>`:`<div class="note" style="max-width:520px"><div class="pt">${tab==='in'?'עוד לא קיבלת גלויות':'עוד לא שלחת גלויות'}</div><p style="margin:8px 0 12px">שולחים תמונה ושורה בכתב יד לחבר/ה, או מדביקים מדבקה על יום בלוח שלהם.</p><button class="btn primary" data-act="send-card">שליחת גלויה ראשונה</button></div>`}</main>`;
+};
+ACT.ptab=el=>{S.ui.ptab=el.dataset.t;render(true)};
+ACT['view-card']=el=>{const list=el.dataset.dir==='in'?Social.cardsIn():Social.pcOut;const c=list.find(x=>x.id===el.dataset.i);if(c)openPopup('viewcard',{c,dir:el.dataset.dir})};
+POP.viewcard={label:'גלויה',cls:'w',render:d=>{const c=d.c;const who=d.dir==='in'?Social.profiles[c.from]:null;return `${popTape()}${popHead(d.dir==='in'?`גלויה מ${who?who.name:'?'}`:'גלויה ששלחת')}<div class="pcard" style="cursor:default;box-shadow:none"><div class="ph" style="height:auto;min-height:200px;background:${c.photo?'var(--card)':'var(--pink)'}">${c.photo?`<img alt="" src="${esc(c.photo)}" style="max-height:60vh;object-fit:contain">`:`<span style="display:block;width:160px;height:160px;margin:20px auto">${stickerSvg(c.sticker||'flower')}</span>`}</div><div class="pt">${esc(c.note||(c.day?`מדבקה על ${longDate(c.day)}`:''))}</div><div class="pts">${ago(c.at||0)}</div></div>`}};
+ACT['send-card']=el=>{closePopup();if(!Social.on)return;const fr=Social.friendIds();if(!fr.length){toast('קודם צריך להוסיף חבר/ה');return go('friends')}
+  openPopup('postcard',{to:el&&el.dataset&&el.dataset.id?[el.dataset.id]:(fr.length===1?[fr[0]]:[]),photo:null,note:'',sticker:'flower',day:el&&el.dataset?el.dataset.d||null:null,sending:false,err:''})};
+POP.postcard={label:'שליחת גלויה',cls:'w',render:d=>{const fr=Social.friendIds();
+  return `${popTape()}${popHead('שליחת גלויה')}<div class="stack" style="gap:14px"><div class="opts" style="justify-content:flex-start" role="group" aria-label="נמענים"><b>אל</b>${fr.map(id=>{const p=Social.profiles[id];const on=d.to.includes(id);return `<button type="button" class="chip ${on?'on':''}" data-act="pc-to" data-id="${esc(id)}" aria-pressed="${on}">${esc(p.name)}</button>`}).join('')}</div>
+  ${d.day?`<div class="banner lav">${ico('cal',18)} על היום ${esc(longDate(d.day))}</div>`:''}
+  <div class="dropz">${d.photo?`<img alt="תמונה שנבחרה" src="${esc(d.photo)}">`:`${ico('camera',44)}<span class="pt">הוסיפו תמונה</span>`}<div class="row" style="gap:10px;flex-wrap:wrap;justify-content:center"><label class="ghost" style="cursor:pointer">${ico('image',18)} מהגלריה<input type="file" accept="image/*" hidden data-ch="pc-file"></label><label class="ghost" style="cursor:pointer">${ico('camera',18)} צילום עכשיו<input type="file" accept="image/*" capture="environment" hidden data-ch="pc-file"></label>${d.photo?`<button type="button" class="ghost red" data-act="pc-nophoto">${ico('trash',16)} הסרה</button>`:''}</div></div>
+  <div class="field"><label for="pn">מה כותבים על הגלויה?</label><input id="pn" class="in" maxlength="100" value="${esc(d.note)}" placeholder="איזה יום! גאה בך" data-in="pc-note" data-focus="1"></div>
+  <div class="row" style="gap:6px;flex-wrap:wrap"><b>מדבקה</b>${STICKERS.map(s=>`<button type="button" class="opt ${d.sticker===s[0]?'on':''}" style="width:48px;height:48px" data-act="pc-sticker" data-s="${s[0]}" aria-label="מדבקה">${s[1]()}</button>`).join('')}</div>
+  ${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="pc-send" ${d.sending?'disabled':''}>${d.sending?'שולחים…':'שליחה'} ${ico('mail',20)}</button></div></div>`}};
+ACT['pc-to']=el=>{const d=S.popup.d,id=el.dataset.id;const i=d.to.indexOf(id);if(i>=0)d.to.splice(i,1);else d.to.push(id);renderPopup()};
+ACT['pc-sticker']=el=>{S.popup.d.sticker=el.dataset.s;renderPopup()};ACT['pc-nophoto']=()=>{S.popup.d.photo=null;renderPopup()};
+INP['pc-note']=el=>{S.popup.d.note=el.value};
+INP['pc-file']=async el=>{const f=el.files&&el.files[0];if(!f)return;const d=S.popup.d;try{d.photo=await resizeImage(f,720,.72);d.err=''}catch(e){d.err='לא הצלחנו לקרוא את התמונה'}renderPopup()};
+ACT['pc-send']=async()=>{const d=S.popup.d;if(!d.to.length){d.err='צריך לבחור למי לשלוח';return renderPopup()}if(!d.photo&&!(d.note||'').trim()){d.err='צריך להוסיף תמונה או שורה בכתב יד';return renderPopup()}
+  d.sending=true;d.err='';renderPopup();const pp=S.popup;
+  try{await Social.send({to:d.to,note:(d.note||'').trim(),sticker:d.sticker,photo:d.photo||null,day:d.day||null});if(S.popup!==pp)return;closePopup();toast('הגלויה נשלחה!');if(S.route.name==='postcards'){S.ui.ptab='out';render(true)}}
+  catch(e){if(S.popup!==pp)return;d.sending=false;d.err='לא הצלחנו לשלוח. אולי התמונה גדולה מדי, או שחסרה הרשאת כתיבה';renderPopup()}};
+/* ---------------- weekly zine ---------------- */
+function zineData(){const t=todayStr();const days=[];for(let i=6;i>=0;i--){const s=addDays(t,-i);days.push({s,v:scoreOf(s)})}const sc=days.filter(x=>x.v!=null);const avg=sc.length?Math.round(sc.reduce((a,b)=>a+b.v,0)/sc.length):null;const best=sc.reduce((a,b)=>!a||b.v>a.v?b:a,null);const stepsAvg=Math.round(days.reduce((a,d)=>a+((S.days[d.s]&&S.days[d.s].steps)||0),0)/7);return{days,sc,avg,best,stepsAvg,streak:streak()}}
+PAGES.zine=()=>{
+  const z=zineData();const first=z.days[0].s,last=z.days[6].s;
+  const quote=!z.sc.length?'עוד אין מדבקות השבוע. התחילו להזין, והגיליון ימלא את עצמו.':z.streak>=3?`שבוע של רצף! ${z.streak} ימים רצופים שעמדת ביעד.`:z.avg>=75?'שבוע חזק. הממוצע שלך גבוה, תמשיכו ככה!':'שבוע של התחלות. כל מדבקה נחשבת.';
+  const cards=Social.on?Social.cardsIn().filter(c=>c.at>=Date.now()-7*864e5&&c.photo).slice(0,2):[];
+  const dayCol=d=>{const t=tierOf(d.v);return `<div><span>${WD[pdate(d.s).getDay()]}</span><span class="stk" style="aspect-ratio:1;transform:rotate(${t==='great'?-5:t==='good'?4:-3}deg)">${d.v==null?`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6" opacity=".5"/></svg>`:tierShape(t,d.v)}<span style="font-size:20px">${d.v==null?'':d.v}</span></span></div>`};
+  return `<main class="page"><div class="rowb" style="margin-bottom:22px"><div class="row" style="gap:12px;flex-wrap:wrap"><button class="btn primary" data-act="zine-share">${ico('share',20)} שיתוף בוואטסאפ</button><button class="btn secondary" data-act="zine-dl" id="zdl">${ico('up',20)} הורדה כתמונה</button></div><div class="row" style="gap:16px;flex-wrap:wrap"><div class="datetag" style="margin:0;font-family:'Gveret Levin';font-size:28px;transform:rotate(-2deg)">${esc(shortDate(first))} – ${esc(shortDate(last))}</div>${stitle('lav','הגיליון השבועי',GX.star(COL.lime))}</div></div>
+  <div class="cols"><div class="c2" style="position:relative;min-height:440px"><span class="dec" style="inset-inline-start:30px;top:30px;width:min(420px,70%);aspect-ratio:1.4">${GX.blob(COL.pink,2)}</span><div style="position:relative;z-index:1;display:grid;place-items:center;padding:20px 0">${z.best?`<div class="score-big" style="transform:rotate(-6deg)">${tierShape(tierOf(z.best.v),z.best.v)}<div class="in-t"><small>היום הכי טוב · ${WD[pdate(z.best.s).getDay()]}</small><span class="n">${z.best.v}</span><small>${PRAISE[tierOf(z.best.v)]}</small></div></div>`:`<div class="note"><div class="pt">עוד אין יום מוביל</div></div>`}</div>${cards.length?`<div class="pgrid" style="grid-template-columns:repeat(2,1fr);margin-top:10px">${cards.map(c=>pcardHtml(c,'in')).join('')}</div>`:''}</div>
+  <div class="c2"><div class="sheetwrap alt"><div class="sheet white" style="padding:30px 22px 22px">${tapeEl()}<div class="zine-days" style="margin-bottom:18px">${z.days.slice().reverse().map(dayCol).join('')}</div><div class="row" style="gap:10px;margin-bottom:16px;flex-wrap:wrap"><div class="statn grow" style="background:var(--lav-l);justify-content:center;flex-direction:column;gap:0"><b>${z.best?z.best.v:'–'}</b><span class="pts">היום הכי טוב</span></div><div class="statn grow" style="background:var(--pink-l);justify-content:center;flex-direction:column;gap:0"><b>${z.streak}</b><span class="pts">ימים ברצף</span></div><div class="statn grow" style="background:var(--lime-l);justify-content:center;flex-direction:column;gap:0"><b>${z.avg==null?'–':z.avg}</b><span class="pts">ממוצע השבוע</span></div></div><div class="pt">${esc(quote)}</div><div class="row" style="gap:8px;margin-top:10px"><b>בממוצע ${fmtNum(z.stepsAvg)} צעדים ביום</b></div></div></div></div></div></main>`;
+};
+function zineText(z){return `הגיליון השבועי שלי ב"היום שלי":\n${z.days.map(d=>`${WD[pdate(d.s).getDay()]} ${d.v==null?'—':d.v}`).join(' · ')}\nממוצע ${z.avg==null?'—':z.avg}, ${z.streak} ימים ברצף${z.best?`, היום הכי טוב ${z.best.v}`:''}`}
+ACT['zine-share']=()=>whatsapp(zineText(zineData()));
+function scallop(ctx,cx,cy,r,n){ctx.beginPath();for(let i=0;i<=240;i++){const t=i/240*Math.PI*2,rr=r*(0.84+0.1*Math.cos(n*t));const x=cx+rr*Math.cos(t),y=cy+rr*Math.sin(t);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath()}
+ACT['zine-dl']=async()=>{
+  const z=zineData();
+  try{await Promise.all([document.fonts.load('80px "Suez One"'),document.fonts.load('40px "Gveret Levin"'),document.fonts.load('700 30px Heebo')])}catch(e){}
+  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.direction='rtl';x.textAlign='center';
+  x.fillStyle='#fbf4e6';x.fillRect(0,0,W,H);x.fillStyle='#1f1a2e';x.font='110px "Suez One",serif';x.fillText('הגיליון השבועי',W/2,170);x.font='44px "Gveret Levin",cursive';x.fillText(`${shortDate(z.days[0].s)} – ${shortDate(z.days[6].s)}`,W/2,240);
+  z.days.slice().reverse().forEach((d,i)=>{const cx=W-(95+i*148),cy=470,t=tierOf(d.v);x.lineWidth=6;x.strokeStyle='#1f1a2e';
+    if(d.v==null){x.setLineDash([12,12]);x.beginPath();x.arc(cx,cy,56,0,7);x.stroke();x.setLineDash([])}
+    else{x.fillStyle=t==='great'?'#ff5b2e':t==='good'?'#cbf03a':'#b9a4f7';if(t==='soft'){x.beginPath();x.arc(cx,cy,56,0,7)}else scallop(x,cx,cy,64,12);x.fill();x.stroke();x.fillStyle='#1f1a2e';x.font='46px "Suez One",serif';x.fillText(String(d.v),cx,cy+16)}
+    x.fillStyle='#1f1a2e';x.font='700 32px Heebo,sans-serif';x.fillText(WD[pdate(d.s).getDay()],cx,cy-86)});
+  const stat=(i,v,l,col)=>{const cx=W-(210+i*330),cy=780;x.fillStyle=col;x.strokeStyle='#1f1a2e';x.lineWidth=6;x.beginPath();x.roundRect(cx-140,cy-90,280,180,36);x.fill();x.stroke();x.fillStyle='#1f1a2e';x.font='90px "Suez One",serif';x.fillText(String(v),cx,cy+10);x.font='34px "Gveret Levin",cursive';x.fillText(l,cx,cy+60)};
+  stat(0,z.best?z.best.v:'–','היום הכי טוב','#ddd2fb');stat(1,z.streak,'ימים ברצף','#ffd3e7');stat(2,z.avg==null?'–':z.avg,'ממוצע השבוע','#e7f8a0');
+  x.fillStyle='#1f1a2e';x.font='54px "Gveret Levin",cursive';x.fillText(`בממוצע ${fmtNum(z.stepsAvg)} צעדים ביום`,W/2,1030);x.font='70px "Suez One",serif';x.fillText('היום שלי',W/2,1250);
+  const blob=await new Promise(r=>c.toBlob(r,'image/png'));
+  try{const ok=await saveFile('היום-שלי-גיבוי-שבועי.png',blob);if(ok)toast('התמונה מוכנה')}catch(e){toast('לא הצלחנו להוריד')}
+};
+PAGES.join=r=>{S.ui.pendingJoin=r.a;if(S.mode==='api'&&!S.user)S.ui.auth=Object.assign(S.ui.auth||{},{tab:'register',email:'',pass:'',err:'',busy:false});setTimeout(()=>go(S.profile?'friends':'welcome'),0);return '<div class="splash">…</div>'};
+
+/* ---------- standalone (own server) mode ---------- */
+const Api={
+  async call(method,path,body,opt){
+    const r=await fetch(path,{method,headers:body!==undefined?{'content-type':'application/json'}:{},body:body!==undefined?JSON.stringify(body):undefined,credentials:'same-origin',keepalive:!!(opt&&opt.keepalive)});
+    let j=null;try{j=await r.json()}catch(e){}
+    if(!r.ok){const err=Object.assign(new Error((j&&j.error)||'http '+r.status),{code:(j&&j.error)||('http'+r.status),status:r.status,data:j});
+      if(r.status===401&&!/\/api\/(login|register|me)$/.test(path))authLost();throw err}
+    return j;
+  },
+  get(p){return this.call('GET',p)},post(p,b){return this.call('POST',p,b===undefined?{}:b)},
+  async health(){try{const r=await fetch('/api/health',{credentials:'same-origin'});if(!r.ok)return null;const j=await r.json();return j&&j.app==='daily-planner'?j:null}catch(e){return null}}
+};
+function authLost(){if(S.mode!=='api'||!S.user)return;S.user=null;S.profile=null;S.days={};Social.on=false;toast('החיבור פג. צריך להתחבר מחדש');go('welcome')}
+const AUTH_ERR={bad_credentials:'המייל או הסיסמה לא נכונים',exists:'כבר יש חשבון עם המייל הזה. נסו להתחבר',weak_password:'הסיסמה צריכה להיות באורך 8 תווים לפחות',bad_email:'המייל לא נראה תקין',rate:'יותר מדי ניסיונות. נסו שוב בעוד כמה דקות',signup_closed:'ההרשמה סגורה כרגע'};
+function authPanel(){
+  const a=S.ui.auth||(S.ui.auth={tab:'login',email:'',pass:'',err:'',busy:false});const reg=a.tab==='register';
+  return `<h2 class="suez" style="font-size:clamp(36px,5vw,56px)">${reg?'יוצרים חשבון':'בואו נתחיל'}</h2><p class="ptn">${reg?'חשבון חינמי. הנתונים שלך נשמרים בענן ועובדים בכל מכשיר':'כניסה לדף היומי שלך'}</p>
+  <div class="seg" role="tablist"><button class="chip ${!reg?'on':''}" role="tab" aria-selected="${!reg}" data-act="auth-tab" data-t="login">כניסה</button><button class="chip ${reg?'on':''}" role="tab" aria-selected="${reg}" data-act="auth-tab" data-t="register">הרשמה</button></div>
+  <div data-submit="auth" class="stack" style="gap:12px"><div class="field"><label for="em">מייל</label><input id="em" class="in" type="email" dir="ltr" style="text-align:left" autocomplete="${reg?'email':'username'}" value="${esc(a.email)}" data-in="auth-email" data-focus="1"></div>
+  <div class="field"><label for="pw">סיסמה${reg?' (לפחות 8 תווים)':''}</label><input id="pw" class="in" type="password" dir="ltr" style="text-align:left" autocomplete="${reg?'new-password':'current-password'}" value="${esc(a.pass)}" data-in="auth-pass"></div>
+  ${a.err?`<div class="err-t" role="alert">${esc(a.err)}</div>`:''}<button class="btn primary big block" type="button" data-act="submit" ${a.busy?'disabled':''}>${ico('check',22)} ${a.busy?'רגע…':reg?'הרשמה':'כניסה'}</button></div>
+  <button class="linkbtn" style="align-self:flex-start" data-act="guest">להמשיך בלי חשבון (נשמר במכשיר הזה בלבד)</button><div class="pts" style="opacity:.6">גרסה ${VERSION}</div>`;
+}
+ACT['auth-tab']=el=>{const a=S.ui.auth;a.tab=el.dataset.t;a.err='';render(true)};
+INP['auth-email']=el=>{S.ui.auth.email=el.value};INP['auth-pass']=el=>{S.ui.auth.pass=el.value};
+SUB.auth=async()=>{
+  const a=S.ui.auth;if(a.busy)return;if(!a.email.trim()||!a.pass){a.err='צריך למלא מייל וסיסמה';return render(true)}
+  a.busy=true;a.err='';render(true);
+  try{
+    const lc=Store.readLocal();const l=Store.ls();const guestData=l&&l.getItem('dp_guest')==='1'&&lc&&lc.profile?lc:null;
+    const r=await Api.call('POST',a.tab==='login'?'/api/login':'/api/register',{email:a.email.trim(),password:a.pass});
+    S.user=r.user;S.mode='api';S.guest=false;if(l){l.removeItem('dp_guest');l.removeItem('dp1')}
+    await Store.loadApi(guestData);a.busy=false;a.pass='';S.setup=null;
+    if(S.profile){Social=SocialApi;await Social.init()}
+    toast(a.tab==='login'?'ברוכים השבים!':'החשבון נוצר');go(S.profile?(S.ui.pendingJoin?'friends':'today'):'setup');
+  }catch(e){a.busy=false;a.err=AUTH_ERR[e.code]||'משהו השתבש. נסו שוב';render(true)}
+};
+ACT.guest=()=>{const l=Store.ls();if(l)l.setItem('dp_guest','1');S.mode='local';S.guest=true;S.setup=null;go('setup')};
+ACT.logout=async()=>{try{await Api.post('/api/logout')}catch(e){}S.user=null;S.profile=null;S.days={};S.setup=null;S.ui.auth=null;Social.on=false;closePopup();go('welcome');toast('יצאת מהחשבון')};
+POP.delacct={label:'מחיקת חשבון',render:d=>`${popTape()}${popHead('מחיקת החשבון')}<p>כל הנתונים שלך יימחקו לצמיתות: משימות, לו״ז, אוכל, חברים וגלויות. אי אפשר לבטל.</p><div class="field"><label for="dp">סיסמה לאישור</label><input id="dp" class="in" type="password" dir="ltr" style="text-align:left" data-in="del-pass" data-focus="1" autocomplete="current-password"></div>${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" data-act="close-popup">ביטול</button><button class="btn danger" data-act="del-acct-go">למחוק הכול</button></div>`};
+ACT['del-acct']=()=>openPopup('delacct',{pass:'',err:''});INP['del-pass']=el=>{S.popup.d.pass=el.value};
+ACT['del-acct-go']=async()=>{const d=S.popup.d;try{await Api.post('/api/account/delete',{password:d.pass});S.user=null;S.profile=null;S.days={};Social.on=false;closePopup();go('welcome');toast('החשבון נמחק')}catch(e){d.err=e.code==='bad_credentials'?'הסיסמה לא נכונה':'לא הצלחנו למחוק';renderPopup()}};
+/* ---------- social over the API ---------- */
+const SocialApi={on:false,err:false,profiles:{},_f:[],_in:[],_out:[],_ci:[],_co:[],timer:null,last:0,lastPub:'',myCode:'',
+  async init(){this.on=true;await this.refresh();clearInterval(this.timer);this.timer=setInterval(()=>{if(document.visibilityState==='visible'&&this.on&&['friends','friend','postcards','zine'].includes(S.route.name))this.refresh()},20000)},
+  async refresh(){this.last=Date.now();try{const d=await Api.get('/api/social');const pr={};[...d.friends,...d.incoming,...d.outgoing].forEach(p=>{pr[p.id]=p});this.profiles=pr;this._f=d.friends.map(p=>p.id);this._in=d.incoming.map(p=>p.id);this._out=d.outgoing.map(p=>p.id);this._ci=d.cardsIn;this._co=d.cardsOut;this.myCode=d.me.code;if(S.profile)S.profile.code=d.me.code;this.err=false;this.changed()}catch(e){this.err=true}},
+  changed(){if(['friends','friend','postcards','zine'].includes(S.route.name))softRender()},
+  me(){return S.user?String(S.user.id):''},mine(){return this._f.concat(this._out)},friendIds(){return this._f},incoming(){return this._in},outgoing(){return this._out},
+  cardsIn(){return this._ci},get pcOut(){return this._co},touch(){},
+  async addByCode(code){try{const r=await Api.post('/api/friends/add',{code});await this.refresh();return r}catch(e){throw{code:e.code==='nf'?'nf':e.code==='dup'?'dup':'err',name:e.data&&e.data.name}}},
+  async accept(id){await Api.post('/api/friends/accept',{id});await this.refresh()},
+  async remove(id){await Api.post('/api/friends/remove',{id});await this.refresh()},
+  async send(doc){const r=await Api.post('/api/postcards',doc);await this.refresh();return r},
+};
+Store.loadApi=async function(guestData){
+  const d=await Api.get('/api/data');S.profile=d.profile&&d.profile.name?d.profile:null;S.days={};for(const k in d.days)S.days[k]=normDay(d.days[k]);
+  if(!S.profile&&guestData&&guestData.profile&&guestData.profile.name){S.profile=Object.assign({},guestData.profile,{code:d.profile&&d.profile.code||guestData.profile.code});S.days={};for(const k in guestData.days||{})S.days[k]=normDay(guestData.days[k]);this.saveProfile();for(const k in S.days)this.saveDay(k)}
+};
+
+(async function main(){
+  render();
+  try{await Store.init()}catch(e){console.error(e);try{Store.loadLocal()}catch(_){}}
+  S.ready=true;
+  try{if(S.mode==='db')await Social.init();else if(S.mode==='api'&&S.user&&S.profile){Social=SocialApi;await Social.init()}}catch(e){console.error(e)}
+  render();
+})();
+
+</script></body></html>

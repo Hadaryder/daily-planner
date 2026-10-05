@@ -1,0 +1,4 @@
+{ "name": "daily-planner", "version": "1.6.0", "private": true, "type": "module",
+  "description": "היום שלי — מתכנן יומי צבעוני. שרת Node 22 ללא תלויות.",
+  "engines": { "node": ">=22.13" },
+  "scripts": { "start": "node --no-warnings server.mjs", "build:front": "python3 frontend/build.py" } }
