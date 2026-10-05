@@ -98,6 +98,7 @@ const q = {
   delToken: db.prepare('DELETE FROM tokens WHERE hash=?'),
   delTokens: db.prepare('DELETE FROM tokens WHERE user_id=? AND kind=?'),
   cleanTokens: db.prepare('DELETE FROM tokens WHERE expires<?'),
+  pendingToken: db.prepare('SELECT 1 x FROM tokens WHERE user_id=? AND kind=? AND expires>? LIMIT 1'),
   insSess: db.prepare('INSERT INTO sessions(token,user_id,expires) VALUES (?,?,?)'),
   sess: db.prepare('SELECT s.user_id id,u.email email,u.verified verified,u.consent_ver consent_ver FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>?'),
   delSess: db.prepare('DELETE FROM sessions WHERE token=?'),
@@ -164,13 +165,20 @@ function sendReset(req, u) {
   const link = `${baseUrl(req)}/#/reset/${newToken(u.id, 'reset', 3600e3)}`;
   sendMail(MAIL, { to: u.email, subject: 'איפוס סיסמה ב״היום שלי״', text: `שלום,\nביקשתם לאפס את הסיסמה ב"היום שלי". הקישור תקף לשעה אחת:\n${link}\n\nאם לא ביקשתם, אפשר להתעלם. הסיסמה לא תשתנה.`, html: mailHtml('איפוס סיסמה', 'ביקשתם לאפס את הסיסמה ב״היום שלי״. הקישור תקף לשעה אחת. אם לא ביקשתם, אפשר להתעלם מההודעה והסיסמה לא תשתנה.', link, 'בחירת סיסמה חדשה') }).catch(e => console.error('שליחת מייל איפוס נכשלה:', e.message));
 }
+// משתמשים קיימים שעוד לא אימתו: בכניסה הראשונה אחרי שהמיילים מופעלים נשלח להם קישור אימות (לכל היותר פעם ביום, ורק אם אין קישור תקף ממתין)
+function autoVerifyMail(req, u) {
+  if (!MAIL_ENABLED || u.verified) return;
+  if (q.pendingToken.get(u.id, 'verify', now())) return;
+  const bucket = today(); if (((q.usageGet.get(u.id, 'vauto', bucket) || {}).n || 0) >= 1) return;
+  q.usageInc.run(u.id, 'vauto', bucket); const full = q.userById.get(u.id); if (full) sendVerify(req, full);
+}
 const needVerified = (res, ctx) => { if (MAIL_ENABLED && !ctx.user.verified) { fail(res, 403, 'unverified'); return true; } return false; };
 const pwOk = p => typeof p === 'string' && p.length >= 8 && p.length <= 200;
 /* ---------- routes ---------- */
 const routes = {};
 const R = (m, p, fn, opt = {}) => { routes[m + ' ' + p] = { fn, ...opt }; };
 R('GET', '/api/health', (req, res) => send(res, 200, { ok: true, app: 'daily-planner', signup: ALLOW_SIGNUP, ai: !!AI_KEY, mail: MAIL_ENABLED, policy: POLICY_VERSION }));
-R('GET', '/api/me', (req, res, ctx) => ctx.user ? send(res, 200, { user: userInfo(ctx.user), needsConsent: needsConsent(ctx.user), mail: MAIL_ENABLED }) : fail(res, 401, 'unauthorized'));
+R('GET', '/api/me', (req, res, ctx) => ctx.user ? (autoVerifyMail(req, ctx.user), send(res, 200, { user: userInfo(ctx.user), needsConsent: needsConsent(ctx.user), mail: MAIL_ENABLED })) : fail(res, 401, 'unauthorized'));
 R('POST', '/api/register', async (req, res, ctx) => {
   if (!ALLOW_SIGNUP) return fail(res, 403, 'signup_closed');
   if (limited('reg:' + ctx.ip, 10, 3600e3)) return fail(res, 429, 'rate');
