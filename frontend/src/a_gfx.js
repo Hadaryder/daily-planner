@@ -8,6 +8,7 @@ const GX={
   flower(petal,center){let p='';for(let k=0;k<8;k++)p+=`<ellipse cx="50" cy="27" rx="11" ry="20" fill="${petal}" stroke="${INK}" stroke-width="3" transform="rotate(${k*45} 50 50)"/>`;return svgw(p+`<circle cx="50" cy="50" r="12" fill="${center}" stroke="${INK}" stroke-width="3"/>`)},
   star(fill){let pts='';for(let i=0;i<10;i++){const r=i%2?19:46,t=-Math.PI/2+i*Math.PI/5;pts+=(50+r*Math.cos(t)).toFixed(1)+','+(54+r*Math.sin(t)).toFixed(1)+' '}return svgw(`<polygon points="${pts}" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
   sparkle(fill){return svgw(`<path d="M50 4Q54 46 96 50Q54 54 50 96Q46 54 4 50Q46 46 50 4Z" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`)},
+  flower100(){let p='';for(let k=0;k<10;k++)p+=`<ellipse cx="50" cy="22" rx="10" ry="19" fill="${COL.pink}" stroke="${INK}" stroke-width="3" transform="rotate(${k*36} 50 50)"/>`;return svgw(p+`<circle cx="50" cy="50" r="22" fill="var(--tape)" stroke="${INK}" stroke-width="3"/>`,'0 0 100 100','flower100')},
   squig(c='var(--ink)'){return svgw(`<path d="M2 12q9 -14 18 0t18 0t18 0t18 0t18 0t18 0" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`,'0 0 120 24','sq')},
   tape(c='var(--tape)'){return svgw(`<path d="M2 2L8 6L2 10L8 14L2 18L8 22L2 26H98L92 22L98 18L92 14L98 10L92 6L98 2Z" fill="${c}" fill-opacity=".9"/>`,'0 0 100 28','tp')},
 };
@@ -23,7 +24,7 @@ const IC={check:'M5 13l4 4L19 7',x:'M5 5l14 14M19 5L5 19',plus:'M12 5v14M5 12h14
 const ico=(n,s=22,w=2.4)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${IC[n]}"/></svg>`;
 const COL={pink:'var(--pink)',lime:'var(--lime)',lav:'var(--lav)',orange:'var(--orange)',green:'var(--green)',limel:'var(--lime-l)',pinkl:'var(--pink-l)',lavl:'var(--lav-l)'};
 // sticker by tier: great=orange scalloped, good=lime scalloped, soft=lavender blob
-function tierShape(t,seed=1){return t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):GX.blob(COL.lav,seed)}
-function stk(t,txt,size,rot){return `<span class="stk" style="width:${size}px;height:${size}px;${rot?`transform:rotate(${rot}deg)`:''}">${tierShape(t,(txt|0)+3)}<span style="font-size:${Math.round(size*.36)}px">${txt}</span></span>`}
+function tierShape(t,seed=1){if(+seed===100)return GX.flower100();return t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):GX.blob(COL.lav,seed)}
+function stk(t,txt,size,rot){return `<span class="stk" style="width:${size}px;height:${size}px;${rot?`transform:rotate(${rot}deg)`:''}">${tierShape(t,+txt||((txt|0)+3))}<span style="font-size:${Math.round(size*(String(txt).length>=3?.27:.36))}px">${txt}</span></span>`}
 const STICKERS=[['flower',()=>GX.flower(COL.pink,COL.lime)],['flower2',()=>GX.flower(COL.lav,COL.orange)],['star',()=>GX.star(COL.pink)],['badge',()=>GX.badge(COL.orange,14)],['blob',()=>GX.blob(COL.green,4)]];
 const stickerSvg=id=>{const f=STICKERS.find(s=>s[0]===id);return f?f[1]():GX.flower(COL.pink,COL.lime)};
