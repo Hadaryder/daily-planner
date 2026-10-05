@@ -16,7 +16,47 @@ const AI_DAILY_LIMIT = +process.env.AI_DAILY_LIMIT || 30;
 const ALLOW_SIGNUP = process.env.ALLOW_SIGNUP !== '0';
 const TRUST_PROXY = process.env.TRUST_PROXY === '1'; // להפעיל רק מאחורי פרוקסי (Fly, Caddy, nginx)
 fs.mkdirSync(DATA_DIR, { recursive: true });
-const db = new DatabaseSync(path.join(DATA_DIR, 'planner.db'));
+const DB_FILE = path.join(DATA_DIR, 'planner.db');
+const BACKUP_DIR = path.join(DATA_DIR, 'backups');
+const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
+const sqlStr = x => "'" + String(x).replace(/'/g, "''") + "'";
+// שחזור מגיבוי (ידני, בטוח): RESTORE_FROM=<שם קובץ ב-backups או נתיב מלא>.
+// קודם נשמר עותק של המצב הנוכחי (pre-restore-*), ורק אז מוחלף. מבוצע פעם אחת לכל קובץ (סמן .restored).
+if (process.env.RESTORE_FROM) {
+  try {
+    const src = path.isAbsolute(process.env.RESTORE_FROM) ? process.env.RESTORE_FROM : path.join(BACKUP_DIR, process.env.RESTORE_FROM);
+    const marker = path.join(DATA_DIR, '.restored');
+    const done = fs.existsSync(marker) ? fs.readFileSync(marker, 'utf8').trim() : '';
+    if (done === src) console.log('RESTORE_FROM כבר בוצע בעבר, מדלגים. אפשר להסיר את המשתנה.');
+    else if (!fs.existsSync(src)) console.error('RESTORE_FROM: הקובץ לא נמצא, לא משחזרים:', src);
+    else {
+      new DatabaseSync(src).close(); // מוודא שהגיבוי תקין לפני שנוגעים בכלום
+      if (fs.existsSync(DB_FILE)) {
+        fs.mkdirSync(BACKUP_DIR, { recursive: true });
+        const cur = new DatabaseSync(DB_FILE); cur.exec(`VACUUM INTO ${sqlStr(path.join(BACKUP_DIR, 'pre-restore-' + stamp() + '.db'))}`); cur.close();
+      }
+      for (const ext of ['', '-wal', '-shm']) fs.rmSync(DB_FILE + ext, { force: true });
+      fs.copyFileSync(src, DB_FILE); fs.writeFileSync(marker, src);
+      console.log('שוחזר מגיבוי:', src);
+    }
+  } catch (e) { console.error('שחזור נכשל, ממשיכים עם המסד הנוכחי:', e.message); }
+}
+const db = new DatabaseSync(DB_FILE);
+// גיבוי עקבי (VACUUM INTO). נשמרים 8 אחרונים לכל סוג. לא מפיל את השרת אם נכשל.
+function backupNow(tag) {
+  try {
+    if (fs.existsSync(DB_FILE) && fs.statSync(DB_FILE).size > 300e6) return;
+    fs.mkdirSync(BACKUP_DIR, { recursive: true });
+    const f = path.join(BACKUP_DIR, `${tag}-${stamp()}.db`);
+    db.exec(`VACUUM INTO ${sqlStr(f)}`);
+    const mine = fs.readdirSync(BACKUP_DIR).filter(x => x.startsWith(tag + '-') && x.endsWith('.db')).sort();
+    for (const old of mine.slice(0, Math.max(0, mine.length - 8))) fs.rmSync(path.join(BACKUP_DIR, old), { force: true });
+    console.log('גיבוי נשמר:', path.basename(f));
+  } catch (e) { console.error('גיבוי נכשל (ממשיכים):', e.message); }
+}
+// לפני כל שינוי סכמה או עלייה של גרסה: אם כבר יש נתונים, שומרים עותק
+try { if (db.prepare("SELECT 1 x FROM sqlite_master WHERE type='table' AND name='users'").get()) backupNow('boot'); } catch {}
+setInterval(() => backupNow('daily'), 24 * 3600e3).unref();
 db.exec(`
 PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;
 CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, pass TEXT NOT NULL, created INTEGER NOT NULL);
