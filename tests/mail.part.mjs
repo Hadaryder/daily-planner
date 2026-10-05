@@ -98,6 +98,16 @@ export async function mailTests({ ok, sleep, SERVER, spawn, fs, os, path, Databa
   x = await call('POST', '/api/consent', { accept: true }, sA); ok(x.r.status === 200, 'consent endpoint accepts');
   x = await call('GET', '/api/me', null, sA); ok(x.j.needsConsent === false, 'consent recorded');
   dbh.close();
+  // ---- existing unverified users get a verification email automatically (once a day)
+  { const lg = await call('POST', '/api/register', { email: 'legacy2@x.com', password: 'password123', consent: true }); await sleep(600);
+    const dbh2 = new DatabaseSync(path.join(dir, 'planner.db')); const lid = dbh2.prepare("SELECT id FROM users WHERE email='legacy2@x.com'").get().id;
+    dbh2.prepare("DELETE FROM tokens WHERE user_id=? AND kind='verify'").run(lid); dbh2.close(); // כמו חשבון ישן שנוצר לפני שהיו מיילים
+    const n0 = smtp.mails.length; await call('GET', '/api/me', null, lg.ck); await sleep(700);
+    ok(smtp.mails.length === n0 + 1 && smtp.mails[n0].to[0] === 'legacy2@x.com' && /\/#\/verify\//.test(dec(smtp.mails[n0].raw).text), 'existing unverified user automatically receives a verification email on first visit');
+    await call('GET', '/api/me', null, lg.ck); await call('GET', '/api/me', null, lg.ck); await sleep(500);
+    ok(smtp.mails.length === n0 + 1, 'no repeat emails on later visits (pending link / once a day)');
+    const v = tokenFrom(smtp.mails[n0], 'verify'); await call('POST', '/api/verify', { token: v }); const n1 = smtp.mails.length; await call('GET', '/api/me', null, lg.ck); await sleep(500);
+    ok(smtp.mails.length === n1, 'verified users are never emailed again'); }
   // ---- legal pages
   const pr = await fetch(S1.base + '/privacy'), tr = await fetch(S1.base + '/terms'); const pt = await pr.text(), tt = await tr.text();
   ok(pr.status === 200 && pt.includes('מדיניות פרטיות') && pt.includes('hello@example.com') && pt.includes('הדר') && !pt.includes('{{'), 'privacy page served with operator and contact filled in');
