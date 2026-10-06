@@ -28,8 +28,8 @@ function calc(day,g){
   if(t.length){const d=t.filter(x=>x.done).length;parts.push({k:'tasks',name:'משימות',w:30,f:d/t.length,a:d,b:t.length})}
   const b=day.blocks||[];
   if(b.length){const d=b.filter(x=>x.status==='done').length;parts.push({k:'schedule',name:'לו״ז',w:30,f:d/b.length,a:d,b:b.length})}
-  const pl=Object.values(day.meals||{}).filter(m=>m.plan&&m.plan.trim());
-  if(pl.length){const d=pl.filter(m=>m.actual&&m.actual.followed).length;parts.push({k:'food',name:'אוכל',w:20,f:d/pl.length,a:d,b:pl.length})}
+  const ml=day.meals||{};const logged=Object.keys(ml).filter(k=>ml[k]&&ml[k].actual&&ml[k].actual.text);
+  if(logged.length){const main=['breakfast','lunch','dinner'].filter(k=>logged.includes(k)).length;parts.push({k:'food',name:'אוכל',w:20,f:main/3,a:main,b:3})}
   const st=day.steps||0;
   if(g>0&&(st>0||parts.length))parts.push({k:'steps',name:'צעדים',w:20,f:Math.min(1,st/g),a:st,b:g});
   if(!parts.length)return{score:null,parts};
@@ -138,18 +138,20 @@ function render(keep){
   if(S.mode==='api'){if(!S.user&&!['welcome','join','reset','verify'].includes(r))return go('welcome');if(S.user&&!S.profile&&!['setup','reset','verify'].includes(r))return go('setup')}
   if(!S.profile&&!['welcome','setup','join','reset','verify'].includes(r)){return go('welcome')}
   if(S.profile&&(r===''||r==='welcome'||(r==='setup'&&!S.ui.editSetup)))return go('today');
-  const y=window.scrollY;
+  const y=window.scrollY;if(keep)app.style.minHeight=app.offsetHeight+'px'; // לא נותנים למסמך להתכווץ באמצע ההחלפה (אחרת הדפדפן מקפיץ למעלה)
   const fn=PAGES[r]||PAGES.today;let html='';
   try{html=fn(S.route)}catch(e){console.error(e);html=`<div class="page"><div class="note">אופס, משהו השתבש בטעינת המסך. <button class="btn sm" data-act="reload">נסו שוב</button></div></div>`}
   const showNav=S.profile&&!['welcome','setup','reset','verify'].includes(r);
   app.innerHTML=(showNav?navHtml(r):'')+html;
-  closeMenu();afterRender();
+  closeMenu();afterRender(keep);
   if(S.mode==='api'&&S.user&&S.needsConsent&&!S.popup)setTimeout(()=>{if(S.needsConsent&&!S.popup)openPopup('consent')},0);
   if(S.mode==='api'&&Social.on&&['friends','friend','postcards','zine'].includes(r)&&Date.now()-Social.last>6000)Social.refresh();
   window.scrollTo(0,keep?y:0);
+  if(keep){const t=Date.now();requestAnimationFrame(()=>{app.style.minHeight='';if(Math.abs(window.scrollY-y)>3&&t-userScrollAt>300)window.scrollTo(0,y)})}else app.style.minHeight='';
 }
+let userScrollAt=0;['wheel','touchmove','keydown'].forEach(ev=>window.addEventListener(ev,()=>{userScrollAt=Date.now()},{passive:true,capture:true}));
 function softRender(){const a=document.activeElement;if(S.popup||S.menu||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&$('#app').contains(a)))return;if(Date.now()-lastDown<1500){clearTimeout(softT);softT=setTimeout(softRender,1600);return}render(true)}
-function afterRender(){if(typeof checkCelebrate==='function')setTimeout(checkCelebrate,0);$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const f=$('[data-focus]');if(f){f.focus();if(f.select&&f.dataset.focus==='sel')f.select()}}
+function afterRender(keep){if(typeof checkCelebrate==='function')setTimeout(checkCelebrate,0);$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const want=!keep||S.ui.focusReq;S.ui.focusReq=false;const f=want?$('[data-focus]'):null;if(f){f.focus({preventScroll:!!keep});if(f.select&&f.dataset.focus==='sel')f.select()}}
 /* ---------- popups & menus ---------- */
 function openPopup(type,d){S.popup={type,d:d||{}};renderPopup()}
 function renderPopup(){const el=$('#popup');if(!el)return;if(!S.popup){el.innerHTML='';return}
@@ -174,7 +176,7 @@ document.addEventListener('change',e=>{const el=e.target.closest('[data-ch]');if
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-submit]');if(f){e.preventDefault();const fn=SUB[f.dataset.submit];if(fn){try{fn(f,e)}catch(err){console.error(err)}}}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.menu)closeMenu();else if(!(S.popup&&POP[S.popup.type]&&POP[S.popup.type].locked))closePopup()}});
 window.addEventListener('hashchange',()=>{closePopup();render(false)});
-const VERSION='1.8.0';
+const VERSION='1.9.0';
 async function saveFile(filename,blob){try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;if(dl){await dl.save({filename,data:blob});return true}}catch(e){if(e&&e.code==='cancelled')return false}
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);return true}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.flush()});window.addEventListener('pagehide',()=>Store.flush());

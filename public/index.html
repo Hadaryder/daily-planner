@@ -117,7 +117,10 @@ details.how{border:2px dashed var(--ink);border-radius:14px;padding:6px 14px;bac
 .h-title .fl{position:absolute;inset-inline-end:100%;margin-inline-end:-30px;top:2%;width:clamp(56px,9vw,150px);z-index:2;transform:rotate(14deg)}
 .datetag{position:relative;z-index:3;display:inline-block;margin-top:-10px;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:6px 20px;box-shadow:-5px 5px 0 var(--ink);transform:rotate(-3deg);font-size:clamp(20px,2.2vw,34px)}
 .datetag .tape{width:70px;top:-12px;inset-inline-start:60%}
-.msg{position:relative;z-index:2;margin-top:14px;display:flex;align-items:center;gap:10px;font-size:clamp(18px,2vw,24px)}
+.msg{position:relative;z-index:2;margin-top:14px;display:flex;align-items:center;gap:14px;font-size:clamp(18px,2vw,24px)}
+.msg .ar{display:block;flex:none;width:clamp(44px,5.6vw,80px);color:var(--ink)}.msg .ar svg{display:block;width:100%;height:auto}
+.h-title .tg{position:relative;z-index:3}.h-title .spk{display:none}
+.linkbtn .sm{display:none}
 .score-cl{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
 .score-big{width:clamp(170px,22vw,240px);height:clamp(170px,22vw,240px);position:relative;transform:rotate(-7deg)}
 .score-big .g{position:absolute;inset:0}
@@ -182,7 +185,7 @@ details.how{border:2px dashed var(--ink);border-radius:14px;padding:6px 14px;bac
 .slip{position:relative;border-radius:16px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;text-align:start;min-height:84px;border:2px dashed var(--ink);width:100%;background:var(--lav-l);color:var(--ink-fixed)}
 .slip .lb{align-self:flex-start;background:var(--card);border:1.5px solid var(--ink);border-radius:999px;padding:0 12px;font-size:13px;font-weight:800}
 .slip.plan{cursor:pointer}
-.slip.act{border:2.5px solid var(--ink);box-shadow:-3px 3px 0 var(--ink)}
+.slip.act{border:2.5px solid var(--ink);box-shadow:-3px 3px 0 var(--ink);background:var(--lime-l)}
 .slip.act.fol{background:var(--lime-l)}.slip.act.dif{background:var(--pink-l)}
 .slip.empty-act{background:transparent;border:2.5px dotted var(--ink);color:var(--ink-fixed);cursor:pointer}
 .slip .x{font-family:'Gveret Levin';font-size:24px;line-height:1.15}
@@ -302,6 +305,30 @@ details.how{border:2px dashed var(--ink);border-radius:14px;padding:6px 14px;bac
 .cell .stk span.n3{font-size:clamp(9px,1.05vw,15px)}.score-big .n.n3{font-size:clamp(40px,5vw,58px)}
 .score-big.p100{margin-bottom:26px}.score-big.p100 .n.n3{font-size:clamp(34px,4.4vw,52px)}.p100cap{position:absolute;inset-inline:0;bottom:-20px;margin-inline:auto;width:max-content;max-width:112%;background:var(--card);color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:2px 14px;font-family:'Gveret Levin';font-size:clamp(14px,1.5vw,18px);transform:rotate(7deg);white-space:nowrap;box-shadow:-2px 2px 0 var(--ink)}
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:15px;text-align:start;line-height:1.5}.consent a,.pts a,.linkbtn a{color:inherit;text-decoration:underline}
+/* ---- מובייל: ההדר והניווט לפי העיצוב בפיגמה (Top nav / Date header / Score row, 390px) ---- */
+@media (max-width:699px){
+ .top{padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));gap:12px}
+ .me{padding:0;border:0;background:none;box-shadow:none;border-radius:0}.me .av{width:40px;height:40px}
+ .rail{padding:5px;gap:2px;border-radius:30px;min-height:81px;align-items:center}.tab{padding:8px 6px;font-size:14px;gap:2px;border-radius:22px;min-height:61px;line-height:1.35}.tab .ic{width:24px;height:24px}
+ .page{padding-top:calc(var(--navh) + 16px)}
+ .hero{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;flex-wrap:nowrap;gap:14px;margin-bottom:22px}
+ .h-title{position:relative;width:100%;height:168px}
+ .h-title .tg{position:absolute;top:0;right:0;width:257px;height:124px;z-index:3}
+ .h-title h1{font-size:72px;line-height:65px;white-space:nowrap;text-align:right}
+ .h-title .blob{inset:auto;position:absolute;right:30px;left:auto;top:25px;width:150px;height:110px;z-index:1}
+ .h-title .fl{inset:auto;position:absolute;left:23px;right:auto;top:4px;margin:0;width:76px;transform:rotate(14deg);z-index:2}
+ .h-title .spk{display:block;position:absolute;right:69px;top:-15px;width:29px;height:29px;z-index:3}
+ .datetag{position:absolute;top:71px;right:0;margin:0;font-size:24px;padding:6px 20px;transform:rotate(-2deg);white-space:nowrap}
+ .msg{position:absolute;top:138px;right:0;left:17px;margin:0;font-size:20px;gap:10px;flex-wrap:nowrap;justify-content:flex-start}
+ .msg .ar{width:44px}.msg .mt{white-space:nowrap}
+ .score-cl{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;align-items:flex-start;gap:0;padding:0 4px;min-height:220px}
+ .score-big{width:200px;height:200px;flex:none;transform:rotate(-6deg)}
+ .score-big .n{font-size:64px}.score-big .in-t small{font-size:20px}
+ .score-cl>.stack{width:130px;flex:none;align-items:flex-end;gap:10px}
+ .chips{flex-direction:column;flex-wrap:nowrap;max-width:none;gap:10px;align-items:flex-end}
+ .chipx{height:34px;padding:0 14px}
+ .linkbtn{white-space:nowrap;font-size:19px;gap:5px}.linkbtn .lg{display:none}.linkbtn .sm{display:inline}.linkbtn i{width:20px;height:20px}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><div id="app"></div><div id="menu"></div><div id="popup"></div><div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>'use strict';
@@ -365,8 +392,8 @@ function calc(day,g){
   if(t.length){const d=t.filter(x=>x.done).length;parts.push({k:'tasks',name:'משימות',w:30,f:d/t.length,a:d,b:t.length})}
   const b=day.blocks||[];
   if(b.length){const d=b.filter(x=>x.status==='done').length;parts.push({k:'schedule',name:'לו״ז',w:30,f:d/b.length,a:d,b:b.length})}
-  const pl=Object.values(day.meals||{}).filter(m=>m.plan&&m.plan.trim());
-  if(pl.length){const d=pl.filter(m=>m.actual&&m.actual.followed).length;parts.push({k:'food',name:'אוכל',w:20,f:d/pl.length,a:d,b:pl.length})}
+  const ml=day.meals||{};const logged=Object.keys(ml).filter(k=>ml[k]&&ml[k].actual&&ml[k].actual.text);
+  if(logged.length){const main=['breakfast','lunch','dinner'].filter(k=>logged.includes(k)).length;parts.push({k:'food',name:'אוכל',w:20,f:main/3,a:main,b:3})}
   const st=day.steps||0;
   if(g>0&&(st>0||parts.length))parts.push({k:'steps',name:'צעדים',w:20,f:Math.min(1,st/g),a:st,b:g});
   if(!parts.length)return{score:null,parts};
@@ -475,18 +502,20 @@ function render(keep){
   if(S.mode==='api'){if(!S.user&&!['welcome','join','reset','verify'].includes(r))return go('welcome');if(S.user&&!S.profile&&!['setup','reset','verify'].includes(r))return go('setup')}
   if(!S.profile&&!['welcome','setup','join','reset','verify'].includes(r)){return go('welcome')}
   if(S.profile&&(r===''||r==='welcome'||(r==='setup'&&!S.ui.editSetup)))return go('today');
-  const y=window.scrollY;
+  const y=window.scrollY;if(keep)app.style.minHeight=app.offsetHeight+'px'; // לא נותנים למסמך להתכווץ באמצע ההחלפה (אחרת הדפדפן מקפיץ למעלה)
   const fn=PAGES[r]||PAGES.today;let html='';
   try{html=fn(S.route)}catch(e){console.error(e);html=`<div class="page"><div class="note">אופס, משהו השתבש בטעינת המסך. <button class="btn sm" data-act="reload">נסו שוב</button></div></div>`}
   const showNav=S.profile&&!['welcome','setup','reset','verify'].includes(r);
   app.innerHTML=(showNav?navHtml(r):'')+html;
-  closeMenu();afterRender();
+  closeMenu();afterRender(keep);
   if(S.mode==='api'&&S.user&&S.needsConsent&&!S.popup)setTimeout(()=>{if(S.needsConsent&&!S.popup)openPopup('consent')},0);
   if(S.mode==='api'&&Social.on&&['friends','friend','postcards','zine'].includes(r)&&Date.now()-Social.last>6000)Social.refresh();
   window.scrollTo(0,keep?y:0);
+  if(keep){const t=Date.now();requestAnimationFrame(()=>{app.style.minHeight='';if(Math.abs(window.scrollY-y)>3&&t-userScrollAt>300)window.scrollTo(0,y)})}else app.style.minHeight='';
 }
+let userScrollAt=0;['wheel','touchmove','keydown'].forEach(ev=>window.addEventListener(ev,()=>{userScrollAt=Date.now()},{passive:true,capture:true}));
 function softRender(){const a=document.activeElement;if(S.popup||S.menu||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&$('#app').contains(a)))return;if(Date.now()-lastDown<1500){clearTimeout(softT);softT=setTimeout(softRender,1600);return}render(true)}
-function afterRender(){if(typeof checkCelebrate==='function')setTimeout(checkCelebrate,0);$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const f=$('[data-focus]');if(f){f.focus();if(f.select&&f.dataset.focus==='sel')f.select()}}
+function afterRender(keep){if(typeof checkCelebrate==='function')setTimeout(checkCelebrate,0);$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const want=!keep||S.ui.focusReq;S.ui.focusReq=false;const f=want?$('[data-focus]'):null;if(f){f.focus({preventScroll:!!keep});if(f.select&&f.dataset.focus==='sel')f.select()}}
 /* ---------- popups & menus ---------- */
 function openPopup(type,d){S.popup={type,d:d||{}};renderPopup()}
 function renderPopup(){const el=$('#popup');if(!el)return;if(!S.popup){el.innerHTML='';return}
@@ -511,7 +540,7 @@ document.addEventListener('change',e=>{const el=e.target.closest('[data-ch]');if
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-submit]');if(f){e.preventDefault();const fn=SUB[f.dataset.submit];if(fn){try{fn(f,e)}catch(err){console.error(err)}}}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.menu)closeMenu();else if(!(S.popup&&POP[S.popup.type]&&POP[S.popup.type].locked))closePopup()}});
 window.addEventListener('hashchange',()=>{closePopup();render(false)});
-const VERSION='1.8.0';
+const VERSION='1.9.0';
 async function saveFile(filename,blob){try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;if(dl){await dl.save({filename,data:blob});return true}}catch(e){if(e&&e.code==='cancelled')return false}
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);return true}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.flush()});window.addEventListener('pagehide',()=>Store.flush());
@@ -589,7 +618,7 @@ const WAVE_I=`<i><svg viewBox="0 0 12 14" width="12" height="14" fill="none" str
 const moreBtn=(act,id,extra='')=>`<button class="more" data-act="${act}" data-menu data-id="${id}" ${extra} aria-label="אפשרויות"><i></i><i></i><i></i></button>`;
 function chipsHtml(c){
   const get=k=>c.parts.find(p=>p.k===k);const t=get('tasks'),s=get('schedule'),f=get('food'),w=get('steps');
-  const one=(col,l,v)=>`<span class="chipx" style="background:var(--${col})"><b>${v}</b>${l}</span>`;
+  const one=(col,l,v)=>`<span class="chipx" style="background:var(--${col})">${l}<b>${v}</b></span>`;
   return `<div class="chips">${one('pink','משימות',t?`${t.a}/${t.b}`:'–')}${one('lime','לו״ז',s?`${s.a}/${s.b}`:'–')}${one('lav','אוכל',f?`${f.a}/${f.b}`:'–')}${one('green','צעדים',w?Math.round(w.f*100)+'%':'–')}</div>`;
 }
 function scoreBig(c){
@@ -597,10 +626,11 @@ function scoreBig(c){
   const t=tierOf(c.score);const shape=c.score===100?GX.flower100():t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):t==='soft'?GX.blob(COL.lav,5):`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`;
   return `<div class="score-big" ${t==='none'?'style="color:var(--ink)"':''}>${shape}<div class="in-t" ${t==='none'?'style="color:var(--ink)"':''}><small>הציון שלי היום</small><span class="n ${c.score===100?'n3':''}">${c.score==null?'—':c.score}<small style="font-size:.3em">${c.score==null?'':'/100'}</small></span><small>${praise(c.score)}</small></div></div>`;
 }
+const ARROW=`<svg class="arr" viewBox="0 0 130 90" fill="none" aria-hidden="true"><path d="M8 76C30 14 84 6 112 44" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M92 40L113 46L110 24" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 function headerHtml(date,ro){
   const d=dayOf(date),c=calc(d,goal());const msg=ro?'ככה נראה היום ההוא':MSGS[(pdate(date).getDate()+pdate(date).getMonth())%MSGS.length];
-  return `<div class="hero"><div class="h-title"><span class="fl">${GX.flower(COL.pink,COL.lime)}</span><span class="blob">${GX.blob(COL.pink,2)}</span><h1>היום שלי</h1><div class="datetag">${tapeEl()}${esc(longDate(date))}</div><div class="msg hand"><span style="width:60px">${ico('right',54,1.6)}</span><span>${esc(msg)}</span></div></div>
-  <div class="score-cl">${scoreBig(c)}<div class="stack" style="gap:10px">${chipsHtml(c)}<button class="linkbtn" data-act="score-info" data-d="${date}">איך הציון מחושב?<i>i</i></button></div></div></div>`;
+  return `<div class="hero"><div class="h-title"><span class="blob">${GX.blob(COL.pink,2)}</span><span class="fl">${GX.flower(COL.pink,COL.lime)}</span><span class="spk">${GX.sparkle(COL.lime)}</span><div class="tg"><h1>היום שלי</h1><div class="datetag">${tapeEl()}${esc(longDate(date))}</div></div><div class="msg hand"><span class="mt">${esc(msg)}</span><span class="ar">${ARROW}</span></div></div>
+  <div class="score-cl">${scoreBig(c)}<div class="stack" style="gap:10px">${chipsHtml(c)}<button class="linkbtn" data-act="score-info" data-d="${date}"><span class="lg">איך הציון מחושב?</span><span class="sm">איך מחשבים?</span><i>i</i></button></div></div></div>`;
 }
 function tasksHtml(date,ro){
   const d=dayOf(date);
@@ -608,8 +638,8 @@ function tasksHtml(date,ro){
   const add=ro?'':(S.ui.addTask?`<div class="addform" data-submit="add-task"><input class="in" data-focus="1" maxlength="80" placeholder="מה צריך לעשות?" aria-label="משימה חדשה"><button class="btn primary" type="button" data-act="submit">${ico('check',20)}</button><button class="icbtn big" type="button" data-act="cancel-add-task" aria-label="ביטול">${ico('x',22)}</button></div>`:`<button class="addrow" data-act="show-add-task"><span class="pl">${ico('plus',22,3)}</span>הוספת משימה</button>`);
   return `<section class="stack" style="gap:30px" aria-label="המשימות שלי"><div>${stitle('pink','המשימות שלי',GX.star(COL.lime))}</div><div class="tlist" style="margin-top:6px">${rows||(ro?'<div class="empty">לא היו משימות ביום הזה</div>':'')}</div>${add}</section>`;
 }
-ACT['show-add-task']=()=>{S.ui.addTask=true;render(true)};ACT['cancel-add-task']=()=>{S.ui.addTask=false;render(true)};
-SUB['add-task']=f=>{const v=$('input',f).value.trim();if(!v){S.ui.addTask=false;return render(true)}const t=todayStr();const d=ensureDay(S.ui.date||t);d.tasks.push({id:rid(),title:v,done:false});Store.saveDay(S.ui.date||t);S.ui.addTask=true;render(true)};
+ACT['show-add-task']=()=>{S.ui.addTask=true;S.ui.focusReq=true;render(true)};ACT['cancel-add-task']=()=>{S.ui.addTask=false;render(true)};
+SUB['add-task']=f=>{const v=$('input',f).value.trim();if(!v){S.ui.addTask=false;return render(true)}const t=todayStr();const d=ensureDay(S.ui.date||t);d.tasks.push({id:rid(),title:v,done:false});Store.saveDay(S.ui.date||t);S.ui.addTask=true;S.ui.focusReq=true;render(true)};
 ACT['toggle-task']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const t=ensureDay(dt).tasks.find(x=>x.id===el.dataset.id);if(t){t.done=!t.done;Store.saveDay(dt);render(true)}};
 ACT['menu-task']=el=>openMenu([{act:'edit-task',ic:'pencil',t:'עריכה',data:{id:el.dataset.id}},{act:'ask-del-task',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
 function stepsHtml(date,ro){
@@ -639,26 +669,18 @@ function foodTotals(day){let k=0,p=0,ai=false,any=false;for(const m of Object.va
 function foodHtml(date,ro){
   const d=dayOf(date),t=foodTotals(d);
   let wave='M0 34';for(let i=0;i<6;i++)wave+=`q30 -30 60 0t60 0`;
-  const meal=([k,name])=>{const m=d.meals[k];const a=m.actual;
-    const plan=S.ui.editPlan===k&&!ro?`<div class="slip"><span class="lb">תכנון</span><input class="planin" data-focus="1" data-k="${k}" value="${esc(m.plan)}" maxlength="80" data-in="plan-input" aria-label="תכנון ל${esc(name)}"></div>`
-      :`<${ro?'div':'button'} class="slip plan" ${ro?'':`data-act="edit-plan" data-k="${k}"`}><span class="lb">תכנון</span><span class="x">${m.plan?esc(m.plan):`<span style="opacity:.6">${ro?'לא תוכנן':'מה מתכננים לאכול?'}</span>`}</span></${ro?'div':'button'}>`;
-    let act='';
-    if(a){const fol=a.followed!==false;act=`<div class="slip act ${fol?'fol':'dif'}">${ro?'':moreBtn('menu-meal',k,'style="position:absolute;inset-inline-end:8px;top:8px"')}<span class="lb">בפועל</span><span class="x">${esc(a.text)}</span>${(a.kcal!=null||a.protein!=null)?`<div class="nchips">${a.kcal!=null?`<span class="nchip" style="background:var(--pink)">${a.ai?'≈ ':''}${fmtNum(a.kcal)} קל׳</span>`:''}${a.protein!=null?`<span class="nchip" style="background:var(--lime)">${a.ai?'≈ ':''}${fmtNum(a.protein)} ג׳ חלבון</span>`:''}</div>`:''}<span class="hand" style="font-size:20px;display:flex;gap:6px;align-items:center">${m.plan?(fol?`${ico('check',18,3)} כמו שתכננתי`:`★ קצת אחרת`):''}</span></div>`}
-    else act=ro?`<div class="slip empty-act"><span class="lb">בפועל</span><span class="x" style="opacity:.6">לא מולא</span></div>`:`<button class="slip empty-act" data-act="add-food" data-k="${k}"><span class="lb">בפועל</span><span class="x" style="opacity:.6">מה אכלת בפועל?</span></button>`;
-    const quick=(!ro&&!a&&m.plan&&m.plan.trim()&&S.ui.editPlan!==k)?`<button class="chip lime-q" style="align-self:flex-start;background:var(--lime);border-style:solid;color:var(--ink-fixed)" data-act="ate-plan" data-k="${k}">${ico('check',16,3)} אכלתי כמו שתכננתי</button>`:'';
-    return `<div class="meal"><h3><span style="width:42px;height:42px;display:block;flex:none">${FLOWERS[k]()}</span>${name}</h3>${plan}${quick}${act}</div>`};
-  return `<section class="foodband" aria-label="מה אוכלים היום?"><svg class="wave" viewBox="0 0 720 60" preserveAspectRatio="none" aria-hidden="true"><path d="${wave}V70H0Z" fill="var(--green)"/><path d="${wave}" fill="none" stroke="var(--ink)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
-  <span class="stitle lav" style="top:30px"><span class="dc">${GX.flower(COL.pink,COL.lime)}</span>מה אוכלים היום?</span>
+  const meal=([k,name])=>{const m=d.meals[k];const a=m.actual;let body;
+    if(a)body=`<div class="slip act">${ro?'':moreBtn('menu-meal',k,'style="position:absolute;inset-inline-end:8px;top:8px"')}<span class="x">${esc(a.text)}</span>${(a.kcal!=null||a.protein!=null)?`<div class="nchips">${a.kcal!=null?`<span class="nchip" style="background:var(--pink)">${a.ai?'≈ ':''}${fmtNum(a.kcal)} קל׳</span>`:''}${a.protein!=null?`<span class="nchip" style="background:var(--lime)">${a.ai?'≈ ':''}${fmtNum(a.protein)} ג׳ חלבון</span>`:''}</div>`:''}</div>`;
+    else body=ro?`<div class="slip empty-act"><span class="x" style="opacity:.6">לא מולא</span></div>`:`<button class="slip empty-act" data-act="add-food" data-k="${k}"><span class="x" style="opacity:.6">מה אכלת? לחצו להוספה</span></button>`;
+    return `<div class="meal"><h3><span style="width:42px;height:42px;display:block;flex:none">${FLOWERS[k]()}</span>${name}</h3>${body}</div>`};
+  return `<section class="foodband" aria-label="מה אכלתי היום?"><svg class="wave" viewBox="0 0 720 60" preserveAspectRatio="none" aria-hidden="true"><path d="${wave}V70H0Z" fill="var(--green)"/><path d="${wave}" fill="none" stroke="var(--ink)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
+  <span class="stitle lav" style="top:30px"><span class="dc">${GX.flower(COL.pink,COL.lime)}</span>מה אכלתי היום?</span>
   <div class="fin"><div class="ftool">
    <div class="ntotal">${tapeEl('var(--tape)')}<div class="rowb"><span class="pt">אכלתי היום</span>${t.ai?`<span class="chip" style="background:var(--lav-l);border-style:solid">כולל הערכות AI</span>`:''}</div>
    <div class="rowb" style="gap:18px;flex-wrap:nowrap"><div class="itm"><span class="stk" style="width:70px;height:70px;transform:rotate(-5deg)">${GX.badge(COL.orange,14)}<span style="font-size:${t.k>9999?18:t.k>999?21:26}px">${t.any||t.k?fmtNum(t.k):'0'}</span></span><div><b>קלוריות</b><div class="pts">עד עכשיו</div></div></div><div class="itm"><span class="stk" style="width:70px;height:70px;transform:rotate(4deg)">${GX.badge(COL.lime,12)}<span style="font-size:26px">${fmtNum(t.p)}</span></span><div><b>גרם חלבון</b><div class="pts">עד עכשיו</div></div></div></div></div>${ro?'<span></span>':`<button class="btn sticker" data-act="add-food">+ הוספת אוכל</button>`}</div>
   <div class="meals">${MEALS.map(meal).join('')}</div>
   <div class="signoff"><span>${GX.flower(COL.lime,COL.pink)}</span>נתראה מחר, עמוד חדש מחכה לנו!<span>${GX.flower(COL.pink,COL.lime)}</span></div></div></section>`;
 }
-ACT['edit-plan']=el=>{S.ui.editPlan=el.dataset.k;render(true)};
-INP['plan-input']=el=>{const k=el.dataset.k;ensureDay(S.ui.date).meals[k].plan=el.value;clearTimeout(INP._pt);INP._pt=setTimeout(()=>Store.saveDay(S.ui.date),700)};
-document.addEventListener('focusout',e=>{if(e.target&&e.target.matches&&e.target.matches('.planin')){S.ui.editPlan=null;Store.saveDay(S.ui.date);render(true)}});
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('.planin'))e.target.blur()});
 ACT['menu-meal']=el=>openMenu([{act:'add-food',ic:'pencil',t:'עריכה',data:{k:el.dataset.id,edit:1}},{act:'ask-del-meal',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
 function dayPage(date){
   S.ui.date=date;const ro=!canEdit(date);const isToday=date===todayStr();
@@ -725,10 +747,17 @@ POP.block={label:'פעילות',cls:'w',render:d=>`${popTape()}<div class="hd"><
 ${d.brk?`<div class="stack" style="gap:8px"><div class="row" style="gap:8px">${ico('cup',20)}<b>הפסקה בתוך הפעילות</b></div><div class="note solid" style="background:var(--lav-l);padding:12px;border-style:dashed;display:grid;gap:10px"><div class="field"><label for="bk">שם</label><input id="bk" class="in sm" value="${esc(d.bt)}" maxlength="30" data-in="b-bt" ${d.brk===2?'data-focus="1"':''}></div><div class="twin"><div class="field"><label>משעה</label><input class="in sm" type="time" value="${esc(d.bs)}" data-in="b-bs"></div><div class="field"><label>עד שעה</label><input class="in sm" type="time" value="${esc(d.be)}" data-in="b-be"></div></div><div><button type="button" class="ghost red" data-act="b-rmbrk">${ico('trash',16)} הסרת ההפסקה</button></div></div></div>`
 :`<div class="stack" style="gap:6px;align-items:flex-start"><button type="button" class="ghost" data-act="b-addbrk">הוספת הפסקה בתוך הפעילות ${ico('cup',20)}</button><div class="hint">למשל 10:00–10:30 באמצע יום עבודה. אופציונלי</div></div>`}
 ${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="submit">שמירה</button></div></div>`};
-function blockDefaults(){const n=new Date();const h=Math.min(23,n.getHours()+1);return{start:`${pad2(h)}:00`,end:`${pad2(Math.min(23,h+1))}:00`}}
+const tmin=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m};
+const tfmt=m=>`${pad2(Math.floor(m/60))}:${pad2(m%60)}`;
+// ברירת מחדל לפעילות חדשה: מתחילה כשהקודמת (זו שנגמרת הכי מאוחר) נגמרת, ונמשכת שעה
+function blockDefaults(){
+  const bl=dayOf(S.ui.date).blocks.filter(b=>b.end);
+  if(bl.length){const last=bl.reduce((a,b)=>tmin(b.end)>tmin(a.end)?b:a);const st=Math.min(tmin(last.end),23*60+58);return{start:tfmt(st),end:tfmt(Math.min(st+60,23*60+59))}}
+  const n=new Date();const h=Math.min(23,n.getHours()+1);return{start:`${pad2(h)}:00`,end:`${pad2(Math.min(23,h+1))}:00`};
+}
 ACT['add-block']=()=>{const df=blockDefaults();openPopup('block',{id:null,title:'',start:df.start,end:df.end,brk:0,bt:'הפסקה',bs:'',be:'',err:''})};
 ACT['edit-block']=el=>{closeMenu();const b=dayOf(S.ui.date).blocks.find(x=>x.id===el.dataset.id);if(!b)return;const n=b.note;openPopup('block',{id:b.id,title:b.title,start:b.start,end:b.end,brk:n||el.dataset.brk?2:0,bt:n?n.title:'הפסקה',bs:n?n.start:'',be:n?n.end:'',err:'',status:b.status})};
-INP['b-title']=el=>{S.popup.d.title=el.value};INP['b-start']=el=>{S.popup.d.start=el.value};INP['b-end']=el=>{S.popup.d.end=el.value};INP['b-bt']=el=>{S.popup.d.bt=el.value};INP['b-bs']=el=>{S.popup.d.bs=el.value};INP['b-be']=el=>{S.popup.d.be=el.value};
+INP['b-title']=el=>{S.popup.d.title=el.value};INP['b-start']=el=>{const d=S.popup.d;d.start=el.value;if(!d.id&&!d.endTouched&&/^\d\d:\d\d$/.test(el.value)){d.end=tfmt(Math.min(tmin(el.value)+60,23*60+59));const e=$('#be');if(e)e.value=d.end}};INP['b-end']=el=>{S.popup.d.end=el.value;S.popup.d.endTouched=true};INP['b-bt']=el=>{S.popup.d.bt=el.value};INP['b-bs']=el=>{S.popup.d.bs=el.value};INP['b-be']=el=>{S.popup.d.be=el.value};
 ACT['b-addbrk']=()=>{const d=S.popup.d;d.brk=2;if(!d.bs&&d.start&&d.end){const [h,m]=d.start.split(':').map(Number);const t=h*60+m+60;d.bs=`${pad2(Math.floor(t/60)%24)}:${pad2(t%60)}`;d.be=`${pad2(Math.floor((t+30)/60)%24)}:${pad2((t+30)%60)}`}renderPopup()};
 ACT['b-rmbrk']=()=>{const d=S.popup.d;d.brk=0;d.bs='';d.be='';renderPopup()};
 SUB['save-block']=()=>{
@@ -756,10 +785,10 @@ ACT['st-save']=()=>{const dt=S.ui.date;ensureDay(dt).steps=Math.max(0,+S.popup.d
 /* ---------- score breakdown ---------- */
 POP.score={label:'איך נבנה הציון',cls:'w',render:d=>{const c=calc(dayOf(d.date),goal());const t=tierOf(c.score);
   const names={tasks:['משימות',COL.pink,`${'a'}`],schedule:['לו״ז',COL.lime],food:['אוכל',COL.lav],steps:['צעדים',COL.green]};
-  const det=p=>p.k==='steps'?`${fmtNum(p.a)} מתוך ${fmtNum(p.b)}`:`${p.a} מתוך ${p.b}`;
+  const det=p=>p.k==='steps'?`${fmtNum(p.a)} מתוך ${fmtNum(p.b)}`:p.k==='food'?`${p.a} מתוך 3 ארוחות עיקריות תועדו`:`${p.a} מתוך ${p.b}`;
   return `${popTape()}${popHead('איך נבנה הציון?')}<div class="rowb" style="flex-wrap:nowrap"><div><div class="pts">סכום החלקים</div><div class="suez" style="font-size:28px">${c.score==null?'עוד אין ציון':`= ${c.score} מתוך 100`}</div></div>${c.score==null?'':stk(t,c.score,92,-5)}</div>
-  <div class="stack" style="gap:12px">${['tasks','schedule','food','steps'].map(k=>{const p=c.parts.find(x=>x.k===k);const n=names[k];return `<div class="row" style="gap:12px"><span class="suez" style="min-width:64px;font-size:20px;direction:ltr;text-align:center">${p?`${p.pts}/${p.share}`:'–'}</span><div class="track grow" style="height:18px;border-width:2px"><i style="width:${p?Math.round(p.f*100):0}%;background:${n[1]}"></i></div><div style="text-align:start;min-width:120px"><b>${n[0]} · ${p?p.share+'%':'לא נספר'}</b><div class="pts">${p?det(p):'לא תוכנן'}</div></div><span style="width:30px;height:30px;display:block;flex:none">${GX.blob(n[1],k.length)}</span></div>`}).join('')}</div>
-  <p class="pts">כל חלק נספר לפי מה שתכננת, לא לפי כמה תכננת.</p><p class="pts">חלק שלא תכננת (למשל בלי יעד צעדים) לא נספר, והציון מתחלק מחדש.</p>`}};
+  <div class="stack" style="gap:12px">${['tasks','schedule','food','steps'].map(k=>{const p=c.parts.find(x=>x.k===k);const n=names[k];return `<div class="row" style="gap:12px"><span class="suez" style="min-width:64px;font-size:20px;direction:ltr;text-align:center">${p?`${p.pts}/${p.share}`:'–'}</span><div class="track grow" style="height:18px;border-width:2px"><i style="width:${p?Math.round(p.f*100):0}%;background:${n[1]}"></i></div><div style="text-align:start;min-width:120px"><b>${n[0]} · ${p?p.share+'%':'לא נספר'}</b><div class="pts">${p?det(p):(k==='food'?'עוד לא תועדה ארוחה':'לא תוכנן')}</div></div><span style="width:30px;height:30px;display:block;flex:none">${GX.blob(n[1],k.length)}</span></div>`}).join('')}</div>
+  <p class="pts">כל חלק נספר לפי מה שתכננת, לא לפי כמה תכננת.</p><p class="pts">חלק שלא תכננת (למשל בלי יעד צעדים) לא נספר, והציון מתחלק מחדש. באוכל נספר תיעוד ארוחת בוקר, צהריים וערב (נשנושים לא נספרים), ורק אם תועדה לפחות ארוחה אחת.</p>`}};
 ACT['score-info']=el=>openPopup('score',{date:el.dataset.d||S.ui.date});
 /* ---------- food (AI optional) ---------- */
 const spk=(w=16)=>GX.sparkle(COL.lime).replace('class="g "',`class="g" style="width:${w}px;height:${w}px"`);
@@ -769,10 +798,10 @@ function recentMeals(k){
   return same.concat(other).slice(0,6);
 }
 POP.food={label:'הוספת אוכל',cls:'w',render:d=>{
-  const meal=dayOf(S.ui.date).meals[d.k]||{plan:''};const calcing=d.status==='calc';const rec=d.edit?[]:recentMeals(d.k);d.rec=rec;
+  const calcing=d.status==='calc';const rec=d.edit?[]:recentMeals(d.k);d.rec=rec;
   const main=d.ai
    ?`<div class="field"><label for="ft">מה אכלת? כתבו הכול ביחד, עם כמויות</label><textarea id="ft" class="in" rows="3" maxlength="400" data-in="f-text" data-focus="1" placeholder="למשל: שניצל אפוי 150 גרם, סלט ירקות, חצי כוס אורז">${esc(d.text)}</textarea><div class="hint">אין צורך לפרק לרכיבים. ה-AI יפרק בעצמו. ככל שיש יותר כמויות, ההערכה מדויקת יותר</div></div>`
-   :`<div class="field"><label for="ft">מה אכלת?</label><input id="ft" class="in" value="${esc(d.text)}" maxlength="120" data-in="f-text" data-focus="1" placeholder="${esc(meal.plan||'למשל: שניצל אפוי עם סלט')}"></div><div class="twin"><div class="field"><label>קלוריות (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.kcal)}" data-in="f-kcal"></div><div class="field"><label>חלבון בגרם (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.protein)}" data-in="f-prot"></div></div>`;
+   :`<div class="field"><label for="ft">מה אכלת?</label><input id="ft" class="in" value="${esc(d.text)}" maxlength="120" data-in="f-text" data-focus="1" placeholder="למשל: שניצל אפוי עם סלט"></div><div class="twin"><div class="field"><label>קלוריות (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.kcal)}" data-in="f-kcal"></div><div class="field"><label>חלבון בגרם (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.protein)}" data-in="f-prot"></div></div>`;
   const est=d.est?`<div class="res"><div class="note solid" style="background:var(--pink-l)"><label class="lbl" for="ek">קלוריות</label><div class="row"><span class="suez" style="font-size:26px">≈</span><input id="ek" class="in sm num" style="font-family:'Suez One';font-size:26px" inputmode="numeric" value="${d.est.kcal}" data-in="f-ek"></div></div><div class="note solid" style="background:var(--lime-l)"><label class="lbl" for="ep">חלבון (גרם)</label><div class="row"><span class="suez" style="font-size:26px">≈</span><input id="ep" class="in sm num" style="font-family:'Suez One';font-size:26px" inputmode="numeric" value="${d.est.protein}" data-in="f-ep"></div></div></div>
    <details class="how"><summary>מה ה-AI חישב? ${spk(14)}</summary><ul style="margin:8px 0 2px;padding-inline-start:20px">${d.est.items.map(i=>`<li><b>${esc(i.name)}</b>${i.amount?` · ${esc(i.amount)}`:''} · ${i.kcal} קל׳ · ${i.protein} ג׳ חלבון</li>`).join('')}</ul></details><div class="hint">${spk(16)} זו הערכה. אפשר לתקן כל מספר ידנית</div>`:'';
   return `${popTape()}${popHead(d.edit?'עריכת אוכל':'הוספת אוכל')}
@@ -783,32 +812,28 @@ POP.food={label:'הוספת אוכל',cls:'w',render:d=>{
   ${calcing?`<div class="banner lav" role="status"><span class="dots"><i></i><i></i><i></i></span><span class="grow">ה-AI מחשב את ההערכה…</span>${spk(24)}</div>`:''}
   ${d.status==='err'?`<div class="banner pink" role="alert"><span class="grow">${esc(d.errMsg||'לא הצלחנו לחשב עכשיו. אפשר לנסות שוב, או לשמור בלי חישוב.')}</span></div>`:''}
   ${est}
-  ${meal.plan&&meal.plan.trim()?`<div class="row" style="gap:8px;flex-wrap:wrap"><b>כמו שתכננת?</b><button type="button" class="chip ${d.followed?'on':''}" data-act="f-fol" data-v="1">כמו שתכננתי</button><button type="button" class="chip ${!d.followed?'on':''}" data-act="f-fol" data-v="0">קצת אחרת</button></div>`:''}
   <div class="acts">${d.ai&&!d.est?'<button type="button" class="ghost" data-act="f-save-nocalc">שמירה בלי חישוב</button>':''}<span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button>${d.ai&&!d.est?`<button class="btn primary" type="button" data-act="f-calc" ${calcing?'disabled':''}>${d.status==='err'?'נסו שוב':'חשבו עם AI'} ${spk(22)}</button>`:`<button class="btn primary" type="button" data-act="f-save" ${calcing?'disabled':''}>שמירה</button>`}</div>`}};
 ACT['add-food']=el=>{closeMenu();const dt=S.ui.date;const k=el.dataset.k||(MEALS.find(([x])=>!dayOf(dt).meals[x].actual)||MEALS[0])[0];const m=dayOf(dt).meals[k];const a=m.actual;const edit=!!(el.dataset.edit&&a);const ai=!!(edit&&a&&a.ai);
-  openPopup('food',{k,edit,ai,text:a?a.text:'',kcal:a&&a.kcal!=null&&!a.ai?a.kcal:'',protein:a&&a.protein!=null&&!a.ai?a.protein:'',followed:a?a.followed!==false:true,est:ai&&a.items?{items:a.items,kcal:a.kcal,protein:a.protein}:null,status:'idle'})};
+  openPopup('food',{k,edit,ai,text:a?a.text:'',kcal:a&&a.kcal!=null&&!a.ai?a.kcal:'',protein:a&&a.protein!=null&&!a.ai?a.protein:'',est:ai&&a.items?{items:a.items,kcal:a.kcal,protein:a.protein}:null,status:'idle'})};
 ACT['f-meal']=el=>{S.popup.d.k=el.dataset.k;renderPopup()};
 INP['f-text']=el=>{const d=S.popup.d;d.text=el.value;if(d.ai&&d.est){d.est=null;d.status='idle';renderPopup();const t=$('#ft');if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length)}}};
 INP['f-kcal']=el=>{S.popup.d.kcal=el.value};INP['f-prot']=el=>{S.popup.d.protein=el.value};
 INP['f-ek']=el=>{S.popup.d.est.kcal=Math.max(0,Math.round(+el.value||0))};INP['f-ep']=el=>{S.popup.d.est.protein=Math.max(0,Math.round(+el.value||0))};
 ACT['f-ai']=()=>{const d=S.popup.d;d.ai=!d.ai;d.est=null;d.status='idle';renderPopup()};
-ACT['f-fol']=el=>{S.popup.d.followed=el.dataset.v==='1';renderPopup()};
 function saveFood(withEst){
   const d=S.popup.d;const day=ensureDay(S.ui.date);const meal=day.meals[d.k];
-  const text=(d.text||'').trim()||(!d.ai?(meal.plan||'').trim():'');
+  const text=(d.text||'').trim();
   if(!text){toast('צריך לכתוב מה אכלת');return}
   let kcal=null,protein=null,ai=false,items=null;
   if(d.ai&&withEst&&d.est){ai=true;kcal=d.est.kcal;protein=d.est.protein;items=d.est.items}
   else if(!d.ai){if(d.kcal!==''&&d.kcal!=null)kcal=Math.max(0,Math.round(+d.kcal||0));if(d.protein!==''&&d.protein!=null)protein=Math.max(0,Math.round(+d.protein||0))}
-  const followed=meal.plan&&meal.plan.trim()?!!d.followed:true;
-  meal.actual={text,kcal,protein,ai,followed};if(items)meal.actual.items=items;
+  meal.actual={text,kcal,protein,ai};if(items)meal.actual.items=items;
   Store.saveDay(S.ui.date);closePopup();render(true);toast('נשמר');
 }
 ACT['f-save']=()=>saveFood(true);ACT['f-save-nocalc']=()=>saveFood(false);
-ACT['f-recent']=el=>{const d=S.popup.d;const r=(d.rec||[])[+el.dataset.i];if(!r)return;const meal=dayOf(S.ui.date).meals[d.k];const plan=(meal.plan||'').trim();
-  const day=ensureDay(S.ui.date);const a={text:r.text,kcal:r.kcal!=null?r.kcal:null,protein:r.protein!=null?r.protein:null,ai:r.ai,followed:plan?plan===r.text.trim():true};if(r.items)a.items=r.items;
-  day.meals[d.k].actual=a;Store.saveDay(S.ui.date);closePopup();render(true);toast(`נוסף: ${r.text.length>22?r.text.slice(0,21)+'…':r.text}`)};
-ACT['ate-plan']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const m=ensureDay(dt).meals[el.dataset.k];if(!m.plan||!m.plan.trim())return;m.actual={text:m.plan.trim(),kcal:null,protein:null,ai:false,followed:true};Store.saveDay(dt);render(true);toast('נרשם: אכלת כמו שתכננת')};
+ACT['f-recent']=el=>{const d=S.popup.d;const r=(d.rec||[])[+el.dataset.i];if(!r)return;
+  const a={text:r.text,kcal:r.kcal!=null?r.kcal:null,protein:r.protein!=null?r.protein:null,ai:r.ai};if(r.items)a.items=r.items;
+  ensureDay(S.ui.date).meals[d.k].actual=a;Store.saveDay(S.ui.date);closePopup();render(true);toast(`נוסף: ${r.text.length>22?r.text.slice(0,21)+'…':r.text}`)};
 async function estimateFood(text){
   if(S.mode==='api'){try{return await Api.post('/api/estimate',{text})}catch(e){throw{code:e.code==='ai_unavailable'?'unavailable':e.code==='ai_limit'?'limit':'err'}}}
   const sample=window.claude&&window.claude.use?await window.claude.use('sample'):null;
