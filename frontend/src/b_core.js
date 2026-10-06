@@ -149,7 +149,7 @@ function render(keep){
   window.scrollTo(0,keep?y:0);
 }
 function softRender(){const a=document.activeElement;if(S.popup||S.menu||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&$('#app').contains(a)))return;if(Date.now()-lastDown<1500){clearTimeout(softT);softT=setTimeout(softRender,1600);return}render(true)}
-function afterRender(){$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const f=$('[data-focus]');if(f){f.focus();if(f.select&&f.dataset.focus==='sel')f.select()}}
+function afterRender(){if(typeof checkCelebrate==='function')setTimeout(checkCelebrate,0);$$('textarea[data-auto]').forEach(t=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,56)+'px'});const f=$('[data-focus]');if(f){f.focus();if(f.select&&f.dataset.focus==='sel')f.select()}}
 /* ---------- popups & menus ---------- */
 function openPopup(type,d){S.popup={type,d:d||{}};renderPopup()}
 function renderPopup(){const el=$('#popup');if(!el)return;if(!S.popup){el.innerHTML='';return}
@@ -174,7 +174,7 @@ document.addEventListener('change',e=>{const el=e.target.closest('[data-ch]');if
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-submit]');if(f){e.preventDefault();const fn=SUB[f.dataset.submit];if(fn){try{fn(f,e)}catch(err){console.error(err)}}}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.menu)closeMenu();else if(!(S.popup&&POP[S.popup.type]&&POP[S.popup.type].locked))closePopup()}});
 window.addEventListener('hashchange',()=>{closePopup();render(false)});
-const VERSION='1.7.0';
+const VERSION='1.8.0';
 async function saveFile(filename,blob){try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;if(dl){await dl.save({filename,data:blob});return true}}catch(e){if(e&&e.code==='cancelled')return false}
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);return true}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.flush()});window.addEventListener('pagehide',()=>Store.flush());

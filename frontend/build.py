@@ -2,7 +2,7 @@
 import os
 here=os.path.dirname(os.path.abspath(__file__));src=os.path.join(here,'src')
 css=open(os.path.join(src,'styles.css'),encoding='utf-8').read()
-order=['a_gfx.js','b_core.js','c_screens.js','d_popups.js','e_social.js','g_api.js','f_main.js']
+order=['a_gfx.js','b_core.js','c_screens.js','d_popups.js','e_social.js','g_api.js','h_celebrate.js','f_main.js']
 js=''.join(open(os.path.join(src,f),encoding='utf-8').read()+'\n' for f in order)
 html=f'''<!doctype html>
 <html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>היום שלי</title>
