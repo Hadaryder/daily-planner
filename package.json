@@ -1,6 +1,6 @@
 {
   "name": "daily-planner",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "private": true,
   "type": "module",
   "description": "היום שלי — מתכנן יומי צבעוני. שרת Node 22 ללא תלויות.",

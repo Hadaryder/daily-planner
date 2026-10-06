@@ -66,7 +66,7 @@ const WAVE_I=`<i><svg viewBox="0 0 12 14" width="12" height="14" fill="none" str
 const moreBtn=(act,id,extra='')=>`<button class="more" data-act="${act}" data-menu data-id="${id}" ${extra} aria-label="אפשרויות"><i></i><i></i><i></i></button>`;
 function chipsHtml(c){
   const get=k=>c.parts.find(p=>p.k===k);const t=get('tasks'),s=get('schedule'),f=get('food'),w=get('steps');
-  const one=(col,l,v)=>`<span class="chipx" style="background:var(--${col})"><b>${v}</b>${l}</span>`;
+  const one=(col,l,v)=>`<span class="chipx" style="background:var(--${col})">${l}<b>${v}</b></span>`;
   return `<div class="chips">${one('pink','משימות',t?`${t.a}/${t.b}`:'–')}${one('lime','לו״ז',s?`${s.a}/${s.b}`:'–')}${one('lav','אוכל',f?`${f.a}/${f.b}`:'–')}${one('green','צעדים',w?Math.round(w.f*100)+'%':'–')}</div>`;
 }
 function scoreBig(c){
@@ -74,10 +74,11 @@ function scoreBig(c){
   const t=tierOf(c.score);const shape=c.score===100?GX.flower100():t==='great'?GX.badge(COL.orange,14):t==='good'?GX.badge(COL.lime,12):t==='soft'?GX.blob(COL.lav,5):`<svg class="g" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 6"/></svg>`;
   return `<div class="score-big" ${t==='none'?'style="color:var(--ink)"':''}>${shape}<div class="in-t" ${t==='none'?'style="color:var(--ink)"':''}><small>הציון שלי היום</small><span class="n ${c.score===100?'n3':''}">${c.score==null?'—':c.score}<small style="font-size:.3em">${c.score==null?'':'/100'}</small></span><small>${praise(c.score)}</small></div></div>`;
 }
+const ARROW=`<svg class="arr" viewBox="0 0 130 90" fill="none" aria-hidden="true"><path d="M8 76C30 14 84 6 112 44" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M92 40L113 46L110 24" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 function headerHtml(date,ro){
   const d=dayOf(date),c=calc(d,goal());const msg=ro?'ככה נראה היום ההוא':MSGS[(pdate(date).getDate()+pdate(date).getMonth())%MSGS.length];
-  return `<div class="hero"><div class="h-title"><span class="fl">${GX.flower(COL.pink,COL.lime)}</span><span class="blob">${GX.blob(COL.pink,2)}</span><h1>היום שלי</h1><div class="datetag">${tapeEl()}${esc(longDate(date))}</div><div class="msg hand"><span style="width:60px">${ico('right',54,1.6)}</span><span>${esc(msg)}</span></div></div>
-  <div class="score-cl">${scoreBig(c)}<div class="stack" style="gap:10px">${chipsHtml(c)}<button class="linkbtn" data-act="score-info" data-d="${date}">איך הציון מחושב?<i>i</i></button></div></div></div>`;
+  return `<div class="hero"><div class="h-title"><span class="blob">${GX.blob(COL.pink,2)}</span><span class="fl">${GX.flower(COL.pink,COL.lime)}</span><span class="spk">${GX.sparkle(COL.lime)}</span><div class="tg"><h1>היום שלי</h1><div class="datetag">${tapeEl()}${esc(longDate(date))}</div></div><div class="msg hand"><span class="mt">${esc(msg)}</span><span class="ar">${ARROW}</span></div></div>
+  <div class="score-cl">${scoreBig(c)}<div class="stack" style="gap:10px">${chipsHtml(c)}<button class="linkbtn" data-act="score-info" data-d="${date}"><span class="lg">איך הציון מחושב?</span><span class="sm">איך מחשבים?</span><i>i</i></button></div></div></div>`;
 }
 function tasksHtml(date,ro){
   const d=dayOf(date);
@@ -85,8 +86,8 @@ function tasksHtml(date,ro){
   const add=ro?'':(S.ui.addTask?`<div class="addform" data-submit="add-task"><input class="in" data-focus="1" maxlength="80" placeholder="מה צריך לעשות?" aria-label="משימה חדשה"><button class="btn primary" type="button" data-act="submit">${ico('check',20)}</button><button class="icbtn big" type="button" data-act="cancel-add-task" aria-label="ביטול">${ico('x',22)}</button></div>`:`<button class="addrow" data-act="show-add-task"><span class="pl">${ico('plus',22,3)}</span>הוספת משימה</button>`);
   return `<section class="stack" style="gap:30px" aria-label="המשימות שלי"><div>${stitle('pink','המשימות שלי',GX.star(COL.lime))}</div><div class="tlist" style="margin-top:6px">${rows||(ro?'<div class="empty">לא היו משימות ביום הזה</div>':'')}</div>${add}</section>`;
 }
-ACT['show-add-task']=()=>{S.ui.addTask=true;render(true)};ACT['cancel-add-task']=()=>{S.ui.addTask=false;render(true)};
-SUB['add-task']=f=>{const v=$('input',f).value.trim();if(!v){S.ui.addTask=false;return render(true)}const t=todayStr();const d=ensureDay(S.ui.date||t);d.tasks.push({id:rid(),title:v,done:false});Store.saveDay(S.ui.date||t);S.ui.addTask=true;render(true)};
+ACT['show-add-task']=()=>{S.ui.addTask=true;S.ui.focusReq=true;render(true)};ACT['cancel-add-task']=()=>{S.ui.addTask=false;render(true)};
+SUB['add-task']=f=>{const v=$('input',f).value.trim();if(!v){S.ui.addTask=false;return render(true)}const t=todayStr();const d=ensureDay(S.ui.date||t);d.tasks.push({id:rid(),title:v,done:false});Store.saveDay(S.ui.date||t);S.ui.addTask=true;S.ui.focusReq=true;render(true)};
 ACT['toggle-task']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const t=ensureDay(dt).tasks.find(x=>x.id===el.dataset.id);if(t){t.done=!t.done;Store.saveDay(dt);render(true)}};
 ACT['menu-task']=el=>openMenu([{act:'edit-task',ic:'pencil',t:'עריכה',data:{id:el.dataset.id}},{act:'ask-del-task',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
 function stepsHtml(date,ro){
@@ -116,26 +117,18 @@ function foodTotals(day){let k=0,p=0,ai=false,any=false;for(const m of Object.va
 function foodHtml(date,ro){
   const d=dayOf(date),t=foodTotals(d);
   let wave='M0 34';for(let i=0;i<6;i++)wave+=`q30 -30 60 0t60 0`;
-  const meal=([k,name])=>{const m=d.meals[k];const a=m.actual;
-    const plan=S.ui.editPlan===k&&!ro?`<div class="slip"><span class="lb">תכנון</span><input class="planin" data-focus="1" data-k="${k}" value="${esc(m.plan)}" maxlength="80" data-in="plan-input" aria-label="תכנון ל${esc(name)}"></div>`
-      :`<${ro?'div':'button'} class="slip plan" ${ro?'':`data-act="edit-plan" data-k="${k}"`}><span class="lb">תכנון</span><span class="x">${m.plan?esc(m.plan):`<span style="opacity:.6">${ro?'לא תוכנן':'מה מתכננים לאכול?'}</span>`}</span></${ro?'div':'button'}>`;
-    let act='';
-    if(a){const fol=a.followed!==false;act=`<div class="slip act ${fol?'fol':'dif'}">${ro?'':moreBtn('menu-meal',k,'style="position:absolute;inset-inline-end:8px;top:8px"')}<span class="lb">בפועל</span><span class="x">${esc(a.text)}</span>${(a.kcal!=null||a.protein!=null)?`<div class="nchips">${a.kcal!=null?`<span class="nchip" style="background:var(--pink)">${a.ai?'≈ ':''}${fmtNum(a.kcal)} קל׳</span>`:''}${a.protein!=null?`<span class="nchip" style="background:var(--lime)">${a.ai?'≈ ':''}${fmtNum(a.protein)} ג׳ חלבון</span>`:''}</div>`:''}<span class="hand" style="font-size:20px;display:flex;gap:6px;align-items:center">${m.plan?(fol?`${ico('check',18,3)} כמו שתכננתי`:`★ קצת אחרת`):''}</span></div>`}
-    else act=ro?`<div class="slip empty-act"><span class="lb">בפועל</span><span class="x" style="opacity:.6">לא מולא</span></div>`:`<button class="slip empty-act" data-act="add-food" data-k="${k}"><span class="lb">בפועל</span><span class="x" style="opacity:.6">מה אכלת בפועל?</span></button>`;
-    const quick=(!ro&&!a&&m.plan&&m.plan.trim()&&S.ui.editPlan!==k)?`<button class="chip lime-q" style="align-self:flex-start;background:var(--lime);border-style:solid;color:var(--ink-fixed)" data-act="ate-plan" data-k="${k}">${ico('check',16,3)} אכלתי כמו שתכננתי</button>`:'';
-    return `<div class="meal"><h3><span style="width:42px;height:42px;display:block;flex:none">${FLOWERS[k]()}</span>${name}</h3>${plan}${quick}${act}</div>`};
-  return `<section class="foodband" aria-label="מה אוכלים היום?"><svg class="wave" viewBox="0 0 720 60" preserveAspectRatio="none" aria-hidden="true"><path d="${wave}V70H0Z" fill="var(--green)"/><path d="${wave}" fill="none" stroke="var(--ink)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
-  <span class="stitle lav" style="top:30px"><span class="dc">${GX.flower(COL.pink,COL.lime)}</span>מה אוכלים היום?</span>
+  const meal=([k,name])=>{const m=d.meals[k];const a=m.actual;let body;
+    if(a)body=`<div class="slip act">${ro?'':moreBtn('menu-meal',k,'style="position:absolute;inset-inline-end:8px;top:8px"')}<span class="x">${esc(a.text)}</span>${(a.kcal!=null||a.protein!=null)?`<div class="nchips">${a.kcal!=null?`<span class="nchip" style="background:var(--pink)">${a.ai?'≈ ':''}${fmtNum(a.kcal)} קל׳</span>`:''}${a.protein!=null?`<span class="nchip" style="background:var(--lime)">${a.ai?'≈ ':''}${fmtNum(a.protein)} ג׳ חלבון</span>`:''}</div>`:''}</div>`;
+    else body=ro?`<div class="slip empty-act"><span class="x" style="opacity:.6">לא מולא</span></div>`:`<button class="slip empty-act" data-act="add-food" data-k="${k}"><span class="x" style="opacity:.6">מה אכלת? לחצו להוספה</span></button>`;
+    return `<div class="meal"><h3><span style="width:42px;height:42px;display:block;flex:none">${FLOWERS[k]()}</span>${name}</h3>${body}</div>`};
+  return `<section class="foodband" aria-label="מה אכלתי היום?"><svg class="wave" viewBox="0 0 720 60" preserveAspectRatio="none" aria-hidden="true"><path d="${wave}V70H0Z" fill="var(--green)"/><path d="${wave}" fill="none" stroke="var(--ink)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
+  <span class="stitle lav" style="top:30px"><span class="dc">${GX.flower(COL.pink,COL.lime)}</span>מה אכלתי היום?</span>
   <div class="fin"><div class="ftool">
    <div class="ntotal">${tapeEl('var(--tape)')}<div class="rowb"><span class="pt">אכלתי היום</span>${t.ai?`<span class="chip" style="background:var(--lav-l);border-style:solid">כולל הערכות AI</span>`:''}</div>
    <div class="rowb" style="gap:18px;flex-wrap:nowrap"><div class="itm"><span class="stk" style="width:70px;height:70px;transform:rotate(-5deg)">${GX.badge(COL.orange,14)}<span style="font-size:${t.k>9999?18:t.k>999?21:26}px">${t.any||t.k?fmtNum(t.k):'0'}</span></span><div><b>קלוריות</b><div class="pts">עד עכשיו</div></div></div><div class="itm"><span class="stk" style="width:70px;height:70px;transform:rotate(4deg)">${GX.badge(COL.lime,12)}<span style="font-size:26px">${fmtNum(t.p)}</span></span><div><b>גרם חלבון</b><div class="pts">עד עכשיו</div></div></div></div></div>${ro?'<span></span>':`<button class="btn sticker" data-act="add-food">+ הוספת אוכל</button>`}</div>
   <div class="meals">${MEALS.map(meal).join('')}</div>
   <div class="signoff"><span>${GX.flower(COL.lime,COL.pink)}</span>נתראה מחר, עמוד חדש מחכה לנו!<span>${GX.flower(COL.pink,COL.lime)}</span></div></div></section>`;
 }
-ACT['edit-plan']=el=>{S.ui.editPlan=el.dataset.k;render(true)};
-INP['plan-input']=el=>{const k=el.dataset.k;ensureDay(S.ui.date).meals[k].plan=el.value;clearTimeout(INP._pt);INP._pt=setTimeout(()=>Store.saveDay(S.ui.date),700)};
-document.addEventListener('focusout',e=>{if(e.target&&e.target.matches&&e.target.matches('.planin')){S.ui.editPlan=null;Store.saveDay(S.ui.date);render(true)}});
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('.planin'))e.target.blur()});
 ACT['menu-meal']=el=>openMenu([{act:'add-food',ic:'pencil',t:'עריכה',data:{k:el.dataset.id,edit:1}},{act:'ask-del-meal',ic:'trash',t:'מחיקה',red:1,data:{id:el.dataset.id}}],el);
 function dayPage(date){
   S.ui.date=date;const ro=!canEdit(date);const isToday=date===todayStr();

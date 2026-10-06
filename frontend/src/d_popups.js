@@ -28,10 +28,17 @@ POP.block={label:'פעילות',cls:'w',render:d=>`${popTape()}<div class="hd"><
 ${d.brk?`<div class="stack" style="gap:8px"><div class="row" style="gap:8px">${ico('cup',20)}<b>הפסקה בתוך הפעילות</b></div><div class="note solid" style="background:var(--lav-l);padding:12px;border-style:dashed;display:grid;gap:10px"><div class="field"><label for="bk">שם</label><input id="bk" class="in sm" value="${esc(d.bt)}" maxlength="30" data-in="b-bt" ${d.brk===2?'data-focus="1"':''}></div><div class="twin"><div class="field"><label>משעה</label><input class="in sm" type="time" value="${esc(d.bs)}" data-in="b-bs"></div><div class="field"><label>עד שעה</label><input class="in sm" type="time" value="${esc(d.be)}" data-in="b-be"></div></div><div><button type="button" class="ghost red" data-act="b-rmbrk">${ico('trash',16)} הסרת ההפסקה</button></div></div></div>`
 :`<div class="stack" style="gap:6px;align-items:flex-start"><button type="button" class="ghost" data-act="b-addbrk">הוספת הפסקה בתוך הפעילות ${ico('cup',20)}</button><div class="hint">למשל 10:00–10:30 באמצע יום עבודה. אופציונלי</div></div>`}
 ${d.err?`<div class="err-t" role="alert">${esc(d.err)}</div>`:''}<div class="acts"><span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button><button class="btn primary" type="button" data-act="submit">שמירה</button></div></div>`};
-function blockDefaults(){const n=new Date();const h=Math.min(23,n.getHours()+1);return{start:`${pad2(h)}:00`,end:`${pad2(Math.min(23,h+1))}:00`}}
+const tmin=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m};
+const tfmt=m=>`${pad2(Math.floor(m/60))}:${pad2(m%60)}`;
+// ברירת מחדל לפעילות חדשה: מתחילה כשהקודמת (זו שנגמרת הכי מאוחר) נגמרת, ונמשכת שעה
+function blockDefaults(){
+  const bl=dayOf(S.ui.date).blocks.filter(b=>b.end);
+  if(bl.length){const last=bl.reduce((a,b)=>tmin(b.end)>tmin(a.end)?b:a);const st=Math.min(tmin(last.end),23*60+58);return{start:tfmt(st),end:tfmt(Math.min(st+60,23*60+59))}}
+  const n=new Date();const h=Math.min(23,n.getHours()+1);return{start:`${pad2(h)}:00`,end:`${pad2(Math.min(23,h+1))}:00`};
+}
 ACT['add-block']=()=>{const df=blockDefaults();openPopup('block',{id:null,title:'',start:df.start,end:df.end,brk:0,bt:'הפסקה',bs:'',be:'',err:''})};
 ACT['edit-block']=el=>{closeMenu();const b=dayOf(S.ui.date).blocks.find(x=>x.id===el.dataset.id);if(!b)return;const n=b.note;openPopup('block',{id:b.id,title:b.title,start:b.start,end:b.end,brk:n||el.dataset.brk?2:0,bt:n?n.title:'הפסקה',bs:n?n.start:'',be:n?n.end:'',err:'',status:b.status})};
-INP['b-title']=el=>{S.popup.d.title=el.value};INP['b-start']=el=>{S.popup.d.start=el.value};INP['b-end']=el=>{S.popup.d.end=el.value};INP['b-bt']=el=>{S.popup.d.bt=el.value};INP['b-bs']=el=>{S.popup.d.bs=el.value};INP['b-be']=el=>{S.popup.d.be=el.value};
+INP['b-title']=el=>{S.popup.d.title=el.value};INP['b-start']=el=>{const d=S.popup.d;d.start=el.value;if(!d.id&&!d.endTouched&&/^\d\d:\d\d$/.test(el.value)){d.end=tfmt(Math.min(tmin(el.value)+60,23*60+59));const e=$('#be');if(e)e.value=d.end}};INP['b-end']=el=>{S.popup.d.end=el.value;S.popup.d.endTouched=true};INP['b-bt']=el=>{S.popup.d.bt=el.value};INP['b-bs']=el=>{S.popup.d.bs=el.value};INP['b-be']=el=>{S.popup.d.be=el.value};
 ACT['b-addbrk']=()=>{const d=S.popup.d;d.brk=2;if(!d.bs&&d.start&&d.end){const [h,m]=d.start.split(':').map(Number);const t=h*60+m+60;d.bs=`${pad2(Math.floor(t/60)%24)}:${pad2(t%60)}`;d.be=`${pad2(Math.floor((t+30)/60)%24)}:${pad2((t+30)%60)}`}renderPopup()};
 ACT['b-rmbrk']=()=>{const d=S.popup.d;d.brk=0;d.bs='';d.be='';renderPopup()};
 SUB['save-block']=()=>{
@@ -59,10 +66,10 @@ ACT['st-save']=()=>{const dt=S.ui.date;ensureDay(dt).steps=Math.max(0,+S.popup.d
 /* ---------- score breakdown ---------- */
 POP.score={label:'איך נבנה הציון',cls:'w',render:d=>{const c=calc(dayOf(d.date),goal());const t=tierOf(c.score);
   const names={tasks:['משימות',COL.pink,`${'a'}`],schedule:['לו״ז',COL.lime],food:['אוכל',COL.lav],steps:['צעדים',COL.green]};
-  const det=p=>p.k==='steps'?`${fmtNum(p.a)} מתוך ${fmtNum(p.b)}`:`${p.a} מתוך ${p.b}`;
+  const det=p=>p.k==='steps'?`${fmtNum(p.a)} מתוך ${fmtNum(p.b)}`:p.k==='food'?`${p.a} מתוך 3 ארוחות עיקריות תועדו`:`${p.a} מתוך ${p.b}`;
   return `${popTape()}${popHead('איך נבנה הציון?')}<div class="rowb" style="flex-wrap:nowrap"><div><div class="pts">סכום החלקים</div><div class="suez" style="font-size:28px">${c.score==null?'עוד אין ציון':`= ${c.score} מתוך 100`}</div></div>${c.score==null?'':stk(t,c.score,92,-5)}</div>
-  <div class="stack" style="gap:12px">${['tasks','schedule','food','steps'].map(k=>{const p=c.parts.find(x=>x.k===k);const n=names[k];return `<div class="row" style="gap:12px"><span class="suez" style="min-width:64px;font-size:20px;direction:ltr;text-align:center">${p?`${p.pts}/${p.share}`:'–'}</span><div class="track grow" style="height:18px;border-width:2px"><i style="width:${p?Math.round(p.f*100):0}%;background:${n[1]}"></i></div><div style="text-align:start;min-width:120px"><b>${n[0]} · ${p?p.share+'%':'לא נספר'}</b><div class="pts">${p?det(p):'לא תוכנן'}</div></div><span style="width:30px;height:30px;display:block;flex:none">${GX.blob(n[1],k.length)}</span></div>`}).join('')}</div>
-  <p class="pts">כל חלק נספר לפי מה שתכננת, לא לפי כמה תכננת.</p><p class="pts">חלק שלא תכננת (למשל בלי יעד צעדים) לא נספר, והציון מתחלק מחדש.</p>`}};
+  <div class="stack" style="gap:12px">${['tasks','schedule','food','steps'].map(k=>{const p=c.parts.find(x=>x.k===k);const n=names[k];return `<div class="row" style="gap:12px"><span class="suez" style="min-width:64px;font-size:20px;direction:ltr;text-align:center">${p?`${p.pts}/${p.share}`:'–'}</span><div class="track grow" style="height:18px;border-width:2px"><i style="width:${p?Math.round(p.f*100):0}%;background:${n[1]}"></i></div><div style="text-align:start;min-width:120px"><b>${n[0]} · ${p?p.share+'%':'לא נספר'}</b><div class="pts">${p?det(p):(k==='food'?'עוד לא תועדה ארוחה':'לא תוכנן')}</div></div><span style="width:30px;height:30px;display:block;flex:none">${GX.blob(n[1],k.length)}</span></div>`}).join('')}</div>
+  <p class="pts">כל חלק נספר לפי מה שתכננת, לא לפי כמה תכננת.</p><p class="pts">חלק שלא תכננת (למשל בלי יעד צעדים) לא נספר, והציון מתחלק מחדש. באוכל נספר תיעוד ארוחת בוקר, צהריים וערב (נשנושים לא נספרים), ורק אם תועדה לפחות ארוחה אחת.</p>`}};
 ACT['score-info']=el=>openPopup('score',{date:el.dataset.d||S.ui.date});
 /* ---------- food (AI optional) ---------- */
 const spk=(w=16)=>GX.sparkle(COL.lime).replace('class="g "',`class="g" style="width:${w}px;height:${w}px"`);
@@ -72,10 +79,10 @@ function recentMeals(k){
   return same.concat(other).slice(0,6);
 }
 POP.food={label:'הוספת אוכל',cls:'w',render:d=>{
-  const meal=dayOf(S.ui.date).meals[d.k]||{plan:''};const calcing=d.status==='calc';const rec=d.edit?[]:recentMeals(d.k);d.rec=rec;
+  const calcing=d.status==='calc';const rec=d.edit?[]:recentMeals(d.k);d.rec=rec;
   const main=d.ai
    ?`<div class="field"><label for="ft">מה אכלת? כתבו הכול ביחד, עם כמויות</label><textarea id="ft" class="in" rows="3" maxlength="400" data-in="f-text" data-focus="1" placeholder="למשל: שניצל אפוי 150 גרם, סלט ירקות, חצי כוס אורז">${esc(d.text)}</textarea><div class="hint">אין צורך לפרק לרכיבים. ה-AI יפרק בעצמו. ככל שיש יותר כמויות, ההערכה מדויקת יותר</div></div>`
-   :`<div class="field"><label for="ft">מה אכלת?</label><input id="ft" class="in" value="${esc(d.text)}" maxlength="120" data-in="f-text" data-focus="1" placeholder="${esc(meal.plan||'למשל: שניצל אפוי עם סלט')}"></div><div class="twin"><div class="field"><label>קלוריות (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.kcal)}" data-in="f-kcal"></div><div class="field"><label>חלבון בגרם (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.protein)}" data-in="f-prot"></div></div>`;
+   :`<div class="field"><label for="ft">מה אכלת?</label><input id="ft" class="in" value="${esc(d.text)}" maxlength="120" data-in="f-text" data-focus="1" placeholder="למשל: שניצל אפוי עם סלט"></div><div class="twin"><div class="field"><label>קלוריות (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.kcal)}" data-in="f-kcal"></div><div class="field"><label>חלבון בגרם (אופציונלי)</label><input class="in sm num" inputmode="numeric" value="${esc(d.protein)}" data-in="f-prot"></div></div>`;
   const est=d.est?`<div class="res"><div class="note solid" style="background:var(--pink-l)"><label class="lbl" for="ek">קלוריות</label><div class="row"><span class="suez" style="font-size:26px">≈</span><input id="ek" class="in sm num" style="font-family:'Suez One';font-size:26px" inputmode="numeric" value="${d.est.kcal}" data-in="f-ek"></div></div><div class="note solid" style="background:var(--lime-l)"><label class="lbl" for="ep">חלבון (גרם)</label><div class="row"><span class="suez" style="font-size:26px">≈</span><input id="ep" class="in sm num" style="font-family:'Suez One';font-size:26px" inputmode="numeric" value="${d.est.protein}" data-in="f-ep"></div></div></div>
    <details class="how"><summary>מה ה-AI חישב? ${spk(14)}</summary><ul style="margin:8px 0 2px;padding-inline-start:20px">${d.est.items.map(i=>`<li><b>${esc(i.name)}</b>${i.amount?` · ${esc(i.amount)}`:''} · ${i.kcal} קל׳ · ${i.protein} ג׳ חלבון</li>`).join('')}</ul></details><div class="hint">${spk(16)} זו הערכה. אפשר לתקן כל מספר ידנית</div>`:'';
   return `${popTape()}${popHead(d.edit?'עריכת אוכל':'הוספת אוכל')}
@@ -86,32 +93,28 @@ POP.food={label:'הוספת אוכל',cls:'w',render:d=>{
   ${calcing?`<div class="banner lav" role="status"><span class="dots"><i></i><i></i><i></i></span><span class="grow">ה-AI מחשב את ההערכה…</span>${spk(24)}</div>`:''}
   ${d.status==='err'?`<div class="banner pink" role="alert"><span class="grow">${esc(d.errMsg||'לא הצלחנו לחשב עכשיו. אפשר לנסות שוב, או לשמור בלי חישוב.')}</span></div>`:''}
   ${est}
-  ${meal.plan&&meal.plan.trim()?`<div class="row" style="gap:8px;flex-wrap:wrap"><b>כמו שתכננת?</b><button type="button" class="chip ${d.followed?'on':''}" data-act="f-fol" data-v="1">כמו שתכננתי</button><button type="button" class="chip ${!d.followed?'on':''}" data-act="f-fol" data-v="0">קצת אחרת</button></div>`:''}
   <div class="acts">${d.ai&&!d.est?'<button type="button" class="ghost" data-act="f-save-nocalc">שמירה בלי חישוב</button>':''}<span class="sp"></span><button class="btn secondary" type="button" data-act="close-popup">ביטול</button>${d.ai&&!d.est?`<button class="btn primary" type="button" data-act="f-calc" ${calcing?'disabled':''}>${d.status==='err'?'נסו שוב':'חשבו עם AI'} ${spk(22)}</button>`:`<button class="btn primary" type="button" data-act="f-save" ${calcing?'disabled':''}>שמירה</button>`}</div>`}};
 ACT['add-food']=el=>{closeMenu();const dt=S.ui.date;const k=el.dataset.k||(MEALS.find(([x])=>!dayOf(dt).meals[x].actual)||MEALS[0])[0];const m=dayOf(dt).meals[k];const a=m.actual;const edit=!!(el.dataset.edit&&a);const ai=!!(edit&&a&&a.ai);
-  openPopup('food',{k,edit,ai,text:a?a.text:'',kcal:a&&a.kcal!=null&&!a.ai?a.kcal:'',protein:a&&a.protein!=null&&!a.ai?a.protein:'',followed:a?a.followed!==false:true,est:ai&&a.items?{items:a.items,kcal:a.kcal,protein:a.protein}:null,status:'idle'})};
+  openPopup('food',{k,edit,ai,text:a?a.text:'',kcal:a&&a.kcal!=null&&!a.ai?a.kcal:'',protein:a&&a.protein!=null&&!a.ai?a.protein:'',est:ai&&a.items?{items:a.items,kcal:a.kcal,protein:a.protein}:null,status:'idle'})};
 ACT['f-meal']=el=>{S.popup.d.k=el.dataset.k;renderPopup()};
 INP['f-text']=el=>{const d=S.popup.d;d.text=el.value;if(d.ai&&d.est){d.est=null;d.status='idle';renderPopup();const t=$('#ft');if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length)}}};
 INP['f-kcal']=el=>{S.popup.d.kcal=el.value};INP['f-prot']=el=>{S.popup.d.protein=el.value};
 INP['f-ek']=el=>{S.popup.d.est.kcal=Math.max(0,Math.round(+el.value||0))};INP['f-ep']=el=>{S.popup.d.est.protein=Math.max(0,Math.round(+el.value||0))};
 ACT['f-ai']=()=>{const d=S.popup.d;d.ai=!d.ai;d.est=null;d.status='idle';renderPopup()};
-ACT['f-fol']=el=>{S.popup.d.followed=el.dataset.v==='1';renderPopup()};
 function saveFood(withEst){
   const d=S.popup.d;const day=ensureDay(S.ui.date);const meal=day.meals[d.k];
-  const text=(d.text||'').trim()||(!d.ai?(meal.plan||'').trim():'');
+  const text=(d.text||'').trim();
   if(!text){toast('צריך לכתוב מה אכלת');return}
   let kcal=null,protein=null,ai=false,items=null;
   if(d.ai&&withEst&&d.est){ai=true;kcal=d.est.kcal;protein=d.est.protein;items=d.est.items}
   else if(!d.ai){if(d.kcal!==''&&d.kcal!=null)kcal=Math.max(0,Math.round(+d.kcal||0));if(d.protein!==''&&d.protein!=null)protein=Math.max(0,Math.round(+d.protein||0))}
-  const followed=meal.plan&&meal.plan.trim()?!!d.followed:true;
-  meal.actual={text,kcal,protein,ai,followed};if(items)meal.actual.items=items;
+  meal.actual={text,kcal,protein,ai};if(items)meal.actual.items=items;
   Store.saveDay(S.ui.date);closePopup();render(true);toast('נשמר');
 }
 ACT['f-save']=()=>saveFood(true);ACT['f-save-nocalc']=()=>saveFood(false);
-ACT['f-recent']=el=>{const d=S.popup.d;const r=(d.rec||[])[+el.dataset.i];if(!r)return;const meal=dayOf(S.ui.date).meals[d.k];const plan=(meal.plan||'').trim();
-  const day=ensureDay(S.ui.date);const a={text:r.text,kcal:r.kcal!=null?r.kcal:null,protein:r.protein!=null?r.protein:null,ai:r.ai,followed:plan?plan===r.text.trim():true};if(r.items)a.items=r.items;
-  day.meals[d.k].actual=a;Store.saveDay(S.ui.date);closePopup();render(true);toast(`נוסף: ${r.text.length>22?r.text.slice(0,21)+'…':r.text}`)};
-ACT['ate-plan']=el=>{const dt=S.ui.date;if(!canEdit(dt))return;const m=ensureDay(dt).meals[el.dataset.k];if(!m.plan||!m.plan.trim())return;m.actual={text:m.plan.trim(),kcal:null,protein:null,ai:false,followed:true};Store.saveDay(dt);render(true);toast('נרשם: אכלת כמו שתכננת')};
+ACT['f-recent']=el=>{const d=S.popup.d;const r=(d.rec||[])[+el.dataset.i];if(!r)return;
+  const a={text:r.text,kcal:r.kcal!=null?r.kcal:null,protein:r.protein!=null?r.protein:null,ai:r.ai};if(r.items)a.items=r.items;
+  ensureDay(S.ui.date).meals[d.k].actual=a;Store.saveDay(S.ui.date);closePopup();render(true);toast(`נוסף: ${r.text.length>22?r.text.slice(0,21)+'…':r.text}`)};
 async function estimateFood(text){
   if(S.mode==='api'){try{return await Api.post('/api/estimate',{text})}catch(e){throw{code:e.code==='ai_unavailable'?'unavailable':e.code==='ai_limit'?'limit':'err'}}}
   const sample=window.claude&&window.claude.use?await window.claude.use('sample'):null;
@@ -140,6 +143,7 @@ POP.settings={label:'הפרופיל שלי',cls:'w',render:d=>{const st=d.st;ret
  ${S.mode==='api'?`<div class="stack" style="gap:8px;border-top:2px dashed var(--ink);padding-top:12px"><b>החשבון</b><div class="row" style="gap:8px;flex-wrap:wrap"><span>${esc(S.user?S.user.email:'')}</span>${S.mail?(S.user&&S.user.verified?`<span class="chip on">${ico('check',14,3)} מאומת</span>`:`<span class="chip pink">לא מאומת</span><button type="button" class="ghost" data-act="resend-verify">שליחת קישור</button>`):''}</div>
 <div class="twin"><div class="field"><label for="po">סיסמה נוכחית</label><input id="po" class="in sm" type="password" dir="ltr" style="text-align:left" autocomplete="current-password" data-in="pw-old"></div><div class="field"><label for="pn">סיסמה חדשה</label><input id="pn" class="in sm" type="password" dir="ltr" style="text-align:left" autocomplete="new-password" data-in="pw-new"></div></div>
 ${d.pw&&d.pw.err?`<div class="err-t" role="alert">${esc(d.pw.err)}</div>`:''}${d.pw&&d.pw.ok?`<div class="hint">${ico('check',16)} הסיסמה שונתה</div>`:''}<div><button type="button" class="btn secondary sm" data-act="pw-change">שינוי סיסמה</button></div></div>`:''}
+<div><button type="button" class="ghost" data-act="celebrate-preview">✦ תצוגה מקדימה של חגיגת ה-100</button></div>
 <div class="pts">${typeof legalLinks==='function'?legalLinks():''} · גרסה ${VERSION}</div><div class="pts">מצב אחסון: ${S.mode==='api'?`חשבון ${esc(S.user?S.user.email:'')}. נשמר בענן`:S.mode==='db'?(S.dbfail?'במכשיר הזה בלבד (אין הרשאת כתיבה בענן)':'ענן. הנתונים נשמרים בחשבון שלך'):'מקומי, במכשיר הזה בלבד'}</div>${S.mode==='api'?`<div class="acts" style="gap:10px"><button type="button" class="btn secondary sm" data-act="logout">יציאה מהחשבון</button><span class="sp"></span><button type="button" class="ghost red" data-act="del-acct">מחיקת החשבון</button></div>`:(S.guest&&S.apiAvail?`<div><button type="button" class="btn lime sm" data-act="make-account">יצירת חשבון כדי לשמור בענן</button></div>`:'')}</div>`}};
 ACT['make-account']=()=>{closePopup();S.ui.auth={tab:'register',email:'',pass:'',err:'',busy:false};S.mode='api';S.user=null;go('welcome');render(true)};
 ACT.settings=()=>{initSetup();openPopup('settings',{st:S.setup,pw:{old:'',nw:'',err:'',ok:false}})};
